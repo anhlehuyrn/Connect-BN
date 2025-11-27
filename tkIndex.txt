@@ -1,0 +1,217 @@
+import { ArrowRight, Users, Globe2, Sparkles, Map, BookOpen, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import heroImage from "@/assets/hero-bac-ninh.jpg";
+import templeImage from "@/assets/temple-interior.jpg";
+import craftsImage from "@/assets/crafts-workshop.jpg";
+
+const Index = () => {
+  const features = [
+    {
+      icon: BookOpen,
+      title: "Cultural Heritage",
+      description: "Explore Bac Ninh's rich intangible heritage, from Quan Ho folk songs to traditional crafts.",
+      link: "/gallery",
+    },
+    {
+      icon: Sparkles,
+      title: "Interactive Game",
+      description: "Experience Vietnamese folklore through our engaging browser-based mini game.",
+      link: "/game",
+    },
+    {
+      icon: Map,
+      title: "Heritage Map",
+      description: "Discover heritage sites, job opportunities, and community resources on our interactive map.",
+      link: "/map",
+    },
+    {
+      icon: Users,
+      title: "Youth Engagement",
+      description: "Join youth programs, workshops, and community initiatives shaping Bac Ninh's future.",
+      link: "/youth",
+    },
+    {
+      icon: Globe2,
+      title: "Open Data",
+      description: "Access transparent data on local development, tourism, and civic initiatives.",
+      link: "/open-data",
+    },
+    {
+      icon: Heart,
+      title: "Community Voice",
+      description: "Share your feedback and participate in building a better Bac Ninh together.",
+      link: "/#feedback",
+    },
+  ];
+
+  const highlights = [
+    {
+      image: templeImage,
+      title: "Ancient Temples",
+      description: "Sacred sites preserving centuries of spiritual heritage",
+    },
+    {
+      image: craftsImage,
+      title: "Traditional Crafts",
+      description: "Master artisans keeping alive the art of Dong Ho paintings",
+    },
+    {
+      image: heroImage,
+      title: "Cultural Festivals",
+      description: "Vibrant celebrations bringing communities together",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="relative h-[600px] overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src={heroImage}
+            alt="Bac Ninh Heritage"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-hero" />
+        </div>
+        <div className="relative container mx-auto px-4 h-full flex items-center">
+          <div className="max-w-2xl text-primary-foreground">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              Discover Bac Ninh's
+              <span className="block text-heritage-gold">Living Heritage</span>
+            </h1>
+            <p className="text-lg md:text-xl mb-8 opacity-95">
+              Explore the cultural treasures, traditional crafts, and vibrant community of Vietnam's cultural heartland.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Button asChild size="lg" variant="secondary" className="shadow-elevated">
+                <Link to="/gallery">
+                  Explore Gallery <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="bg-background/10 border-primary-foreground text-primary-foreground hover:bg-background/20">
+                <Link to="/map">View Interactive Map</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-20 bg-gradient-cultural">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">
+              Explore Connect Bac Ninh
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Connecting heritage with innovation for sustainable community development
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <Card key={index} className="border-border/50 hover:shadow-cultural transition-all duration-300 hover:-translate-y-1">
+                <CardContent className="p-6">
+                  <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <feature.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                  <p className="text-muted-foreground mb-4">{feature.description}</p>
+                  <Link
+                    to={feature.link}
+                    className="text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1 transition-colors"
+                  >
+                    Learn more <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Cultural Highlights */}
+      <section className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-primary">
+            Cultural Highlights
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {highlights.map((highlight, index) => (
+              <div key={index} className="group relative overflow-hidden rounded-xl shadow-cultural hover:shadow-elevated transition-all duration-300">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={highlight.image}
+                    alt={highlight.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end p-6">
+                  <div className="text-white">
+                    <h3 className="text-2xl font-bold mb-2">{highlight.title}</h3>
+                    <p className="text-white/90">{highlight.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Video Section */}
+      <section className="py-20 bg-heritage-cream">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center text-primary">
+              Experience Bac Ninh's Culture
+            </h2>
+            <p className="text-center text-muted-foreground mb-8">
+              Watch traditional performances and community stories
+            </p>
+            <div className="aspect-video rounded-xl overflow-hidden shadow-elevated bg-muted">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                title="Bac Ninh Cultural Video"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-hero opacity-95" />
+        <div className="relative container mx-auto px-4 text-center text-primary-foreground">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Join Our Community
+          </h2>
+          <p className="text-lg mb-8 max-w-2xl mx-auto opacity-95">
+            Be part of preserving and promoting Bac Ninh's cultural heritage for future generations
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Button asChild size="lg" variant="secondary">
+              <Link to="/youth">Join Youth Programs</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="bg-background/10 border-primary-foreground text-primary-foreground hover:bg-background/20">
+              <a href="#feedback">Share Feedback</a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Index;

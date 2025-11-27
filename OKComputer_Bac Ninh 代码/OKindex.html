@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Bắc Ninh - Khám Phá Di Sản Văn Hóa</title>
+    <meta name="description" content="Khám phá văn hóa Bắc Ninh - Quê hương dân ca Quan họ, tranh Đông Hồ và di sản Phật giáo cổ kính">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Vietnamese:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home" class="logo-link">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5C11.7 5 5 11.7 5 20s6.7 15 15 15 15-6.7 15-15S28.3 5 20 5zm0 26c-6.1 0-11-4.9-11-11s4.9-11 11-11 11 4.9 11 11-4.9 11-11 11z" fill="currentColor"/>
+                            <path d="M20 12c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z" fill="currentColor"/>
+                            <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <span class="logo-text">Smart Bắc Ninh</span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="navMenu">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link" data-i18n="nav.home">Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#heritage" class="nav-link" data-i18n="nav.heritage">Di Sản</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#culture" class="nav-link" data-i18n="nav.culture">Văn Hóa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#sites" class="nav-link" data-i18n="nav.sites">Địa Danh</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#map" class="nav-link" data-i18n="nav.map">Bản Đồ</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="language-switcher">
+                    <button class="lang-btn" id="langBtn" aria-label="Chọn ngôn ngữ">
+                        <span class="lang-current">VI</span>
+                        <svg class="lang-arrow" viewBox="0 0 24 24" fill="none">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button class="lang-option active" data-lang="vi">Tiếng Việt</button>
+                        <button class="lang-option" data-lang="en">English</button>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-toggle" id="mobileToggle" aria-label="Menu di động">
+                    <span class="toggle-line"></span>
+                    <span class="toggle-line"></span>
+                    <span class="toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <img src="resources/hero-bac-ninh-cultural.jpg" alt="Bắc Ninh Cultural Landscape" class="hero-image">
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title" data-aos="fade-up">
+                    <span class="title-main" data-i18n="hero.title">Bắc Ninh</span>
+                    <span class="title-sub" data-i18n="hero.subtitle">Cội Nguồn Di Sản</span>
+                </h1>
+                <p class="hero-description" data-aos="fade-up" data-aos-delay="200" data-i18n="hero.description">
+                    Khám phá vùng đất cổ kính nơi lưu giữ tinh hoa văn hóa Việt - từ dân ca Quan họ được UNESCO công nhận đến tranh Đông Hồ tinh xảo và những ngôi chùa nghìn năm tuổi.
+                </p>
+            </div>
+            
+            <div class="hero-actions" data-aos="fade-up" data-aos-delay="400">
+                <a href="#heritage" class="btn btn-primary" data-i18n="hero.explore">Khám Phá Di Sản</a>
+                <a href="#map" class="btn btn-secondary" data-i18n="hero.map">Xem Bản Đồ</a>
+            </div>
+        </div>
+        
+        <div class="hero-scroll">
+            <div class="scroll-indicator">
+                <span class="scroll-text" data-i18n="hero.scroll">Cuộn xuống</span>
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heritage Section -->
+    <section id="heritage" class="heritage-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up" data-i18n="heritage.title">Di Sản Văn Hóa</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200" data-i18n="heritage.subtitle">
+                    Những viên ngọc quý của Bắc Ninh được UNESCO vinh danh
+                </p>
+            </div>
+            
+            <div class="heritage-grid">
+                <div class="heritage-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-image">
+                        <img src="https://kimi-web-img.moonshot.cn/img/ich.unesco.org/032a7e2f7244322e92c48212ce26c698c5e410e4.jpg" alt="Quan họ folk singers" class="card-img">
+                        <div class="card-overlay">
+                            <div class="play-button">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M8 5v14l11-7z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title" data-i18n="heritage.quanho.title">Dân Ca Quan Họ</h3>
+                        <p class="card-description" data-i18n="heritage.quanho.description">
+                            Di sản văn hóa phi vật thể được UNESCO công nhận năm 2009, biểu tượng của tình yêu và nghệ thuật hát đối đặc sắc.
+                        </p>
+                        <a href="#" class="card-link" data-i18n="heritage.learnmore">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+                
+                <div class="heritage-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-image">
+                        <img src="https://kimi-web-img.moonshot.cn/img/image.vovworld.vn/d7f647ffd2816650d07850168a8493e2254ae6d3.jpg" alt="Đông Hồ paintings" class="card-img">
+                        <div class="card-badge" data-i18n="heritage.craft">Làng Nghề</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title" data-i18n="heritage.dongho.title">Tranh Đông Hồ</h3>
+                        <p class="card-description" data-i18n="heritage.dongho.description">
+                            Nghệ thuật in khắc gỗ truyền thống với hơn 500 năm lịch sử, phản ánh đợi sống và tín ngưỡng của ngườ Việt.
+                        </p>
+                        <a href="#" class="card-link" data-i18n="heritage.learnmore">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+                
+                <div class="heritage-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-image">
+                        <img src="https://kimi-web-img.moonshot.cn/img/cdn.pixabay.com/25abccc473d7f5d9281d075371a7d67b5c43350f.jpg" alt="Bắc Ninh pagoda" class="card-img">
+                        <div class="card-badge" data-i18n="heritage.religious">Tôn Giáo</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title" data-i18n="heritage.pagodas.title">Chùa Cổ Bắc Ninh</h3>
+                        <p class="card-description" data-i18n="heritage.pagodas.description">
+                            Hệ thống chùa cổ với kiến trúc độc đáo: chùa Dâu, chùa Bút Tháp, chùa Phật Tích - những viên ngọc Phật giáo.
+                        </p>
+                        <a href="#" class="card-link" data-i18n="heritage.learnmore">Tìm hiểu thêm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cultural Timeline -->
+    <section id="culture" class="culture-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up" data-i18n="culture.title">Hành Trình Văn Hóa</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200" data-i18n="culture.subtitle">
+                    Dấu ấn thờ gian qua các triều đại
+                </p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-marker">
+                        <div class="marker-icon">🏛️</div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">1057</div>
+                        <h3 class="timeline-title" data-i18n="culture.ly.title">Thờ kỳ Lý Dynasty</h3>
+                        <p class="timeline-description" data-i18n="culture.ly.description">
+                            Chùa Phật Tích được xây dựng, đánh dấu sự phát triển của Phật giáo tại Bắc Ninh.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-marker">
+                        <div class="marker-icon">🎵</div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">15-17th</div>
+                        <h3 class="timeline-title" data-i18n="culture.quanho.origin.title">Sơ kỳ Quan Họ</h3>
+                        <p class="timeline-description" data-i18n="culture.quanho.origin.description">
+                            Dân ca Quan họ bắt đầu hình thành và phát triển trong các làng xã Bắc Ninh.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-marker">
+                        <div class="marker-icon">🎨</div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">16th</div>
+                        <h3 class="timeline-title" data-i18n="culture.dongho.origin.title">Kỳ nguyên Đông Hồ</h3>
+                        <p class="timeline-description" data-i18n="culture.dongho.origin.description">
+                            Tranh Đông Hồ ra đờ tại làng Đông Hồ, trở thành nghề in khắc gỗ nổi tiếng.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-marker">
+                        <div class="marker-icon">🏆</div>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2009</div>
+                        <h3 class="timeline-title" data-i18n="culture.unesco.title">UNESCO Vinh Danh</h3>
+                        <p class="timeline-description" data-i18n="culture.unesco.description">
+                            Quan họ Bắc Ninh được UNESCO công nhận là Di sản Văn hóa Phi vật thể của Nhân loại.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sites Gallery -->
+    <section id="sites" class="sites-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up" data-i18n="sites.title">Địa Danh Nổi Tiếng</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200" data-i18n="sites.subtitle">
+                    Những điểm đến không thể bỏ lỡ tại Bắc Ninh
+                </p>
+            </div>
+            
+            <div class="sites-gallery">
+                <div class="gallery-item large" data-aos="zoom-in">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.orientalarchitecture.com/d85563db36224992ed175696851443e6ebbe073a.jpg" alt="But Thap Pagoda" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3 class="gallery-title" data-i18n="sites.butthap.title">Chùa Bút Tháp</h3>
+                        <p class="gallery-description" data-i18n="sites.butthap.description">Kiệt tác kiến trúc Phật giáo với tháp Bảo Nghiêm</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+                    <img src="resources/pagoda-architecture-detail.jpg" alt="Pagoda Architecture" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3 class="gallery-title" data-i18n="sites.architecture.title">Kiến Trúc Cổ</h3>
+                        <p class="gallery-description" data-i18n="sites.architecture.description">Nghệ thuật chạm khắc gỗ tinh xảo</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="https://kimi-web-img.moonshot.cn/img/www.asiakingtravel.com/50df8ec45405524295b1e7f19c0f38dcd6c49766.jpeg" alt="Quan ho performance" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3 class="gallery-title" data-i18n="sites.quanho.title">Quan Họ</h3>
+                        <p class="gallery-description" data-i18n="sites.quanho.description">Nghệ thuật hát đối truyền thống</p>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
+                    <img src="https://kimi-web-img.moonshot.cn/img/media.urbanistnetwork.com/a8c08172ad8219ea667bc058a10ae1b418e62a1e.jpg" alt="Dong Ho paintings" class="gallery-img">
+                    <div class="gallery-overlay">
+                        <h3 class="gallery-title" data-i18n="sites.dongho.title">Làng Tranh</h3>
+                        <p class="gallery-description" data-i18n="sites.dongho.description">Nghệ thuật in khắc truyền thống</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Map -->
+    <section id="map" class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-aos="fade-up" data-i18n="map.title">Bản Đồ Văn Hóa</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="200" data-i18n="map.subtitle">
+                    Khám phá các điểm di sản trên bản đồ tương tác
+                </p>
+            </div>
+            
+            <div class="map-container" data-aos="fade-up" data-aos-delay="300">
+                <div id="cultural-map" class="map"></div>
+                <div class="map-controls">
+                    <button class="map-control-btn active" data-filter="all" data-i18n="map.filter.all">Tất Cả</button>
+                    <button class="map-control-btn" data-filter="pagoda" data-i18n="map.filter.pagoda">Chùa</button>
+                    <button class="map-control-btn" data-filter="village" data-i18n="map.filter.village">Làng Nghề</button>
+                    <button class="map-control-btn" data-filter="heritage" data-i18n="map.filter.heritage">Di Sản</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 40 40" fill="none">
+                            <path d="M20 5C11.7 5 5 11.7 5 20s6.7 15 15 15 15-6.7 15-15S28.3 5 20 5zm0 26c-6.1 0-11-4.9-11-11s4.9-11 11-11 11 4.9 11 11-4.9 11-11 11z" fill="currentColor"/>
+                            <path d="M20 12c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z" fill="currentColor"/>
+                            <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3 class="footer-title">Smart Bắc Ninh</h3>
+                    <p class="footer-description" data-i18n="footer.description">
+                        Khám phá và bảo tồn di sản văn hóa Bắc Ninh trong kỷ nguyên số.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-column-title" data-i18n="footer.explore">Khám Phá</h4>
+                        <ul class="footer-link-list">
+                            <li><a href="#heritage" data-i18n="footer.heritage">Di Sản</a></li>
+                            <li><a href="#culture" data-i18n="footer.culture">Văn Hóa</a></li>
+                            <li><a href="#sites" data-i18n="footer.sites">Địa Danh</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 class="footer-column-title" data-i18n="footer.learn">Tìm Hiểu</h4>
+                        <ul class="footer-link-list">
+                            <li><a href="#" data-i18n="footer.history">Lịch Sử</a></li>
+                            <li><a href="#" data-i18n="footer.traditions">Phong Tục</a></li>
+                            <li><a href="#" data-i18n="footer.arts">Nghệ Thuật</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 class="footer-column-title" data-i18n="footer.connect">Kết Nối</h4>
+                        <div class="footer-social">
+                            <a href="#" class="social-link" aria-label="Facebook">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-link" aria-label="YouTube">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="social-link" aria-label="Instagram">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="footer-copyright" data-i18n="footer.copyright">
+                    © 2024 Smart Bắc Ninh. Bảo lưu mọi quyền.
+                </p>
+                <p class="footer-note" data-i18n="footer.note">
+                    Website được phát triển nhằm mục đích giáo dục và bảo tồn di sản văn hóa.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="OKmain.js"></script>
+</body>

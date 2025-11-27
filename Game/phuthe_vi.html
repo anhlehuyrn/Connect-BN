@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <title>Demo Game Bánh Phu Thê (Embedded Assets)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+  <link rel="icon" href="../image%20list%20png/logo1.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background: linear-gradient(180deg,#fffaf0 0%, #fff 60%); font-family: 'Poppins', 'Inter', Arial, Helvetica, sans-serif; color:#222 }
+    header .nav-container { max-width:1200px; margin:0 auto; padding:8px 16px; }
+    #i18n-logo { height:42px; width:auto; display:block }
+    #game-container { width:100%; max-width:980px; height:72vh; margin: 24px auto; display:flex; align-items:center; justify-content:center; position:relative; }
+    #game-container canvas { display:block; border-radius:12px; box-shadow: 0 10px 30px rgba(30,30,30,0.18); }
+    .game-ui { position:absolute; top:12px; left:12px; right:12px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+    .game-ui .left, .game-ui .right { pointer-events:auto; display:flex; gap:8px; align-items:center }
+    .game-ui h2 { margin:0; font-size:18px; font-weight:700; color:#1f6b3a; text-shadow: 0 1px 0 rgba(255,255,255,0.6); }
+    .game-ui .score { background: rgba(255,255,255,0.9); padding:8px 12px; border-radius:10px; box-shadow: 0 6px 16px rgba(30,30,30,0.08); font-weight:600; color:#2a6a3b }
+    .game-ui button { background:#2a6a3b; color:#fff; border:0; padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:600 }
+    .game-ui button:active { transform:translateY(1px) }
+    .help-modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fffaf0; border:2px solid #e6d7c8; padding:18px; border-radius:12px; max-width:720px; box-shadow:0 18px 48px rgba(0,0,0,0.18); display:none; z-index:1200 }
+    .help-modal .close { display:inline-block; margin-top:12px; background:#2a6a3b; color:#fff; padding:8px 12px; border-radius:8px; cursor:pointer }
+    @media (max-width:700px){ #game-container{height:64vh} .game-ui h2{font-size:16px} }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <a href="../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+          <img id="i18n-logo" src="../Giaodien/logowweb.png" alt="Bắc Ninh" />
+        </a>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a></li>
+        <li class="nav-item"><a href="../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a></li>
+        <li class="nav-item"><a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+          <ul class="dropdown-menu">
+            <li><a href="game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+            <li><a href="dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+            <li><a href="phuthe_vi.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="lang-switcher">
+        <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </button>
+        <div class="lang-dropdown" id="langDropdown" role="menu">
+          <div class="lang-option active" data-lang="vi" role="menuitem" tabindex="0"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="lang-option" data-lang="en" role="menuitem" tabindex="0"><span class="lang-flag">🇬🇧</span><span>English</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main style="margin-top:80px;">
+  <section class="bg-gradient-cultural" style="padding: 24px 0;">
+    <div class="container">
+      <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 16px; color: #2c3e50;">Demo Game Bánh Phu Thê</h1>
+    </div>
+  </section>
+
+  <div id="game-container" style="height: 70vh;"></div>
+</main>
+
+<div class="game-ui" aria-hidden="false">
+  <div class="left">
+    <h2 id="gameTitle">Demo: Bánh Phu Thê</h2>
+    <div class="score" id="gameScore">Điểm: 0</div>
+  </div>
+  <div class="right">
+    <button id="helpBtn" aria-label="Help">Hướng dẫn</button>
+    <button id="restartBtn" aria-label="Restart">Chơi lại</button>
+  </div>
+</div>
+
+<div class="help-modal" id="helpModal" role="dialog" aria-modal="true">
+  <div style="font-weight:700; margin-bottom:8px;">Hướng dẫn ngắn</div>
+  <div id="helpTextModal" style="color:#333; line-height:1.45">Kéo nguyên liệu vào chảo, nhấn <strong>Stir</strong>. Sau đó khuấy vỏ, chọn lá, đặt nhân và bấm <strong>Wrap</strong>. Giữ <strong>Steam</strong> đủ lâu để bánh chín. Mỗi bước có điểm thưởng.</div>
+  <div class="close" id="closeHelp">Đóng</div>
+</div>
+
+<script>
+// ===== Config & state =====
+const config = {
+  type: Phaser.AUTO,
+  parent: 'game-container',
+  backgroundColor: '#fffaf0',
+  pixelArt: false,
+  roundPixels: true,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 900,
+    height: 600
+  },
+  scene: [PreloadScene, StartScene, SceneNhan, SceneVo, SceneGoi, SceneHap, SceneEnd]
+};
+
+let globalState = { score: 0, doughReady: false, language: 'vi' };
+
+const i18n = {
+  vi: {
+    title: 'Làm Bánh Phu Thê',
+    subtitle: 'Trò chơi làm bánh Phu Thê - một nét văn hóa Bắc Ninh',
+    start: 'Bắt đầu',
+    help: 'Hướng dẫn',
+    helpText: 'Kéo thả nguyên liệu/ lá/ nhân vào vị trí; bấm Khuấy/ Khuấy/ Gói; giữ nút Hấp đủ lâu. Điểm thưởng mỗi bước.',
+    score: 'Điểm',
+    next: 'Tiếp →',
+    helpModalTitle: 'Hướng dẫn ngắn',
+    helpModalClose: 'Đóng',
+    s1Title: 'Bước 1: Sên nhân đậu xanh',
+    s1Hint: 'Kéo Đậu xanh, Đường, Dừa nạo vào chảo. Sau đó nhấn Stir để sên.',
+    s1Missing: 'Thiếu',
+    s1Cooking: 'Đang sên nhân…',
+    s1Done: '✅ Nhân đã sên đạt: dẻo, không quá ướt.',
+    s2Title: 'Bước 2: Pha vỏ bánh',
+    s2Hint: 'Click "Khuấy" nhiều lần để đạt độ sánh phù hợp. Fun fact: thêm hạt dành dành vào vỏ bánh sẽ tạo nên sắc vàng óng ả.',
+    s2Done: '✅ Vỏ đã đạt độ sánh: mịn và dẻo.',
+    s3Title: 'Bước 3: Gói bánh',
+    s3Hint: 'Chọn lá chuối đúng, kéo nhân vào giữa và bấm Wrap.',
+    s3Slot: 'Vị trí gói',
+    s3LeafOk: 'Đã đặt lá chuối đúng. Tiếp theo đặt nhân vào giữa.',
+    s3LeafBad: 'Đặt lá không đúng. Hãy dùng lá chuối truyền thống.',
+    s3DoughOk: 'Nhân đã đặt vào lá. Nhấn Wrap để hoàn thành.',
+    s3WrapDone: 'Gói thành công! Bánh sẵn sàng để hấp.',
+    s3Need: 'Vui lòng đặt lá đúng và đặt nhân vào vị trí trước khi gói.',
+    s4Title: 'Bước 4: Hấp bánh',
+    s4Hint: 'Giữ nút Steam trong khoảng thời gian hợp lý để hấp chín.',
+    s4Holding: 'Đang hấp bánh… giữ nút để tiếp tục.',
+    s4NotEnough: 'Chưa đủ thời gian hấp. Hãy giữ nút lâu hơn.',
+    endTip: 'Tip văn hóa: Bánh phu thê tượng trưng cho tình nghĩa vợ chồng, thường xuất hiện trong lễ cưới.',
+    endCongrats: '🎉 Bánh phu thê đã hấp chín! Chúc mừng!',
+    restart: 'Chơi lại'
+  },
+  en: {
+    title: 'Making Bánh Phu Thê',
+    subtitle: 'Festive cooking game with Bac Ninh culture',
+    start: 'Start',
+    help: 'Help',
+    helpText: 'Drag ingredients/leaf/dough; click Stir/Mix/Wrap; hold Steam long enough. Earn points each step.',
+    score: 'Score',
+    next: 'Next →',
+    helpModalTitle: 'Quick guide',
+    helpModalClose: 'Close',
+    s1Title: 'Step 1: Cook mung bean filling',
+    s1Hint: 'Drag mung beans, sugar, coconut into the pan. Then press Stir to cook.',
+    s1Missing: 'Missing',
+    s1Cooking: 'Cooking filling…',
+    s1Done: '✅ Filling ready: stretchy and not too wet.',
+    s2Title: 'Step 2: Mix the batter',
+    s2Hint: 'Click "Mix" multiple times until smooth. Fun fact: adding gardenia seeds brings a golden hue.',
+    s2Done: '✅ Batter is smooth and elastic.',
+    s3Title: 'Step 3: Wrap the cake',
+    s3Hint: 'Choose the right banana leaf, drag filling to the center, then press Wrap.',
+    s3Slot: 'Wrapping spot',
+    s3LeafOk: 'Correct leaf placed. Now drop the filling in the middle.',
+    s3LeafBad: 'Wrong leaf. Use traditional banana leaf.',
+    s3DoughOk: 'Filling placed. Press Wrap to finish.',
+    s3WrapDone: 'Wrapped successfully! Ready to steam.',
+    s3Need: 'Please place the correct leaf and the filling before wrapping.',
+    s4Title: 'Step 4: Steam the cake',
+    s4Hint: 'Hold Steam for a suitable time to cook.',
+    s4Holding: 'Steaming… hold the button to continue.',
+    s4NotEnough: 'Not long enough. Hold the button longer.',
+    endTip: 'Culture tip: Bánh phu thê symbolizes marital love and is common in weddings.',
+    endCongrats: '🎉 Cake steamed! Congratulations!',
+    restart: 'Play again'
+  }
+};
+
+function t(key) { return (i18n[globalState.language] || i18n.vi)[key] || key; }
+
+function playClick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = 880; g.gain.value = 0.05;
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); setTimeout(()=>{ o.stop(); ctx.close(); }, 120);
+  } catch {}
+}
+
+const game = new Phaser.Game(config);
+
+// ===== Preload =====
+function PreloadScene() { Phaser.Scene.call(this, { key: 'PreloadScene' }); }
+PreloadScene.prototype = Object.create(Phaser.Scene.prototype);
+PreloadScene.prototype.constructor = PreloadScene;
+
+PreloadScene.prototype.preload = function() {
+  this.load.image('pan', 'phuthe/pan.png');
+  this.load.image('bowl', 'phuthe/bowl.png');
+  this.load.image('dau', 'phuthe/dau.png');
+  this.load.image('duong', 'phuthe/duong.png');
+  this.load.image('dua', 'phuthe/dua.png');
+  this.load.image('leaf_ok', 'phuthe/leaf_banana.png');
+  this.load.image('leaf_no', 'phuthe/leaf_wrong.png');
+  this.load.image('dough', 'phuthe/dough.png');
+  this.load.image('btn_stir', 'phuthe/btn_stir.png');
+  this.load.image('btn_khuay', 'phuthe/btn_khuay.png');
+  this.load.image('btn_wrap', 'phuthe/btn_wrap.png');
+  this.load.image('btn_steam', 'phuthe/btn_steam.png');
+  this.load.image('hapbanh', 'phuthe/hapbanh.png');
+  this.load.image('noihap', 'phuthe/noihap.png');
+  this.load.image('mobanh', 'phuthe/mobanh.png');
+  this.load.image('wrapp', 'phuthe/wrapp.png');
+  this.load.image('wrapt', 'phuthe/wrapt.png');
+  this.load.image('wraptr', 'phuthe/wraptr.png');
+  this.load.image('wrapd', 'phuthe/wrapd.png');
+  this.load.image('banhphuthe', 'phuthe/banhphuthe.png');
+  this.load.image('panatfmix', 'phuthe/panatfmix.png');
+  this.load.image('mixp', 'phuthe/mixp.png');
+  this.load.image('mixg', 'phuthe/mixg.png');
+  this.load.image('mixt', 'phuthe/mixt.png');
+  this.load.image('mixd', 'phuthe/mixd.png');
+
+  const w = this.cameras.main.width, h = this.cameras.main.height;
+  this.cameras.main.setBackgroundColor('#f0f8ff');
+  addText(this, w/2, h/2, globalState.language === 'vi' ? 'Đang tải demo...' : 'Loading demo...', textStyle({ size: 20, color: '#333', center: true }));
+
+  this.load.once('complete', () => this.scene.start('StartScene'));
+  this.time.delayedCall(4000, () => {
+    if (this.scene.key === 'PreloadScene') this.scene.start('SceneNhan');
+  });
+};
+
+PreloadScene.prototype.create = function() {};
+
+// ===== Start =====
+function StartScene() { Phaser.Scene.call(this, { key: 'StartScene' }); }
+StartScene.prototype = Object.create(Phaser.Scene.prototype);
+StartScene.prototype.constructor = StartScene;
+
+StartScene.prototype.create = function() {
+  const w = this.cameras.main.width;
+
+  addText(this, w/2, 130, t('title'), textStyle({ size: 44, color: '#1f6b3a', weight: '700', center: true, shadow: true }));
+  addText(this, w/2, 180, t('subtitle'), textStyle({ size: 20, color: '#4b5563', center: true }));
+
+  const startBtn = this.add.rectangle(w/2, 270, 200, 52, 0x2a6a3b).setInteractive();
+  this.add.text(w/2, 270, t('start'), { fontSize: '20px', color: '#fff', fontFamily: "'Poppins','Segoe UI',Arial,sans-serif" }).setOrigin(0.5);
+  startBtn.on('pointerdown', () => { playClick(); this.scene.start('SceneNhan'); });
+
+  const helpBtn = this.add.rectangle(w/2, 335, 200, 44, 0x8b5a2b).setInteractive();
+  this.add.text(w/2, 335, t('help'), { fontSize: '18px', color: '#fff', fontFamily: "'Poppins','Segoe UI',Arial,sans-serif" }).setOrigin(0.5);
+  helpBtn.on('pointerdown', () => { playClick(); this.showHelp(); });
+
+  const langBtn = this.add.rectangle(w/2, 390, 220, 40, 0xddd6c8).setInteractive();
+  this.add.text(w/2, 390, 'VI / EN', { fontSize: '18px', color: '#374151', fontFamily: "'Poppins','Segoe UI',Arial,sans-serif" }).setOrigin(0.5);
+  langBtn.on('pointerdown', () => {
+    playClick();
+    globalState.language = (globalState.language === 'vi') ? 'en' : 'vi';
+    // sync overlay UI
+    document.getElementById('gameTitle').textContent = t('title');
+    document.getElementById('gameScore').textContent = `${t('score')}: ${globalState.score}`;
+    // sync help modal
+    document.querySelector('.help-modal > div').textContent = t('helpModalTitle');
+    document.getElementById('helpTextModal').innerHTML = t('helpText').replaceAll('Stir', '<strong>Stir</strong>').replaceAll('Wrap', '<strong>Wrap</strong>').replaceAll('Steam', '<strong>Steam</strong>');
+    document.getElementById('closeHelp').textContent = t('helpModalClose');
+    this.scene.restart();
+  });
+
+  // initial overlay sync
+  document.getElementById('gameTitle').textContent = t('title');
+  document.getElementById('gameScore').textContent = `${t('score')}: ${globalState.score}`;
+};
+
+StartScene.prototype.showHelp = function() {
+  const w = this.cameras.main.width, h = this.cameras.main.height;
+  const overlay = this.add.rectangle(w/2, h/2, 580, 240, 0xffffff).setStrokeStyle(2, 0x8b5a2b);
+  const txt = addText(this, w/2, h/2, t('helpText'), textStyle({ size: 18, color: '#374151', center: true, wrap: 520, lineHeight: 1.36 }));
+  const close = this.add.text(w/2, h/2 + 90, t('helpModalClose'), { fontSize: '18px', color: '#2a6a3b', fontFamily: "'Poppins','Segoe UI',Arial,sans-serif" }).setOrigin(0.5).setInteractive();
+  close.on('pointerdown', () => { playClick(); overlay.destroy(); txt.destroy(); close.destroy(); });
+};
+
+// ===== Helpers =====
+function textStyle({ size=18, color='#374151', weight='600', center=false, wrap=420, lineHeight=1.28, shadow=false }={}) {
+  const style = {
+    fontFamily: "'Poppins','Segoe UI',Arial,sans-serif",
+    fontSize: `${size}px`,
+    color,
+    fontStyle: 'normal',
+    fontWeight: weight,
+    wordWrap: { width: wrap }
+  };
+  if (shadow) style.shadow = { offsetX: 2, offsetY: 2, color: 'rgba(230,242,233,0.9)', blur: 3, stroke: false, fill: true };
+  style.padding = { x: 2, y: 2 };
+  style.resolution = Math.ceil(window.devicePixelRatio);
+  style.lineSpacing = Math.round(size * (lineHeight - 1));
+  style.align = center ? 'center' : 'left';
+  return style;
+}
+function addText(scene, x, y, content, style) {
+  const st = style || textStyle();
+  const txt = scene.add.text(x, y, content, st);
+  if (st.align === 'center') txt.setOrigin(0.5);
+  return txt;
+}
+function fitSprite(sprite, boxW, boxH) {
+  const fw = sprite.frame && sprite.frame.width ? sprite.frame.width : (sprite.texture.getSourceImage().width || 1);
+  const fh = sprite.frame && sprite.frame.height ? sprite.frame.height : (sprite.texture.getSourceImage().height || 1);
+  const scale = Math.min(boxW / fw, boxH / fh);
+  sprite.setScale(scale);
+}
+
+// ===== Scene 1 =====
+function SceneNhan() { Phaser.Scene.call(this, { key: 'SceneNhan' }); }
+SceneNhan.prototype = Object.create(Phaser.Scene.prototype);
+SceneNhan.prototype.constructor = SceneNhan;
+
+SceneNhan.prototype.create = function() {
+  addText(this, 24, 18, t('s1Title'), textStyle({ size: 30, color: '#14532d', weight: '700' }));
+  this.hint = addText(this, 24, 66, t('s1Hint'), textStyle({ size: 18, color: '#4b5563', wrap: 420, lineHeight: 1.34 }));
+
+  const panKey = this.textures.exists('pan_opt') ? 'pan_opt' : 'pan';
+  this.pan = this.add.image(580, 300, panKey).setInteractive();
+  fitSprite(this.pan, 614, 307);
+
+  const items = [
+    { key: 'dau', labelVi: 'Đậu xanh', labelEn: 'Mung beans' },
+    { key: 'duong', labelVi: 'Đường', labelEn: 'Sugar' },
+    { key: 'dua', labelVi: 'Dừa nạo', labelEn: 'Grated coconut' }
+  ];
+  const leftX = 180, startY = 140, gap = 120;
+  this.ingredients = [];
+  items.forEach((it, idx) => {
+    const img = this.add.image(leftX, startY + idx*gap, it.key).setInteractive({ cursor: 'grab' });
+    img.setData('name', it.key);
+    img.setData('label', globalState.language === 'vi' ? it.labelVi : it.labelEn);
+    img.setData('homeX', leftX);
+    img.setData('homeY', startY + idx*gap);
+    this.input.setDraggable(img);
+    this.ingredients.push(img);
+    fitSprite(img, 256, 128);
+  });
+
+  this.statusText = addText(this, 24, 520, '', textStyle({ size: 18, color: '#374151', wrap: 520 }));
+
+  this.input.on('drag', (pointer, o, x, y) => { o.x = x; o.y = y; });
+  this.input.on('dragend', (pointer, obj) => {
+    const inZone = Phaser.Geom.Intersects.RectangleToRectangle(obj.getBounds(), this.pan.getBounds());
+    if (inZone) {
+      obj.x = 580 + Phaser.Math.Between(-80, 80);
+      obj.y = 300 + Phaser.Math.Between(-40, 40);
+      obj.setTint(0x88ff88);
+      obj.setData('added', true);
+    } else {
+      obj.x = obj.getData('homeX'); obj.y = obj.getData('homeY');
+      obj.clearTint(); obj.setData('added', false);
+    }
+    this.updateHint();
+  });
+
+  this.stirBtn = this.add.image(580, 480, 'btn_stir').setInteractive();
+  fitSprite(this.stirBtn, 64, 64);
+  this.stirBtn.on('pointerdown', () => {
+    playClick();
+    if (this.ingredients.every(i => i.getData('added'))) {
+      this.stirring = true;
+      if (this.textures.exists('panatfmix')) { this.pan.setTexture('panatfmix'); fitSprite(this.pan, 512, 256); }
+      this.ingredients.forEach(i => i.visible = false);
+      this.statusText.setText(t('s1Cooking'));
+    } else {
+      this.tweens.add({ targets: this.hint, alpha: 0.3, yoyo: true, duration: 200, repeat: 2 });
+      this.statusText.setText(globalState.language === 'vi' ? 'Hãy thêm đủ nguyên liệu trước khi sên.' : 'Add all ingredients before cooking.');
+    }
+  });
+
+  this.progress = 0;
+  this.progressBg = this.add.rectangle(430, 480, 300, 18, 0xe5e7eb).setOrigin(0,0.5);
+  this.progressFill = this.add.rectangle(430, 480, 0, 18, 0x16a34a).setOrigin(0,0.5);
+
+  this.nextText = addText(this, 760, 540, t('next'), textStyle({ size: 20, color: '#14532d', weight: '700' }));
+  this.nextText.setInteractive();
+  this.nextText.visible = false;
+  this.nextText.on('pointerdown', () => { globalState.doughReady = true; this.scene.start('SceneVo'); });
+};
+
+SceneNhan.prototype.update = function(time, delta) {
+  if (this.stirring) {
+    this.progress += delta * 0.06;
+    if (this.progress > 100) this.progress = 100;
+    this.progressFill.width = (this.progress / 100) * 300;
+    if (this.progress >= 100) {
+      this.stirring = false;
+      this.statusText.setText(t('s1Done'));
+      globalState.score += 20;
+      this.nextText.visible = true;
+    }
+  }
+};
+
+SceneNhan.prototype.updateHint = function() {
+  const missing = this.ingredients.filter(i => !i.getData('added')).map(i => i.getData('label'));
+  if (missing.length === 0) {
+    this.hint.setText(globalState.language === 'vi' ? 'Đã thêm đủ nguyên liệu. Nhấn Stir để sên.' : 'All ingredients added. Press Stir to cook.');
+  } else {
+    this.hint.setText(`${t('s1Missing')}: ${missing.join(', ')}`);
+  }
+};
+
+// ===== Scene 2 =====
+function SceneVo() { Phaser.Scene.call(this, { key: 'SceneVo' }); }
+SceneVo.prototype = Object.create(Phaser.Scene.prototype);
+SceneVo.prototype.constructor = SceneVo;
+
+SceneVo.prototype.create = function() {
+  addText(this, 24, 18, t('s2Title'), textStyle({ size: 30, color: '#14532d', weight: '700' }));
+  const bowlKey = this.textures.exists('bowl_opt') ? 'bowl_opt' : 'bowl';
+  this.bowlSprite = this.add.image(580, 300, bowlKey);
+  fitSprite(this.bowlSprite, 512, 256);
+  addText(this, 24, 66, t('s2Hint'), textStyle({ size: 18, color: '#4b5563', wrap: 520, lineHeight: 1.34 }));
+
+  this.mixFrames = ['mixp','mixg','mixt','mixd'];
+  this.mixIndex = -1;
+
+  this.stirCount = 0;
+  this.progress = 0;
+  this.progressBg = this.add.rectangle(430, 460, 360, 18, 0xe5e7eb).setOrigin(0,0.5);
+  this.progressFill = this.add.rectangle(430, 460, 0, 18, 0x16a34a).setOrigin(0,0.5);
+
+  this.khuayBtn = this.add.image(580, 460, 'btn_khuay').setInteractive();
+  fitSprite(this.khuayBtn, 64, 64);
+  this.khuayBtn.on('pointerdown', () => {
+    playClick();
+    this.stirCount++;
+    this.tweens.add({ targets: this.khuayBtn, scaleX: 0.95, scaleY: 0.95, yoyo: true, duration: 80 });
+    this.progress = Math.min(100, this.stirCount * 6 + (this.stirCount > 10 ? 10 : 0));
+    this.progressFill.width = (this.progress / 100) * 360;
+    this.mixIndex = (this.mixIndex + 1) % this.mixFrames.length;
+    const frameKey = this.mixFrames[this.mixIndex];
+    if (this.textures.exists(frameKey)) { this.bowlSprite.setTexture(frameKey); fitSprite(this.bowlSprite, 512, 256); }
+    if (this.progress >= 100) {
+      globalState.score += 20;
+      const doneText = addText(this, 24, 520, t('s2Done'), textStyle({ size: 18, color: '#14532d', wrap: 520 }));
+      this.tweens.add({ targets: doneText, alpha: { from: 0, to: 1 }, duration: 500 });
+      this.time.delayedCall(800, () => this.scene.start('SceneGoi'));
+    }
+  });
+};
+
+// ===== Scene 3 =====
+function SceneGoi() { Phaser.Scene.call(this, { key: 'SceneGoi' }); }
+SceneGoi.prototype = Object.create(Phaser.Scene.prototype);
+SceneGoi.prototype.constructor = SceneGoi;
+
+SceneGoi.prototype.create = function() {
+  addText(this, 24, 18, t('s3Title'), textStyle({ size: 30, color: '#14532d', weight: '700' }));
+  this.guideText = addText(this, 24, 66, t('s3Hint'), textStyle({ size: 18, color: '#4b5563', wrap: 520 }));
+
+  // 20% larger slot (as requested previously)
+  const slotW = 220 * 1.2, slotH = 160 * 1.2;
+  this.slot = this.add.rectangle(580, 300, slotW, slotH, 0xfff7e6).setStrokeStyle(2, 0x8b5a2b);
+  addText(this, this.slot.x, this.slot.y - slotH / 2 - 20, t('s3Slot'), textStyle({ size: 28, color: '#8b5a2b', center: true, weight: '700' }));
+
+  this.wrapFrames = ['wrapp','wrapt','wraptr','wrapd'];
+  this.wrapClicks = 0;
+  this.wrapSprite = this.add.image(this.slot.x, this.slot.y, 'wrapp').setVisible(false);
+  fitSprite(this.wrapSprite, 320, 320);
+
+  const leafOkKey = this.textures.exists('leaf_ok_opt') ? 'leaf_ok_opt' : 'leaf_ok';
+  const leafNoKey = this.textures.exists('leaf_no_opt') ? 'leaf_no_opt' : 'leaf_no';
+  this.leaf_ok = this.add.image(180, 180, leafOkKey).setInteractive();
+  this.leaf_no = this.add.image(180, 340, leafNoKey).setInteractive();
+  fitSprite(this.leaf_ok, 256, 128);
+  fitSprite(this.leaf_no, 256, 128);
+  this.input.setDraggable(this.leaf_ok);
+  this.input.setDraggable(this.leaf_no);
+  this.leaf_ok.setData('isCorrect', true);
+  this.leaf_no.setData('isCorrect', false);
+
+  const doughKey = this.textures.exists('dough_opt') ? 'dough_opt' : 'dough';
+  this.dough = this.add.image(780, 260, doughKey).setInteractive();
+  fitSprite(this.dough, 128, 128);
+  this.input.setDraggable(this.dough);
+  this.dough.setData('placed', false);
+
+  this.feedbackText = addText(this, 24, 520, '', textStyle({ size: 18, color: '#374151', wrap: 520 }));
+
+  this.input.on('drag', (pointer, obj, x, y) => { obj.x = x; obj.y = y; });
+
+  this.input.on('dragend', (pointer, obj) => {
+    if (obj === this.leaf_ok || obj === this.leaf_no) {
+      const inSlot = Phaser.Geom.Intersects.RectangleToRectangle(obj.getBounds(), this.slot.getBounds());
+      if (inSlot) {
+        obj.x = this.slot.x; obj.y = this.slot.y - 20;
+        this.leafPlaced = obj.getData('isCorrect');
+        this.currentLeaf = obj;
+        if (this.leafPlaced) {
+          this.feedbackText.setColor('#14532d');
+          this.feedbackText.setText(t('s3LeafOk'));
+        } else {
+          this.feedbackText.setColor('#b91c1c');
+          this.feedbackText.setText(t('s3LeafBad'));
+        }
+      } else {
+        obj.x = 180; obj.y = (obj === this.leaf_ok) ? 180 : 340;
+        this.leafPlaced = false;
+        this.currentLeaf = null;
+        this.feedbackText.setColor('#374151');
+        this.feedbackText.setText(globalState.language === 'vi' ? 'Hãy kéo lá vào vị trí gói.' : 'Drag the leaf to the wrapping spot.');
+      }
+    }
+
+    if (obj === this.dough) {
+      const inSlot = Phaser.Geom.Intersects.RectangleToRectangle(obj.getBounds(), this.slot.getBounds());
+      if (inSlot && this.leafPlaced) {
+        obj.x = this.slot.x; obj.y = this.slot.y;
+        obj.setData('placed', true);
+        this.feedbackText.setColor('#14532d');
+        this.feedbackText.setText(t('s3DoughOk'));
+      } else {
+        obj.x = 780; obj.y = 260; obj.setData('placed', false);
+        this.feedbackText.setColor('#374151');
+        this.feedbackText.setText(globalState.language === 'vi' ? 'Kéo nhân vào vị trí gói (sau khi đặt lá đúng).' : 'Drag filling to the spot (after placing the correct leaf).');
+      }
+    }
+  });
+
+  this.wrapBtn = this.add.image(580, 480, 'btn_wrap').setInteractive();
+  fitSprite(this.wrapBtn, 64, 64);
+  this.wrapBtn.on('pointerdown', () => {
+    playClick();
+    if (this.leafPlaced && this.dough.getData('placed')) {
+      this.wrapClicks++;
+      const idx = Math.min(this.wrapClicks - 1, this.wrapFrames.length - 1);
+      const key = this.wrapFrames[idx];
+      this.wrapSprite.setTexture(key).setVisible(true);
+      if (this.wrapClicks === 1) {
+        if (this.dough) this.dough.visible = false;
+        if (this.currentLeaf) this.currentLeaf.visible = false;
+      }
+      if (this.wrapClicks >= this.wrapFrames.length) {
+        this.wrapSprite.setTexture('banhphuthe').setVisible(true);
+        this.feedbackText.setColor('#14532d');
+        this.feedbackText.setText(t('s3WrapDone'));
+        globalState.score += 20;
+        this.time.delayedCall(900, () => this.scene.start('SceneHap'));
+      }
+    } else {
+      this.tweens.add({ targets: this.wrapBtn, alpha: 0.4, yoyo: true, duration: 200 });
+      this.feedbackText.setColor('#b91c1c');
+      this.feedbackText.setText(t('s3Need'));
+    }
+  });
+
+  this.leafPlaced = false;
+};
+
+// ===== Scene 4 =====
+function SceneHap() { Phaser.Scene.call(this, { key: 'SceneHap' }); }
+SceneHap.prototype = Object.create(Phaser.Scene.prototype);
+SceneHap.prototype.constructor = SceneHap;
+
+SceneHap.prototype.create = function() {
+  addText(this, 24, 18, t('s4Title'), textStyle({ size: 30, color: '#14532d', weight: '700' }));
+  addText(this, 24, 66, t('s4Hint'), textStyle({ size: 18, color: '#4b5563', wrap: 520 }));
+
+  const steamKey = this.textures.exists('noihap') ? 'noihap' : 'hapbanh';
+  this.steamer = this.add.image(580, 300, steamKey);
+  fitSprite(this.steamer, 512, 512);
+
+  this.steamBtn = this.add.image(580, 480, 'btn_steam').setInteractive();
+  fitSprite(this.steamBtn, 64, 64);
+
+  this.holdProgress = 0;
+  this.targetHold = 3000;
+  this.holding = false;
+
+  this.progressBg = this.add.rectangle(430, 480, 360, 18, 0xe5e7eb).setOrigin(0,0.5);
+  this.progressFill = this.add.rectangle(430, 480, 0, 18, 0x16a34a).setOrigin(0,0.5);
+
+  this.feedbackText = addText(this, 24, 520, '', textStyle({ size: 18, color: '#374151', wrap: 520 }));
+
+  this.steamBtn.on('pointerdown', () => {
+    playClick();
+    this.holding = true;
+    this.holdStart = this.time.now;
+    this.feedbackText.setColor('#374151');
+    this.feedbackText.setText(t('s4Holding'));
+  });
+  this.input.on('pointerup', () => {
+    if (this.holding) {
+      this.holding = false;
+      if (this.holdProgress >= this.targetHold) {
+        this.onSteamSuccess();
+      } else {
+        this.tweens.add({ targets: this.progressFill, alpha: 0.4, yoyo: true, duration: 200 });
+        this.holdProgress = Math.max(0, this.holdProgress - 800);
+        this.feedbackText.setColor('#b91c1c');
+        this.feedbackText.setText(t('s4NotEnough'));
+      }
+    }
+  });
+};
+
+SceneHap.prototype.update = function(time, delta) {
+  if (this.holding) {
+    this.holdProgress += delta;
+    if (this.holdProgress > this.targetHold) this.holdProgress = this.targetHold;
+    this.progressFill.width = (this.holdProgress / this.targetHold) * 360;
+  }
+};
+
+SceneHap.prototype.onSteamSuccess = function() {
+  globalState.score += 40;
+  this.time.delayedCall(600, () => this.scene.start('SceneEnd'));
+};
+
+// ===== End =====
+function SceneEnd() { Phaser.Scene.call(this, { key: 'SceneEnd' }); }
+SceneEnd.prototype = Object.create(Phaser.Scene.prototype);
+SceneEnd.prototype.constructor = SceneEnd;
+
+SceneEnd.prototype.create = function() {
+  const cake = this.add.image(300, 320, 'mobanh');
+  fitSprite(cake, 512, 512);
+  addText(this, 580, 240, t('endTip'), textStyle({ size: 18, color: '#4b5563', wrap: 280, lineHeight: 1.34 }));
+  addText(this, 280, 540, t('endCongrats'), textStyle({ size: 20, color: '#14532d', weight: '700' }));
+
+  const replay = addText(this, 280, 420, t('restart'), textStyle({ size: 20, color: '#14532d', weight: '700' })).setInteractive();
+  replay.on('pointerdown', () => {
+    playClick();
+    globalState.score = 0;
+    globalState.doughReady = false;
+    this.scene.start('SceneNhan');
+  });
+};
+</script>
+
+<script>
+  // Navbar dropdown
+  (function(){
+    const dropdown = document.querySelector('.nav-item.dropdown');
+    const trigger = dropdown ? dropdown.querySelector('#i18n-nav-game') : null;
+    const menu = dropdown ? dropdown.querySelector('.dropdown-menu') : null;
+    if (trigger && menu) {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        menu.classList.toggle('show');
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item.dropdown')) { menu.classList.remove('show'); }
+      });
+    }
+  })();
+</script>
+
+<script>
+  // Overlay sync: score, help modal, restart
+  (function(){
+    const scoreEl = document.getElementById('gameScore');
+    const helpBtn = document.getElementById('helpBtn');
+    const helpModal = document.getElementById('helpModal');
+    const helpTitleEl = helpModal ? helpModal.querySelector('div:first-child') : null;
+    const helpTextEl = document.getElementById('helpTextModal');
+    const closeHelp = document.getElementById('closeHelp');
+    const restartBtn = document.getElementById('restartBtn');
+
+    function updateScore(){ if(window.globalState && scoreEl) scoreEl.textContent = `${t('score')}: ${window.globalState.score || 0}`; }
+    setInterval(updateScore, 250);
+
+    // Sync overlay buttons to language
+    function syncOverlayLanguage() {
+      document.getElementById('gameTitle').textContent = t('title');
+      scoreEl.textContent = `${t('score')}: ${window.globalState.score || 0}`;
+      if (helpBtn) helpBtn.textContent = t('help');
+      if (restartBtn) restartBtn.textContent = globalState.language === 'vi' ? 'Chơi lại' : 'Play again';
+      if (helpTitleEl) helpTitleEl.textContent = t('helpModalTitle');
+      if (helpTextEl) helpTextEl.innerHTML = t('helpText').replaceAll('Stir', '<strong>Stir</strong>').replaceAll('Wrap', '<strong>Wrap</strong>').replaceAll('Steam', '<strong>Steam</strong>');
+      if (closeHelp) closeHelp.textContent = t('helpModalClose');
+    }
+    syncOverlayLanguage();
+
+    if(helpBtn && helpModal){ helpBtn.addEventListener('click', ()=> { helpModal.style.display='block'; }); }
+    if(closeHelp){ closeHelp.addEventListener('click', ()=> { helpModal.style.display='none'; }); }
+
+    if(restartBtn){ restartBtn.addEventListener('click', ()=> {
+      if(window.game && window.game.scene){
+        window.globalState.score = 0; window.globalState.doughReady = false;
+        try { window.game.scene.start('SceneNhan'); } catch(e){ location.reload(); }
+      } else { location.reload(); }
+    }); }
+
+    // Language dropdown click
+    const langDropdown = document.getElementById('langDropdown');
+    if (langDropdown) {
+      langDropdown.addEventListener('click', (e) => {
+        const opt = e.target.closest('.lang-option');
+        if (!opt) return;
+        const lang = opt.getAttribute('data-lang');
+        globalState.language = lang;
+        // Toggle active state
+        langDropdown.querySelectorAll('.lang-option').forEach(el => el.classList.toggle('active', el.getAttribute('data-lang') === lang));
+        syncOverlayLanguage();
+      });
+    }
+  })();
+</script>
+</body>
+</html>

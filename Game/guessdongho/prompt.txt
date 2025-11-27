@@ -1,0 +1,70 @@
+You are an AI building a web game called Quick Mode and Deep Mode about Đông Hồ paintings.
+
+### Quick Mode
+- Already defined: each Đông Hồ painting has 1 correct international symbol and 3 incorrect options.
+
+### Deep Mode
+- In Deep Mode, each Đông Hồ painting can be linked to multiple international references (1–3 correct answers).
+- The game should display the Đông Hồ painting in the center, then 4–6 international images below.
+- At least 1 is correct, but sometimes 2 or 3 are correct.
+- After the player chooses:
+  - If correct → show the meaning of the Đông Hồ painting + meaning of the chosen correct symbol(s).
+  - If incorrect → show the meaning of the Đông Hồ painting + meaning of all correct symbols + meaning of the chosen incorrect option.
+
+### Data for Deep Mode
+
+1. Rat.png (Rat Wedding – satirizes injustice, teaches morality and resilience)
+   - Correct answers: 
+     - Geo.png (George Orwell – Animal Farm – allegory of power and injustice)
+     - Nelson.png (Nelson Mandela – resilience against injustice)
+     - Mar.png (Martin Luther King Jr. – I Have a Dream – fight for justice)
+
+2. Pros.png (Prosperity & Wealth – abundance, happiness, many descendants)
+   - Correct answers:
+     - Corn.png (Cornucopia – symbol of abundance in Western culture)
+     - Gre.png (The Great Gatsby – pursuit of wealth and prosperity)
+
+3. Return.png (Returning in Glory – honors talent, teachers, success)
+   - Correct answers:
+     - Ret.png (The Return of the Prodigal Son – recognition and honor)
+     - Oly.png (Olympic Medal Ceremony – honoring talent and achievement)
+
+4. Pig.png (Yin–Yang Pig Herd – fertility, happiness, prosperity)
+   - Correct answers:
+     - Yin.png (Yin–Yang – harmony and creation)
+     - Bab.png (Baby Boom after WWII – fertility and prosperity)
+
+5. Swing.png (Swing Game – traditional festival, Vietnamese cultural spirit)
+   - Correct answers:
+     - Maypole.png (Maypole Dance – European festival tradition)
+     - Rio.png (Rio Carnival – global festival celebration)
+
+6. Toad.png (Toad Scholar – studying, perseverance, success)
+   - Correct answers:
+     - Tortoise.png (The Tortoise and the Hare – perseverance leads to success)
+     - UNE.png (UNESCO World Book Day – honoring knowledge and study)
+
+7. Rooster.png (Rooster Singing at Night – honesty, keeping promises)
+   - Correct answers:
+     - Wolf.png (The Boy Who Cried Wolf – story about honesty)
+     - Apo.png (Apollo 11 Moon Landing – promise fulfilled: “We will go to the Moon”)
+
+8. Flute.png (Buffalo Herding & Flute Playing – peaceful rural life)
+   - Correct answers:
+     - Monet.png (Claude Monet – Haystacks – rural peace)
+     - Woo.png (Woodstock Festival 1969 – peace, music, simple life)
+
+9. Jelousy.png (Jealousy Scene – criticizes jealousy and its consequences)
+   - Correct answers:
+     - Sha.png (Shakespeare – Othello – tragedy of jealousy)
+     - Cleopatra.png (Cleopatra & Mark Antony – famous tragic love story)
+
+10. Coco.png (Coconut Catching – family harmony and happiness)
+    - Correct answers:
+      - Gothic.png (American Gothic – hardworking family unity)
+      - Roy.png (Royal Wedding of Prince William & Kate Middleton – symbol of family happiness)
+
+### Goal
+- Quick Mode: simple, one-to-one mapping.
+- Deep Mode: richer, multi-layered connections.
+- Players learn Vietnamese culture while connecting it to multiple familiar international events, stories, and symbols.

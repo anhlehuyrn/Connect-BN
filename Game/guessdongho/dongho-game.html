@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Đông Hồ Cultural Quiz — Quick & Deep Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../../script.js"></script>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --panel:#111827;
+      --mute:#9CA3AF;
+      --text:#E5E7EB;
+      --accent:#22c55e;
+      --accent-2:#06b6d4;
+      --warn:#f59e0b;
+      --error:#ef4444;
+      --border:#1f2937;
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#0b1220, var(--bg));
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+    }
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:24px;
+    }
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    select,button{
+      background:var(--panel);
+      color:var(--text);
+      border:1px solid var(--border);
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:14px;
+      cursor:pointer;
+    }
+    button.primary{border-color:var(--accent); box-shadow:0 0 0 1px rgba(34,197,94,.25) inset}
+    button.secondary{border-color:var(--accent-2); box-shadow:0 0 0 1px rgba(6,182,212,.25) inset}
+    button:disabled{opacity:.5; cursor:not-allowed}
+    main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+    .panel{
+      background:rgba(17,24,39,.6);
+      border:1px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .prompt-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 16px;
+      background:rgba(2,6,23,.45);
+      border-bottom:1px solid var(--border);
+    }
+    .prompt-bar .meta{
+      display:flex;
+      gap:12px;
+      font-size:12px;
+      color:var(--mute);
+    }
+    .dongho{
+      display:grid;
+      grid-template-columns: 300px 1fr;
+      gap:18px;
+      padding:18px;
+    }
+    .image-wrap{
+      width: 200px;
+      height: 200px;
+      background:rgba(2,6,23,.4);
+      border:1px dashed var(--border);
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      min-height:220px;
+      overflow:hidden;
+    }
+    .dongho img{width:100%; height:auto; object-fit:contain; display:block;}
+    .dongho .info h2{margin:0 0 6px; font-size:18px}
+    .dongho .info p{margin:4px 0; color:var(--mute); font-size:14px}
+    .options{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+      padding:18px;
+      border-top:1px solid var(--border);
+      background:rgba(2,6,23,.25);
+    }
+    .card{
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+      background:rgba(17,24,39,.6);
+      transition:transform .1s ease, border-color .1s ease;
+      cursor:pointer;
+    }
+    .card:hover{transform:translateY(-2px); border-color:#334155}
+    .card.selected{border-color:var(--warn)}
+    .card.correct{border-color:var(--accent)}
+    .card.incorrect{border-color:var(--error)}
+    .thumb{
+      background:#0b1324;
+      height:120px;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .card img{width:100%; height:100%; object-fit:cover}
+    .label{
+      padding:10px 12px;
+      font-size:13px;
+      border-top:1px solid var(--border);
+    }
+    .actions{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding:12px 16px; border-top:1px solid var(--border);
+      background:rgba(2,6,23,.45);
+    }
+    .actions-left{display:flex; gap:10px; align-items:center;}
+    .actions-right{display:flex; gap:10px; align-items:center;}
+    .legend{font-size:12px; color:var(--mute)}
+    .feedback{
+      padding:18px;
+      border-top:1px solid var(--border);
+      background:rgba(2,6,23,.3);
+      display:none;
+    }
+    .feedback.visible{display:block}
+    .feedback h3{margin:0 0 10px; font-size:16px}
+    .feedback .grid{
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    .badge{
+      display:inline-block; font-size:12px; color:#0c111b; background:var(--accent);
+      padding:4px 8px; border-radius:999px; margin-left:8px;
+    }
+    .badge.warn{background:var(--warn)}
+    .badge.error{background:var(--error)}
+    footer{
+      color:var(--mute); font-size:12px; text-align:center;
+    }
+    @media (max-width: 900px){
+      .dongho{grid-template-columns: 1fr}
+      .options{grid-template-columns: repeat(2, 1fr)}
+      .actions{flex-direction:column; align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <nav class="navbar">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="../../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+              <img id="i18n-logo" src="../../Giaodien/logowweb.png" alt="Bắc Ninh" />
+            </a>
+          </div>
+          <ul class="nav-menu">
+            <li class="nav-item"><a href="../../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a></li>
+            <li class="nav-item"><a href="../../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a></li>
+            <li class="nav-item"><a href="../../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a></li>
+            <li class="nav-item dropdown">
+              <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+              <ul class="dropdown-menu">
+                <li><a href="../game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+                <li><a href="../dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+                <li><a href="../phuthe_vi.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
+                <li><a href="dongho-game.html" class="nav-link" id="i18n-nav-dongho">Đoán Tranh Đông Hồ</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="lang-switcher">
+            <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </button>
+            <div class="lang-dropdown" id="langDropdown" role="menu">
+              <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">
+                <span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span>
+                <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">
+                <span class="lang-flag">🇬🇧</span><span>English</span>
+                <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="panel question" aria-label="Đông Hồ quiz">
+        <div class="prompt-bar">
+          <div class="meta">
+            <span id="modeLabel">Mode: Quick</span>
+            <span>Each round: 4–6 options</span>
+          </div>
+          <div class="controls">
+            <label for="mode" class="legend">Mode</label>
+            <select id="mode" aria-label="Select mode">
+              <option value="quick" selected>Quick</option>
+              <option value="deep">Deep</option>
+            </select>
+            <button id="next" class="primary" aria-label="Next question">Next</button>
+            <button id="reveal" class="secondary" aria-label="Reveal answers" disabled>Reveal</button>
+          </div>
+        </div>
+
+        <div class="dongho">
+          <div class="image-wrap">
+            <img id="donghoImage" alt="Đông Hồ painting" src="" />
+          </div>
+          <div class="info">
+            <h2 id="donghoName">—</h2>
+            <p id="donghoMeaning">—</p>
+            <p class="legend">Reflect on the painting, then choose the most culturally aligned international symbol below.</p>
+          </div>
+        </div>
+
+        <div class="options" id="options" aria-live="polite"></div>
+
+        <div class="actions">
+          <div class="actions-left">
+            <span id="status" class="legend">Awaiting your choice…</span>
+          </div>
+          <div class="actions-right">
+            <button id="clear" aria-label="Clear selection" disabled>Clear selection</button>
+          </div>
+        </div>
+
+        <div class="feedback" id="feedback">
+          <h3>Explanations</h3>
+          <div class="grid">
+            <div>
+              <strong>Đông Hồ meaning</strong>
+              <p id="fbDongHo">—</p>
+            </div>
+            <div>
+              <strong>Selected option</strong>
+              <p id="fbSelected">—</p>
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <strong>All options explained</strong>
+            <ul id="fbAll" style="margin:6px 0 0 18px"></ul>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        Images referenced by filename only. Ensure your /assets directory contains the specified .png files.
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // ---------- Data: Đông Hồ paintings ----------
+    const DONG_HO = [
+      { img:"Rat.png",    name:"Rat Wedding (Đám cưới chuột)", meaning:"Satirizes injustice and power abuse; teaches morality and resilience." },
+      { img:"Pros.png",   name:"Prosperity & Wealth (Vinh Hoa – Phú Quý)", meaning:"Wishes for abundance, happiness, and many descendants." },
+      { img:"Return.png", name:"Returning in Glory (Vinh Quy Bái Tổ)", meaning:"Honors talent, mentors/teachers, and wishes for success." },
+      { img:"Pig.png",    name:"Yin–Yang Pig Herd (Lợn Âm Dương)", meaning:"Symbolizes fertility, happiness, and prosperity through harmony." },
+      { img:"Swing.png",  name:"Swing Game (Trò chơi đánh đu)", meaning:"Represents Vietnamese traditional festivals and communal joy." },
+      { img:"Toad.png",   name:"Toad Scholar (Thầy đồ cóc)", meaning:"Encourages studying, perseverance, and success." },
+      { img:"Rooster.png",name:"Rooster Singing at Night (Gà trống gáy)", meaning:"Reminder to keep promises and be honest." },
+      { img:"Flute.png",  name:"Buffalo Herding & Flute Playing (Mục đồng thổi sáo)", meaning:"Peaceful rural life, simplicity, and harmony with nature." },
+      { img:"Jelousy.png",name:"Jealousy Scene (Đánh ghen)", meaning:"Criticizes jealousy and its social consequences." },
+      { img:"Coco.png",   name:"Coconut Catching (Hứng dừa)", meaning:"Family harmony, mutual support, and shared happiness." }
+    ];
+
+    // ---------- Data: Quick Mode correct mapping ----------
+    const QUICK_CORRECT = {
+      "Rat.png":    "Nelson.png",
+      "Pros.png":   "Corn.png",
+      "Return.png": "Nobel.png",
+      "Pig.png":    "Yin.png",
+      "Swing.png":  "Maypole.png",
+      "Toad.png":   "Tortoise.png",
+      "Rooster.png":"Wolf.png",
+      "Flute.png":  "Monet.png",
+      "Jelousy.png":"Cleopatra.png",
+      "Coco.png":   "Gothic.png"
+    };
+
+    // ---------- Data: International options ----------
+    const INTL = {
+      "Nelson.png":   { name:"Nelson Mandela", meaning:"Symbol of resilience against injustice; moral courage and reconciliation." },
+      "Corn.png":     { name:"Cornucopia", meaning:"Western symbol of abundance, plenty, and prosperity." },
+      "Nobel.png":    { name:"Nobel", meaning:"Global recognition of talent, knowledge, and contributions to humanity." },
+      "Yin.png":      { name:"Yin–Yang", meaning:"Harmony, duality in balance, origin of growth and prosperity." },
+      "Maypole.png":  { name:"Maypole Dance", meaning:"European spring festival tradition and communal celebration." },
+      "Tortoise.png": { name:"The Tortoise and the Hare", meaning:"Perseverance and steady effort lead to success." },
+      "Wolf.png":     { name:"The Boy Who Cried Wolf", meaning:"Cautionary tale about honesty and keeping trust." },
+      "Monet.png":    { name:"Claude Monet — Haystacks", meaning:"Impression of rural peace and cyclical agrarian life." },
+      "Cleopatra.png":{ name:"Cleopatra & Mark Antony", meaning:"Famous tragic love entwined with jealousy and power." },
+      "Gothic.png":   { name:"American Gothic", meaning:"Icon of hardworking family unity and shared responsibility." },
+
+      // Deep Mode additions:
+      "Geo.png":      { name:"George Orwell — Animal Farm", meaning:"Allegory of power, propaganda, and social injustice." },
+      "Mar.png":      { name:"Martin Luther King Jr. — I Have a Dream", meaning:"Civil rights, justice, and hopeful perseverance." },
+      "Gre.png":      { name:"The Great Gatsby", meaning:"Pursuit of wealth, aspiration, and the American dream’s illusions." },
+      "Ret.png":      { name:"The Return of the Prodigal Son", meaning:"Recognition, forgiveness, and honoring return." },
+      "Oly.png":      { name:"Olympic Medal Ceremony", meaning:"Honoring talent, excellence, and achievement." },
+      "Bab.png":      { name:"Post-WWII Baby Boom", meaning:"Population growth signaling prosperity and optimism." },
+      "Rio.png":      { name:"Rio Carnival", meaning:"Global celebration of music, dance, and cultural vibrancy." },
+      "UNE.png":      { name:"UNESCO World Book Day", meaning:"Celebration of reading, knowledge, and education." },
+      "Apo.png":      { name:"Apollo 11 Moon Landing", meaning:"Promise kept: a leap of human ingenuity and resolve." },
+      "Woo.png":      { name:"Woodstock Festival (1969)", meaning:"Peace, music, and communal countercultural simplicity." },
+      "Sha.png":      { name:"Shakespeare — Othello", meaning:"Tragedy of jealousy, manipulation, and trust." },
+      "Roy.png":      { name:"Royal Wedding — William & Kate", meaning:"Symbol of family happiness and societal unity." }
+    };
+
+    // ---------- Data: Deep Mode correct sets ----------
+    const DEEP_CORRECT = {
+      "Rat.png":    ["Geo.png","Nelson.png","Mar.png"],
+      "Pros.png":   ["Corn.png","Gre.png"],
+      "Return.png": ["Ret.png","Oly.png"],
+      "Pig.png":    ["Yin.png","Bab.png"],
+      "Swing.png":  ["Maypole.png","Rio.png"],
+      "Toad.png":   ["Tortoise.png","UNE.png"],
+      "Rooster.png":["Wolf.png","Apo.png"],
+      "Flute.png":  ["Monet.png","Woo.png"],
+      "Jelousy.png":["Sha.png","Cleopatra.png"],
+      "Coco.png":   ["Gothic.png","Roy.png"]
+    };
+
+    // ---------- Utility ----------
+    const rand = (n) => Math.floor(Math.random() * n);
+    const sample = (arr, k) => {
+      const a = [...arr]; const res=[];
+      while(res.length<k && a.length){ res.push(a.splice(rand(a.length),1)[0]); }
+      return res;
+    };
+
+    function pickQuestion(mode){
+      const dh = DONG_HO[rand(DONG_HO.length)];
+      const allIntl = Object.keys(INTL);
+
+      if(mode === "quick"){
+        const correct = QUICK_CORRECT[dh.img];
+        const distractors = sample(allIntl.filter(x => x !== correct), 3);
+        const options = [correct, ...distractors].sort(()=>Math.random()-0.5);
+        return { dh, options, correctSet: new Set([correct]) };
+      } else {
+        const correctArr = DEEP_CORRECT[dh.img];
+        const totalCount = 4 + rand(3); // 4,5,6
+        const needDistractors = Math.max(1, totalCount - correctArr.length);
+        const pool = allIntl.filter(x => !correctArr.includes(x));
+        const distractors = sample(pool, needDistractors);
+        const combined = [...correctArr, ...distractors].slice(0, totalCount);
+        const options = combined.sort(()=>Math.random()-0.5);
+        return { dh, options, correctSet: new Set(correctArr) };
+      }
+    }
+
+    // ---------- DOM refs ----------
+    const modeSel = document.getElementById('mode');
+    const nextBtn = document.getElementById('next');
+    const revealBtn = document.getElementById('reveal');
+    const clearBtn = document.getElementById('clear');
+    const modeLabel = document.getElementById('modeLabel');
+    const dhImgEl = document.getElementById('donghoImage');
+    const dhNameEl = document.getElementById('donghoName');
+    const dhMeaningEl = document.getElementById('donghoMeaning');
+    const optionsEl = document.getElementById('options');
+    const statusEl = document.getElementById('status');
+    const fbEl = document.getElementById('feedback');
+    const fbDongHo = document.getElementById('fbDongHo');
+    const fbSelected = document.getElementById('fbSelected');
+    const fbAll = document.getElementById('fbAll');
+
+    let state = { mode:"quick", question:null, selected:null, revealed:false };
+
+    // ---------- Render ----------
+    function renderQuestion(){
+      const { dh, options, correctSet } = pickQuestion(state.mode);
+      state.question = { dh, options, correctSet };
+      state.selected = null;
+      state.revealed = false;
+
+      modeLabel.textContent = `Mode: ${state.mode === "quick" ? "Quick" : "Deep"}`;
+      revealBtn.disabled = true;
+      clearBtn.disabled = true;
+      statusEl.textContent = "Awaiting your choice…";
+      statusEl.className = "legend";
+
+      // If your assets live in /assets/, set a prefix:
+      const prefix = ""; // e.g., const prefix = "/assets/";
+      dhImgEl.src = `${prefix}${dh.img}`;
+      dhImgEl.alt = dh.name;
+      dhNameEl.textContent = dh.name;
+      dhMeaningEl.textContent = dh.meaning;
+
+      fbEl.classList.remove('visible');
+      fbDongHo.textContent = "—";
+      fbSelected.textContent = "—";
+      fbAll.innerHTML = "";
+
+      optionsEl.innerHTML = "";
+      options.forEach((img)=>{
+        const opt = INTL[img];
+        const card = document.createElement('div');
+        card.className = "card";
+        card.dataset.img = img;
+        card.setAttribute('role','button');
+        card.setAttribute('tabindex','0');
+        card.setAttribute('aria-label', opt.name);
+
+        const thumb = document.createElement('div'); thumb.className = "thumb";
+        const image = document.createElement('img');
+        image.src = `${prefix}${img}`;
+        image.alt = opt.name;
+        thumb.appendChild(image);
+
+        const label = document.createElement('div'); label.className = "label";
+        label.textContent = opt.name;
+
+        card.appendChild(thumb);
+        card.appendChild(label);
+
+        const choose = ()=>{
+          if(state.revealed) return;
+          Array.from(optionsEl.children).forEach(el=>el.classList.remove('selected'));
+          card.classList.add('selected');
+          state.selected = img;
+          clearBtn.disabled = false;
+          revealBtn.disabled = false;
+          statusEl.textContent = "Selection made. Reveal to check.";
+          statusEl.className = "legend";
+        };
+
+        card.addEventListener('click', choose);
+        card.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); choose(); } });
+
+        optionsEl.appendChild(card);
+      });
+    }
+
+    function reveal(){
+      if(!state.question || !state.selected) return;
+      state.revealed = true;
+
+      Array.from(optionsEl.children).forEach(el=>{
+        const img = el.dataset.img;
+        el.classList.add( state.question.correctSet.has(img) ? "correct" : "incorrect" );
+      });
+
+      const { dh, options, correctSet } = state.question;
+      fbEl.classList.add('visible');
+      fbDongHo.textContent = dh.meaning;
+
+      const selData = INTL[state.selected];
+      const isCorrect = correctSet.has(state.selected);
+      const selBadge = isCorrect ? "Correct" : "Incorrect";
+      const selClass = isCorrect ? "" : "error";
+      fbSelected.innerHTML = `<span>${selData.name}</span>
+        <span class="badge ${selClass}">${selBadge}</span>
+        <br /><span style="color:var(--mute)">${selData.meaning}</span>`;
+
+      fbAll.innerHTML = "";
+      options.forEach(img=>{
+        const d = INTL[img];
+        const badge = correctSet.has(img) ? `<span class="badge">Correct</span>` : `<span class="badge warn">Alt.</span>`;
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${d.name}</strong> ${badge}<br /><span style="color:var(--mute)">${d.meaning}</span>`;
+        fbAll.appendChild(li);
+      });
+
+      statusEl.textContent = isCorrect ? "Correct! See explanations below." : "Incorrect. See explanations below.";
+      statusEl.className = isCorrect ? "legend badge" : "legend badge error";
+
+      revealBtn.disabled = true;
+    }
+
+    function clearSelection(){
+      if(state.revealed) return;
+      state.selected = null;
+      Array.from(optionsEl.children).forEach(el=>el.classList.remove('selected'));
+      statusEl.textContent = "Selection cleared. Awaiting your choice…";
+      statusEl.className = "legend";
+      clearBtn.disabled = true;
+      revealBtn.disabled = true;
+    }
+
+    // ---------- Events ----------
+    modeSel.addEventListener('change', ()=>{
+      state.mode = modeSel.value;
+      renderQuestion();
+    });
+    nextBtn.addEventListener('click', renderQuestion);
+    revealBtn.addEventListener('click', reveal);
+    clearBtn.addEventListener('click', clearSelection);
+
+    // ---------- Init ----------
+    renderQuestion();
+  </script>
+</body>
+</html>

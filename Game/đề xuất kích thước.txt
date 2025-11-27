@@ -1,0 +1,50 @@
+Danh sách PNG + Kích thước đề xuất
+pan.png → ~512×256 px
+
+panatfmix.png → ~512×256 px
+
+bowl.png → ~512×256 px
+
+noihap.png → ~512×512 px
+
+hapbanh.png → ~512×512 px
+
+dau.png → ~256×128 px
+
+duong.png → ~256×128 px
+
+dua.png → ~256×128 px
+
+leaf_banana.png → ~256×128 px
+
+leaf_wrong.png → ~256×128 px
+
+dough.png → ~128×128 px
+
+btn_stir.png → ~128×64 px
+
+btn_khuay.png → ~128×64 px
+
+btn_wrap.png → ~128×64 px
+
+btn_steam.png → ~128×64 px
+
+mixp.png → ~256×256 px
+
+mixg.png → ~256×256 px
+
+mixt.png → ~256×256 px
+
+mixd.png → ~256×256 px
+
+wrapp.png → ~256×256 px
+
+wrapt.png → ~256×256 px
+
+wraptr.png → ~256×256 px
+
+wrapd.png → ~256×256 px
+
+banhphuthe.png → ~512×512 px
+
+mobanh.png → ~512×512 px

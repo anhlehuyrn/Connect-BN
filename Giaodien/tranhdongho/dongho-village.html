@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dong Ho Folk Painting - Bac Ninh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+        .dongho-page {
+            font-family: 'Inter', sans-serif;
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .hero-dongho {
+            position: relative;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero-dongho::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('dhbackg.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-dongho::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content-dongho {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-dongho h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .hero-dongho .subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 2rem;
+            background: white;
+            color: #2c3e50;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
+        .content-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .color-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .color-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .color-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .color-name {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .color-source {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .column {
+            background: linear-gradient(135deg, #fbf7f2 0%, #f5ebe0 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid #d4a574;
+        }
+
+        .column h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .themes-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .themes-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05rem;
+        }
+
+        .themes-list li:last-child {
+            border-bottom: none;
+        }
+
+        .themes-list li::before {
+            content: '🎨';
+            margin-right: 0.75rem;
+        }
+
+        .image-showcase {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .image-showcase img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .section.visible .image-showcase {
+            opacity: 1;
+            transform: none;
+        }
+
+        .video-showcase {
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            background: #000;
+        }
+
+        .section.visible .video-showcase {
+            opacity: 1;
+            transform: none;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #d4a574 0%, #b8935f 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 20px rgba(212, 165, 116, 0.3);
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .accent-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #d4a574;
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(212,165,116,0.3);
+            padding-bottom: 2px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .accent-link:hover {
+            color: #e0b980;
+            border-color: rgba(224,185,128,0.6);
+        }
+
+        .youtube-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3498db;
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(52,152,219,0.3);
+            padding-bottom: 2px;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .youtube-link:hover {
+            color: #1f7fbf;
+            border-color: rgba(31,127,191,0.6);
+        }
+
+        .color-item {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .section.visible .color-item {
+            opacity: 1;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero-dongho h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-dongho .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .back-btn {
+                top: 80px;
+                left: 1rem;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .color-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body class="dongho-page">
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="../../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+                        <img id="i18n-logo" src="../logowweb.png" alt="Bắc Ninh" />
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="../../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="../../Game/game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+                            <li><a href="../../Game/dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="lang-switcher">
+                    <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown" role="menu">
+                        <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">
+                            <span class="lang-flag">🇻🇳</span>
+                            <span>Tiếng Việt</span>
+                            <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">
+                            <span class="lang-flag">🇬🇧</span>
+                            <span>English</span>
+                            <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-dongho" style="margin-top:80px;">
+        <div class="hero-content-dongho">
+            <h1 id="i18n-dh-title">Dong Ho Folk Painting</h1>
+            <p class="subtitle" id="i18n-dh-subtitle">A timeless Vietnamese art from Bac Ninh</p>
+        </div>
+    </section>
+
+    <!-- Content Sections -->
+    <div class="content-section">
+        <section class="section">
+            <h2><span class="section-icon">🧭</span> Understand Dong Ho</h2>
+            <p>
+                Explore the origins, techniques, and symbolism of Đông Hồ folk painting, and experience it interactively through the games below.
+            </p>
+            <p>
+                <a class="accent-link" href="../../Game/dongho-printing.html">🎮 Đông Hồ Printing Game</a>
+                &nbsp;&nbsp;&nbsp;
+                <a class="accent-link" href="../../Game/game.html">🧩 Dong Ho Memory Game</a>
+            </p>
+        </section>
+        
+        <!-- Origin & Location -->
+        <section class="section">
+            <h2><span class="section-icon">📍</span> Origin & Location</h2>
+            <p>
+                Dong Ho folk painting originates from Dong Ho Village in Bac Ninh Province, situated along the banks of the Duong River in northern Vietnam. For centuries, the village has been known as a cradle of traditional woodblock printing.
+            </p>
+            <div class="image-showcase">
+                <img src="conglangtranh.png" alt="Dong Ho village entrance gate" loading="lazy">
+            </div>
+            <p>
+                <a class="accent-link" href="https://www.google.com/maps/search/Dong+Ho+Village+Bac+Ninh" target="_blank" rel="noopener">📍 View on Google Maps</a>
+            </p>
+        </section>
+
+        <!-- Historical Background -->
+        <section class="section">
+            <h2><span class="section-icon">📜</span> Historical Background</h2>
+            <p>
+                The craft is believed to have begun during the 16th century (or possibly earlier), reaching its peak popularity in the 18th–19th centuries when the paintings were produced in large quantities for Lunar New Year celebrations.
+            </p>
+            <div class="video-showcase">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/RbVr9ZCmzJM?start=2" title="Dong Ho Documentary" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Materials -->
+        <section class="section">
+            <h2><span class="section-icon">📄</span> Materials: Handcrafted Dó Paper</h2>
+            <p>
+                Dong Ho paintings are printed on dó paper, a unique Vietnamese paper made from the inner bark of the dó tree. The paper is durable, slightly textured, and specially coated with a layer of powdered seashells (điệp), giving the surface a subtle shimmer and enhancing color brightness.
+            </p>
+            <div class="image-showcase">
+                <img src="quetgiay.png" alt="Making dó paper" loading="lazy">
+            </div>
+        </section>
+
+        <!-- Natural Colors -->
+        <section class="section">
+            <h2><span class="section-icon">🎨</span> Natural Colors & Their Origins</h2>
+            <p>
+                These eco-friendly pigments create a vibrant but harmonious palette, showing the makers' deep connection with nature.
+            </p>
+            
+            <div class="color-grid">
+                <div class="color-item">
+                    <img src="datdo.png" alt="Red gravel">
+                    <div class="color-name">Red</div>
+                    <div class="color-source">From red gravel or earth (sỏi son)</div>
+                </div>
+                <div class="color-item">
+                    <img src="than.png" alt="Burned bamboo">
+                    <div class="color-name">Black</div>
+                    <div class="color-source">From burned bamboo leaves</div>
+                </div>
+                <div class="color-item">
+                    <img src="hoe.png" alt="Gardenia flowers">
+                    <div class="color-name">Yellow</div>
+                    <div class="color-source">From gardenia flowers</div>
+                </div>
+                <div class="color-item">
+                    <img src="lacham.png" alt="Indigo leaves">
+                    <div class="color-name">Green</div>
+                    <div class="color-source">From indigo leaves mixed with copper rust</div>
+                </div>
+                <div class="color-item">
+                    <img src="shell.png" alt="Seashell powder">
+                    <div class="color-name">White</div>
+                    <div class="color-source">From seashell powder</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Printing Technique -->
+        <section class="section">
+            <h2><span class="section-icon">🪵</span> Printing Technique</h2>
+            <p>
+                Each painting is made using hand-carved woodblocks, with separate blocks for line art and each color layer. Artisans print the outlines first, then apply colors layer by layer, requiring patience, precision, and experience.
+            </p>
+            <div class="image-showcase">
+                <img src="intranh.png" alt="Đông Hồ woodblock printing process with layered colors" loading="lazy">
+            </div>
+        </section>
+
+        <!-- Themes & Symbolism -->
+        <section class="section">
+            <h2><span class="section-icon">🎭</span> Themes & Symbolism</h2>
+            <p>
+                Traditional subjects reflect daily life, moral values, and hopes for prosperity.
+            </p>
+            <ul class="themes-list">
+                <li>Scenes of rural life</li>
+                <li>Folk tales and legends</li>
+                <li>Prosperity symbols (e.g., pigs with spirals, chickens with many offspring)</li>
+                <li>Satirical works expressing social commentary</li>
+            </ul>
+            <div class="color-grid">
+                <div class="color-item">
+                    <img src="ListDH/Rat.png" alt="Dong Ho painting: Rat Wedding">
+                    <div class="color-name">Rat Wedding</div>
+                    <div class="color-source">A reminder for children to live ethically, treat others well, yet remain resilient and unyielding.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Pros.png" alt="Dong Ho painting: Prosperity and Wealth">
+                    <div class="color-name">Prosperity and Wealth</div>
+                    <div class="color-source">A wish for the family to enjoy abundance, happiness, and many descendants.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Return.png" alt="Dong Ho painting: Returning in Glory">
+                    <div class="color-name">Returning in Glory</div>
+                    <div class="color-source">Symbolizes good fortune and honors talented individuals and teachers who nurture them.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Pig.png" alt="Dong Ho painting: Yin-Yang Pig Herd">
+                    <div class="color-name">Yin-Yang Pig Herd</div>
+                    <div class="color-source">Represents fertility and growth, bringing a happy and prosperous life.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Swing.png" alt="Dong Ho painting: Swing Game">
+                    <div class="color-name">Swing Game</div>
+                    <div class="color-source">Depicts a traditional Vietnamese game during festivals, preserving cultural heritage.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Toad.png" alt="Dong Ho painting: Toad Scholar">
+                    <div class="color-name">Toad Scholar</div>
+                    <div class="color-source">A celebratory message wishing children diligence and studiousness.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Rooster.png" alt="Dong Ho painting: Rooster Singing at Night">
+                    <div class="color-name">Rooster Singing at Night</div>
+                    <div class="color-source">Reminds people of the value of trust—never break promises or act dishonorably.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Flute.png" alt="Dong Ho painting: Buffalo Herding and Flute Playing">
+                    <div class="color-name">Buffalo Herding and Flute Playing</div>
+                    <div class="color-source">Reflects the peaceful, simple beauty of rural life.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Jelousy.png" alt="Dong Ho painting: Jealousy Scene">
+                    <div class="color-name">Jealousy Scene</div>
+                    <div class="color-source">Criticizes the discord caused by women sharing a husband, highlighting marital strife.</div>
+                </div>
+                <div class="color-item">
+                    <img src="ListDH/Coco.png" alt="Dong Ho painting: Coconut Catching">
+                    <div class="color-name">Coconut Catching</div>
+                    <div class="color-source">Shows harmony and happiness: the brave husband climbs high with strength, while the wife gracefully catches coconuts below.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Meaning Then & Now -->
+        <section class="section">
+            <h2><span class="section-icon">🌱</span> Meaning Then & Now</h2>
+            <div class="two-column">
+                <div class="column">
+                    <h3>Past</h3>
+                    <p>
+                        Dong Ho paintings served as affordable, meaningful decorations for the Lunar New Year. They reflected villagers' wishes for a peaceful life, virtuous behavior, strong family ties, and agricultural abundance.
+                    </p>
+                </div>
+                <div class="column">
+                    <h3>Today</h3>
+                    <p>
+                        The craft highlights early eco-friendly art practices, with handmade paper and natural pigments long before sustainability became a global concern. It represents Vietnam's traditional wisdom in living harmoniously with nature.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenges & Preservation -->
+        <section class="section">
+            <h2><span class="section-icon">⚠️</span> Challenges & Preservation</h2>
+            <div class="highlight-box">
+                <h3>UNESCO Recognition</h3>
+                <p>
+                    Industrialization, mass-produced prints, and a declining number of artisans have put the craft at risk. Due to its cultural importance and vulnerability, UNESCO has identified Dong Ho painting as an element needing urgent safeguarding, emphasizing the need for preservation, documentation, and revitalization.
+                </p>
+            </div>
+        </section>
+
+        <!-- Cultural Value -->
+        <section class="section">
+            <h2><span class="section-icon">🌏</span> Cultural Value</h2>
+            <p>
+                Dong Ho paintings serve as a testament to Vietnamese identity—an artistic heritage connecting past and present through craftsmanship, environmental respect, and community values.
+            </p>
+            <div class="image-showcase">
+                <img src="ongtayDongHo.png" alt="Artisan hands crafting Đông Hồ woodblocks" loading="lazy">
+            </div>
+            <div class="image-showcase">
+                <img src="tayvsDH.png" alt="Traditional tools and materials used in Đông Hồ painting" loading="lazy">
+            </div>
+        </section>
+
+    </div>
+
+    <footer style="background: #2c3e50; color: white; padding: 3rem 2rem; text-align: center;">
+        <p>&copy; 2024 Discover Bac Ninh. Preserving Vietnamese cultural heritage.</p>
+        <p class="text-muted text-sm" style="margin-top: 2rem; font-size: 0.85rem; color: #bbb; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa. Chúng tôi cam kết không sử dụng bất kỳ hình ảnh nào cho mục đích thương mại mà không có sự cho phép thích hợp.
+            <br><br>
+            Images used on this website are collected from various public sources and curated for educational and cultural preservation purposes. We commit to not using any image for commercial purposes without proper permission.
+        </p>
+    </footer>
+
+    <script>
+        const I18N = {
+            vi: {
+                logo: 'Bắc Ninh',
+                nav_intro: 'Giới Thiệu',
+                nav_map: 'Bản Đồ',
+                nav_locations: 'Địa Điểm',
+                nav_game: 'Trò chơi',
+                nav_memory: 'Ghép hình',
+                nav_printing: 'In tranh',
+                dh_title: 'Tranh dân gian Đông Hồ',
+                dh_subtitle: 'Nghệ thuật Việt Nam vượt thời gian từ Bắc Ninh'
+            },
+            en: {
+                logo: 'Bac Ninh',
+                nav_intro: 'Introduction',
+                nav_map: 'Map',
+                nav_locations: 'Locations',
+                nav_game: 'Game',
+                nav_memory: 'Memory Game',
+                nav_printing: 'Printing Game',
+                dh_title: 'Dong Ho Folk Painting',
+                dh_subtitle: 'A timeless Vietnamese art from Bac Ninh'
+            }
+        };
+        let currentLanguage = localStorage.getItem('language') || 'vi';
+        function el(id) { return document.getElementById(id); }
+        function applyLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            document.documentElement.lang = lang;
+            const t = I18N[lang];
+            const logoImg = el('i18n-logo');
+            if (logoImg && logoImg.tagName === 'IMG') {
+                logoImg.setAttribute('alt', t.logo);
+            }
+            el('i18n-nav-intro')?.replaceChildren(document.createTextNode(t.nav_intro));
+            el('i18n-nav-map')?.replaceChildren(document.createTextNode(t.nav_map));
+            el('i18n-nav-locations')?.replaceChildren(document.createTextNode(t.nav_locations));
+            el('i18n-nav-game')?.replaceChildren(document.createTextNode(t.nav_game));
+            el('i18n-nav-memory')?.replaceChildren(document.createTextNode(t.nav_memory));
+            el('i18n-nav-printing')?.replaceChildren(document.createTextNode(t.nav_printing));
+            el('i18n-dh-title')?.replaceChildren(document.createTextNode(t.dh_title));
+            el('i18n-dh-subtitle')?.replaceChildren(document.createTextNode(t.dh_subtitle));
+            updateActiveLang(lang);
+        }
+        function updateActiveLang(lang) {
+            document.querySelectorAll('.lang-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.lang === lang);
+            });
+            const globeBtn = el('globeBtn');
+            if (globeBtn) {
+                globeBtn.setAttribute('aria-label', lang === 'vi' ? 'Đổi ngôn ngữ' : 'Change language');
+            }
+        }
+        const globeBtn = el('globeBtn');
+        const langDropdown = el('langDropdown');
+        const langOptions = document.querySelectorAll('.lang-option');
+        function openLangDropdown() {
+            langDropdown?.classList.add('show');
+            globeBtn?.setAttribute('aria-expanded', 'true');
+        }
+        function closeLangDropdown() {
+            langDropdown?.classList.remove('show');
+            globeBtn?.setAttribute('aria-expanded', 'false');
+        }
+        globeBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = langDropdown.classList.contains('show');
+            if (isOpen) { closeLangDropdown(); } else { openLangDropdown(); }
+        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-switcher')) { closeLangDropdown(); }
+        });
+        langOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const lang = option.dataset.lang;
+                if (currentLanguage === lang) return;
+                applyLanguage(lang);
+                closeLangDropdown();
+            });
+            option.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); option.click(); }
+            });
+        });
+        const navDropdown = document.querySelector('.nav-item.dropdown');
+        const navGameTrigger = navDropdown ? navDropdown.querySelector('#i18n-nav-game') : null;
+        const navDropdownMenu = navDropdown ? navDropdown.querySelector('.dropdown-menu') : null;
+        if (navGameTrigger && navDropdownMenu) {
+            navGameTrigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = navDropdownMenu.classList.contains('show');
+                if (isOpen) { navDropdownMenu.classList.remove('show'); } else { navDropdownMenu.classList.add('show'); }
+            });
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.nav-item.dropdown')) { navDropdownMenu.classList.remove('show'); }
+            });
+        }
+        applyLanguage(currentLanguage);
+        const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -100px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
+        }, observerOptions);
+        document.querySelectorAll('.section').forEach(section => { observer.observe(section); });
+    </script>
+</body>
+</html>

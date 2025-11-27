@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đông Hồ Printing Game</title>
+  <link rel="icon" href="../image%20list%20png/logo1.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .printing-game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .game-layout {
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .paper-area {
+      position: relative;
+      background: #f9f6f1;
+      border: 2px solid #d4a574;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .paper-canvas {
+      position: relative;
+      width: 450px;
+      height: 450px;
+      background-image: url('intranh/giaygio.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      overflow: visible;
+      transition: all 0.3s ease;
+      border: 1px solid #e0d5c7;
+      cursor: default;
+    }
+
+    .paper-canvas.ready-to-print {
+      cursor: none;
+    }
+
+    .printed-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+    }
+
+    .printed-layer.show {
+      opacity: 1;
+    }
+
+    .molds-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, #fbf7f2 0%, #f5ebe0 100%);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      max-width: 320px;
+    }
+
+    .molds-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 0 0 0.5rem 0;
+      text-align: center;
+    }
+
+    .sequence-info {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #7f8c8d;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: rgba(255,255,255,0.5);
+      border-radius: 6px;
+    }
+
+    .molds-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .mold-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: white;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .mold-step.active {
+      border-color: #d4a574;
+      box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+      background: #fffef9;
+    }
+
+    .mold-step.completed {
+      background: #e8f5e9;
+      border-color: #4caf50;
+      opacity: 0.7;
+    }
+
+    .mold-step:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .mold-step.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .mold-step.disabled:hover {
+      transform: none;
+      box-shadow: none;
+    }
+
+    .step-number {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      background: #d4a574;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mold-preview {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .mold-step.active .mold-preview {
+      border-color: #d4a574;
+      box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.2);
+      cursor: pointer;
+    }
+
+    .mold-step.active .mold-preview:hover {
+      transform: scale(1.05);
+    }
+
+    .mold-step.disabled .mold-preview {
+      cursor: not-allowed;
+    }
+
+    .mold-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mold-info {
+      width: 100%;
+    }
+
+    .mold-name {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0;
+      font-size: 0.85rem;
+      line-height: 1.2;
+    }
+
+    .mold-instruction {
+      display: none;
+    }
+
+    .instruction-box {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 10px;
+      border-left: 4px solid #d4a574;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .instruction-box h3 {
+      margin: 0 0 0.75rem 0;
+      font-size: 1rem;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+
+    .instruction-box ol {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: #555;
+    }
+
+    .instruction-box li {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .instruction-box li:last-child {
+      margin-bottom: 0;
+    }
+
+    .instruction-highlight {
+      color: #d4a574;
+      font-weight: 600;
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .game-btn {
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-reset {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .btn-reset:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(231, 76, 60, 0.3);
+    }
+
+    .instruction-text {
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 1rem;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .status-message {
+      text-align: center;
+      padding: 0.75rem 1.5rem;
+      background: #d4a574;
+      color: white;
+      border-radius: 8px;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      min-height: 2.5rem;
+    }
+
+    .status-message.show {
+      opacity: 1;
+    }
+
+    .completion-banner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: white;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      z-index: 2000;
+      text-align: center;
+      transition: transform 0.4s ease;
+      max-width: 400px;
+    }
+
+    .completion-banner.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .completion-banner h2 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .completion-banner p {
+      color: #7f8c8d;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .game-layout {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .paper-canvas {
+        width: 350px;
+        height: 350px;
+      }
+
+      .molds-panel {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .molds-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .paper-canvas {
+        width: 280px;
+        height: 280px;
+      }
+
+      .molds-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+
+      .mold-step {
+        padding: 0.5rem;
+      }
+
+      .mold-name {
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <h1 id="i18n-logo">Bắc Ninh</h1>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a>
+          </li>
+          <li class="nav-item">
+            <a href="../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a>
+          </li>
+          <li class="nav-item">
+            <a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+            <ul class="dropdown-menu">
+              <li><a href="game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+              <li><a href="dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+              <li><a href="phuthe_vi.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="lang-switcher">
+          <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </button>
+          <div class="lang-dropdown" id="langDropdown" role="menu">
+            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">
+              <span class="lang-flag">🇻🇳</span>
+              <span>Tiếng Việt</span>
+              <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">
+              <span class="lang-flag">🇬🇧</span>
+              <span>English</span>
+              <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="bg-gradient-cultural" style="padding: 64px 0 32px;">
+      <div class="container">
+        <div class="text-center">
+          <h1 style="font-size: 40px; font-weight: 700; margin-bottom: 16px; color: #2c3e50;" id="i18n-game-title">
+            Đông Hồ Woodblock Printing
+          </h1>
+          <p style="font-size: 18px; color: #7f8c8d; max-width: 720px; margin: 0 auto 24px;" id="i18n-game-subtitle">
+            Experience the traditional Vietnamese art of Đông Hồ printing by selecting molds and creating beautiful artwork
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 2rem 0 4rem;">
+      <div class="printing-game-container">
+        <div class="instruction-box">
+          <h3 id="i18n-how-to-play">🎮 How to Play</h3>
+          <ol id="i18n-instructions">
+            <li>Click the <span class="instruction-highlight">Red Layer</span> mold to select it</li>
+            <li>Move your cursor over the paper and click to print the red layer</li>
+            <li>Continue with <span class="instruction-highlight">Blue</span>, <span class="instruction-highlight">White</span>, and <span class="instruction-highlight">Black</span> layers in order</li>
+            <li>Watch as each layer builds upon the previous to create a complete Đông Hồ print!</li>
+          </ol>
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="game-layout">
+          <div class="molds-panel">
+            <h2 class="molds-title" id="i18n-printing-sequence">Printing Sequence</h2>
+            <div class="sequence-info" id="sequenceInfo">Step 1 of 4</div>
+            <div class="molds-list" id="moldsList">
+              <!-- Molds will be generated here -->
+            </div>
+          </div>
+
+          <div class="paper-area">
+            <div class="paper-canvas" id="paperCanvas">
+              <img id="layer1" class="printed-layer" alt="Layer 1">
+              <img id="layer2" class="printed-layer" alt="Layer 2">
+              <img id="layer3" class="printed-layer" alt="Layer 3">
+              <img id="layer4" class="printed-layer" alt="Layer 4">
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="game-btn btn-reset" id="resetBtn">Reset & Start Over</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="completion-banner" id="completionBanner">
+      <h2 id="i18n-congrats">🎉 Masterpiece Complete!</h2>
+      <p id="i18n-complete-msg">You've successfully created a traditional Đông Hồ woodblock print using all four layers!</p>
+      <button class="game-btn btn-reset" onclick="resetGame()" id="i18n-create-another">Create Another</button>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-container">
+      <p style="text-align: center; padding: 2rem 0;" id="i18n-footer">© 2024 Smart Bac Ninh — Đông Hồ Printing Game</p>
+      <p class="text-muted text-sm" style="margin-top: 1rem; font-size: 0.85rem; color: #95a5a6; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6; padding-bottom: 2rem;" id="i18n-copyright">
+        Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa. Chúng tôi cam kết không sử dụng bất kỳ hình ảnh nào cho mục đích thương mại mà không có sự cho phép thích hợp.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // i18n translations
+    const I18N = {
+      vi: {
+        logo: 'Bắc Ninh',
+        nav_intro: 'Giới Thiệu',
+        nav_map: 'Bản Đồ',
+        nav_locations: 'Địa Điểm',
+        nav_game: 'Trò chơi',
+        nav_memory: 'Ghép hình',
+        nav_printing: 'In tranh',
+        nav_phuthe: 'Bánh Phu Thê',
+        game_title: 'In Khắc gỗ Đông Hồ',
+        game_subtitle: 'Trải nghiệm nghệ thuật in tranh Đông Hồ truyền thống Việt Nam bằng cách chọn khuôn và tạo nghệ thuật tuyệt đẹp',
+        how_to_play: '🎮 Cách chơi',
+        instructions: [
+          'Nhấp vào khuôn <span class="instruction-highlight">Lớp đỏ</span> để chọn',
+          'Di chuyển chuột lên giấy và nhấp để in lớp đỏ',
+          'Tiếp tục với các lớp <span class="instruction-highlight">Xanh</span>, <span class="instruction-highlight">Trắng</span> và <span class="instruction-highlight">Đen</span> theo thứ tự',
+          'Xem mỗi lớp xếp chồng lên nhau để tạo nghệ thuật Đông Hồ hoàn chỉnh!'
+        ],
+        printing_sequence: 'Thứ tự in tranh',
+        step: 'Bước',
+        of: 'của',
+        red_layer: 'Lớp đỏ',
+        blue_layer: 'Lớp xanh',
+        white_layer: 'Lớp trắng',
+        black_layer: 'Lớp đen',
+        completed: '✓ Hoàn thành',
+        locked: 'Khóa',
+        click_instruction: 'Nhấp để chọn, sau đó nhấp vào giấy để in',
+        reset_btn: 'Đặt lại & Bắt đầu',
+        congrats: '🎉 Kiệt tác hoàn thành!',
+        complete_msg: 'Bạn đã tạo thành công một bức tranh khắc gỗ Đông Hồ truyền thống sử dụng cả bốn lớp!',
+        create_another: 'Tạo tranh khác',
+        footer: '© 2024 Smart Bắc Ninh — Trò chơi In tranh Đông Hồ',
+        copyright: 'Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa. Chúng tôi cam kết không sử dụng bất kỳ hình ảnh nào cho mục đích thương mại mà không có sự cho phép thích hợp.',
+        // Status messages
+        welcome_msg: 'Chào mừng! Nhấp vào khuôn đỏ để bắt đầu quá trình in.',
+        selected_msg: 'đã chọn. Nhấp vào giấy để in!',
+        printing_msg: 'Đang in',
+        complete_layer: 'hoàn thành! Bây giờ in',
+        all_complete: 'Tất cả các lớp đã in thành công!'
+      },
+      en: {
+        logo: 'Bac Ninh',
+        nav_intro: 'Introduction',
+        nav_map: 'Map',
+        nav_locations: 'Locations',
+        nav_game: 'Game',
+        nav_memory: 'Memory Game',
+        nav_printing: 'Printing Game',
+        nav_phuthe: 'Phu Thê Cake Game',
+        game_title: 'Đông Hồ Woodblock Printing',
+        game_subtitle: 'Experience the traditional Vietnamese art of Đông Hồ printing by selecting molds and creating beautiful artwork',
+        how_to_play: '🎮 How to Play',
+        instructions: [
+          'Click the <span class="instruction-highlight">Red Layer</span> mold to select it',
+          'Move your cursor over the paper and click to print the red layer',
+          'Continue with <span class="instruction-highlight">Blue</span>, <span class="instruction-highlight">White</span>, and <span class="instruction-highlight">Black</span> layers in order',
+          'Watch as each layer builds upon the previous to create a complete Đông Hồ print!'
+        ],
+        printing_sequence: 'Printing Sequence',
+        step: 'Step',
+        of: 'of',
+        red_layer: 'Red Layer',
+        blue_layer: 'Blue Layer',
+        white_layer: 'White Layer',
+        black_layer: 'Black Layer',
+        completed: '✓ Completed',
+        locked: 'Locked',
+        click_instruction: 'Click to select, then click on paper to print',
+        reset_btn: 'Reset & Start Over',
+        congrats: '🎉 Masterpiece Complete!',
+        complete_msg: 'You\'ve successfully created a traditional Đông Hồ woodblock print using all four layers!',
+        create_another: 'Create Another',
+        footer: '© 2024 Smart Bac Ninh — Đông Hồ Printing Game',
+        copyright: 'Images used on this website are collected from various public sources and curated for educational and cultural preservation purposes. We commit to not using any image for commercial purposes without proper permission.',
+        // Status messages
+        welcome_msg: 'Welcome! Click the red mold to begin the printing process.',
+        selected_msg: 'selected. Click on the paper to print!',
+        printing_msg: 'Printing',
+        complete_layer: 'complete! Now print the',
+        all_complete: 'All layers printed successfully!'
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'vi';
+
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    function applyLanguage(lang) {
+      currentLanguage = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      const t = I18N[lang];
+
+      // Navigation
+      el('i18n-logo')?.replaceChildren(document.createTextNode(t.logo));
+      el('i18n-nav-intro')?.replaceChildren(document.createTextNode(t.nav_intro));
+      el('i18n-nav-map')?.replaceChildren(document.createTextNode(t.nav_map));
+      el('i18n-nav-locations')?.replaceChildren(document.createTextNode(t.nav_locations));
+      el('i18n-nav-game')?.replaceChildren(document.createTextNode(t.nav_game));
+      el('i18n-nav-memory')?.replaceChildren(document.createTextNode(t.nav_memory));
+      el('i18n-nav-printing')?.replaceChildren(document.createTextNode(t.nav_printing));
+      el('i18n-nav-phuthe')?.replaceChildren(document.createTextNode(t.nav_phuthe));
+
+      // Game content
+      el('i18n-game-title')?.replaceChildren(document.createTextNode(t.game_title));
+      el('i18n-game-subtitle')?.replaceChildren(document.createTextNode(t.game_subtitle));
+      el('i18n-how-to-play')?.replaceChildren(document.createTextNode(t.how_to_play));
+      
+      // Instructions list
+      const instructionsOl = el('i18n-instructions');
+      if (instructionsOl) {
+        instructionsOl.innerHTML = t.instructions.map(inst => `<li>${inst}</li>`).join('');
+      }
+
+      el('i18n-printing-sequence')?.replaceChildren(document.createTextNode(t.printing_sequence));
+      el('resetBtn')?.replaceChildren(document.createTextNode(t.reset_btn));
+      el('i18n-congrats')?.replaceChildren(document.createTextNode(t.congrats));
+      el('i18n-complete-msg')?.replaceChildren(document.createTextNode(t.complete_msg));
+      el('i18n-create-another')?.replaceChildren(document.createTextNode(t.create_another));
+
+      // Footer
+      el('i18n-footer')?.replaceChildren(document.createTextNode(t.footer));
+      const footerEl = el('i18n-footer');
+      if (footerEl) {
+        footerEl.textContent = footerEl.textContent.replace('Smart Bac Ninh','Connect Bac Ninh').replace('Smart Bắc Ninh','Connect Bắc Ninh');
+      }
+      el('i18n-copyright')?.replaceChildren(document.createTextNode(t.copyright));
+
+      // Update sequence info and re-render molds
+      updateSequenceInfo();
+      renderMolds();
+      updateActiveLang(lang);
+    }
+
+    function updateActiveLang(lang) {
+      document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+      const globeBtn = el('globeBtn');
+      if (globeBtn) {
+        globeBtn.setAttribute('aria-label', lang === 'vi' ? 'Đổi ngôn ngữ' : 'Change language');
+      }
+    }
+
+    // Globe button functionality
+    const globeBtn = el('globeBtn');
+    const langDropdown = el('langDropdown');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    function openLangDropdown() {
+      langDropdown?.classList.add('show');
+      globeBtn?.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeLangDropdown() {
+      langDropdown?.classList.remove('show');
+      globeBtn?.setAttribute('aria-expanded', 'false');
+    }
+
+    globeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = langDropdown.classList.contains('show');
+      if (isOpen) {
+        closeLangDropdown();
+      } else {
+        openLangDropdown();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.lang-switcher')) {
+        closeLangDropdown();
+      }
+    });
+
+    langOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const lang = option.dataset.lang;
+        if (currentLanguage === lang) return;
+        applyLanguage(lang);
+        closeLangDropdown();
+      });
+
+      option.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          option.click();
+        }
+      });
+    });
+
+    // Printing sequence: Red → Blue → White → Black
+    const printingSequence = [
+      {
+        step: 1,
+        nameKey: 'red_layer',
+        color: 'red',
+        front: 'intranh/gadaxuong/khgadaxuongdo.png',
+        back: 'intranh/gadaxuong/khgadaxuongdo_back.png',
+        result: 'intranh/gadaxuong/gado_ai.png',
+      },
+      {
+        step: 2,
+        nameKey: 'blue_layer',
+        color: 'blue',
+        front: 'intranh/gadaxuong/khgadaxuongxanh.png',
+        back: 'intranh/gadaxuong/khgadaxuongxanh_back.png',
+        result: 'intranh/gadaxuong/gaxanh_ai.png',
+      },
+      {
+        step: 3,
+        nameKey: 'white_layer',
+        color: 'white',
+        front: 'intranh/gadaxuong/khgadaxuongtrang.png',
+        back: 'intranh/gadaxuong/khgadaxuongtrang_back.png',
+        result: 'intranh/gadaxuong/gatrang_ai2.png',
+      },
+      {
+        step: 4,
+        nameKey: 'black_layer',
+        color: 'black',
+        front: 'intranh/gadaxuong/khgadaxuongden.png',
+        back: 'intranh/gadaxuong/khgadaxuongden_back.png',
+        result: 'intranh/gadaxuong/gaden_ai.png',
+      }
+    ];
+
+    let currentStep = 0;
+    let selectedMold = null;
+    let isReadyToPrint = false;
+
+    const moldsList = document.getElementById('moldsList');
+    const paperCanvas = document.getElementById('paperCanvas');
+    const sequenceInfo = document.getElementById('sequenceInfo');
+    const statusMessage = document.getElementById('statusMessage');
+    const completionBanner = document.getElementById('completionBanner');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Initialize the game
+    function initGame() {
+      renderMolds();
+      updateSequenceInfo();
+      const t = I18N[currentLanguage];
+      showStatus(t.welcome_msg);
+    }
+
+    // Render all molds with their states
+    function renderMolds() {
+      const t = I18N[currentLanguage];
+      moldsList.innerHTML = '';
+      printingSequence.forEach((mold, index) => {
+        const isActive = index === currentStep;
+        const isCompleted = index < currentStep;
+        const isDisabled = index > currentStep;
+
+        const moldStep = document.createElement('div');
+        moldStep.className = `mold-step ${
+          isActive ? 'active' : isCompleted ? 'completed' : 'disabled'
+        }`;
+        moldStep.innerHTML = `
+          <div class="mold-preview" data-step="${index}">
+            <div class="step-number">${mold.step}</div>
+            <img src="${mold.front}" alt="${t[mold.nameKey]}">
+          </div>
+          <div class="mold-info">
+            <div class="mold-name">${t[mold.nameKey]}</div>
+            <div class="mold-instruction">
+              ${isCompleted ? t.completed : isActive ? t.click_instruction : t.locked}
+            </div>
+          </div>
+        `;
+
+        if (isActive) {
+          moldStep.addEventListener('click', () => selectMold(index));
+        }
+
+        moldsList.appendChild(moldStep);
+      });
+    }
+
+    // Select a mold (only if it's the current step)
+    function selectMold(stepIndex) {
+      if (stepIndex !== currentStep) return;
+
+      selectedMold = printingSequence[stepIndex];
+      isReadyToPrint = true;
+      
+      // Change cursor to mold back image
+      paperCanvas.style.cursor = `url('${selectedMold.back}') 32 32, auto`;
+      paperCanvas.classList.add('ready-to-print');
+      
+      const t = I18N[currentLanguage];
+      showStatus(`${t[selectedMold.nameKey]} ${t.selected_msg}`);
+    }
+
+    // Print on paper (click handler)
+    paperCanvas.addEventListener('click', function() {
+      if (!isReadyToPrint || !selectedMold) return;
+
+      printLayer();
+    });
+
+    // Print the current layer
+    function printLayer() {
+      const t = I18N[currentLanguage];
+      isReadyToPrint = false;
+      paperCanvas.style.cursor = 'default';
+      paperCanvas.classList.remove('ready-to-print');
+
+      showStatus(`${t.printing_msg} ${t[selectedMold.nameKey]}...`);
+
+      // Show the printed result
+      const layerImg = document.getElementById(`layer${currentStep + 1}`);
+      layerImg.src = selectedMold.result;
+      
+      setTimeout(() => {
+        layerImg.classList.add('show');
+        
+        setTimeout(() => {
+          currentStep++;
+          selectedMold = null;
+
+          if (currentStep >= printingSequence.length) {
+            // All layers complete!
+            showStatus(t.all_complete);
+            setTimeout(() => {
+              completionBanner.classList.add('show');
+            }, 1000);
+          } else {
+            const nextMold = printingSequence[currentStep];
+            showStatus(`✓ ${t.complete_layer} ${t[nextMold.nameKey]}.`);
+            renderMolds();
+            updateSequenceInfo();
+          }
+        }, 600);
+      }, 100);
+    }
+
+    // Update sequence info
+    function updateSequenceInfo() {
+      const t = I18N[currentLanguage];
+      if (currentStep < printingSequence.length) {
+        sequenceInfo.textContent = `${t.step} ${currentStep + 1} ${t.of} ${printingSequence.length}`;
+      } else {
+        sequenceInfo.textContent = 'Complete! 🎉';
+      }
+    }
+
+    // Reset the game
+    function resetGame() {
+      currentStep = 0;
+      selectedMold = null;
+      isReadyToPrint = false;
+      
+      // Clear all layers
+      for (let i = 1; i <= 4; i++) {
+        const layer = document.getElementById(`layer${i}`);
+        layer.classList.remove('show');
+        layer.src = '';
+      }
+
+      // Reset cursor
+      paperCanvas.style.cursor = 'default';
+      paperCanvas.classList.remove('ready-to-print');
+
+      // Hide completion banner
+      completionBanner.classList.remove('show');
+
+      // Re-render
+      renderMolds();
+      updateSequenceInfo();
+      const t = I18N[currentLanguage];
+      showStatus(t.welcome_msg);
+    }
+
+    // Show status message
+    function showStatus(message) {
+      statusMessage.textContent = message;
+      statusMessage.classList.add('show');
+      
+      setTimeout(() => {
+        statusMessage.classList.remove('show');
+      }, 3500);
+    }
+
+    // Event listeners
+    resetBtn.addEventListener('click', resetGame);
+
+    // Apply language on load, then initialize game
+    applyLanguage(currentLanguage);
+    // Note: initGame() is called within applyLanguage via renderMolds/updateSequenceInfo
+  </script>
+</body>
+</html>

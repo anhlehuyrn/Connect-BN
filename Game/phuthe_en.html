@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Bánh Phu Thê Game (English)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.min.js"></script>
+  <link rel="icon" href="../image%20list%20png/logo1.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background: linear-gradient(180deg,#fffaf0 0%, #fff 60%); font-family: 'Poppins', 'Inter', Arial, Helvetica, sans-serif; color:#222 }
+    header .nav-container { max-width:1200px; margin:0 auto; padding:8px 16px; }
+    #i18n-logo { height:42px; width:auto; display:block }
+    #game-container { width:100%; max-width:980px; height:72vh; margin: 24px auto; display:flex; align-items:center; justify-content:center; position:relative; }
+    #game-container canvas { display:block; border-radius:12px; box-shadow: 0 10px 30px rgba(30,30,30,0.18); }
+    /* overlay UI above the canvas */
+    .game-ui { position:absolute; top:12px; left:12px; right:12px; display:flex; justify-content:space-between; align-items:center; pointer-events:none; }
+    .game-ui .left, .game-ui .right { pointer-events:auto; display:flex; gap:8px; align-items:center }
+    .game-ui h2 { margin:0; font-size:18px; font-weight:700; color:#1f6b3a; text-shadow: 0 1px 0 rgba(255,255,255,0.6); }
+    .game-ui .score { background: rgba(255,255,255,0.9); padding:8px 12px; border-radius:10px; box-shadow: 0 6px 16px rgba(30,30,30,0.08); font-weight:600; color:#2a6a3b }
+    .game-ui button { background:#2a6a3b; color:#fff; border:0; padding:8px 10px; border-radius:10px; cursor:pointer; font-weight:600 }
+    .game-ui button:active { transform:translateY(1px) }
+    /* help modal */
+    .help-modal { position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fffaf0; border:2px solid #e6d7c8; padding:18px; border-radius:12px; max-width:720px; box-shadow:0 18px 48px rgba(0,0,0,0.18); display:none; z-index:1200 }
+    .help-modal .close { display:inline-block; margin-top:12px; background:#2a6a3b; color:#fff; padding:8px 12px; border-radius:8px; cursor:pointer }
+    @media (max-width:700px){ #game-container{height:64vh} .game-ui h2{font-size:16px} }
+  </style>
+</head>
+<body>
+<header>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <a href="../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+          <img id="i18n-logo" src="../Giaodien/logowweb.png" alt="Bac Ninh" />
+        </a>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Introduction</a></li>
+        <li class="nav-item"><a href="../index.html#map" class="nav-link" id="i18n-nav-map">Map</a></li>
+        <li class="nav-item"><a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Locations</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link" id="i18n-nav-game">Games</a>
+          <ul class="dropdown-menu">
+            <li><a href="game.html" class="nav-link" id="i18n-nav-memory">Memory</a></li>
+            <li><a href="dongho-printing.html" class="nav-link" id="i18n-nav-printing">Dong Ho Printing</a></li>
+            <li><a href="phuthe_en.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="lang-switcher">
+        <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </button>
+        <div class="lang-dropdown" id="langDropdown" role="menu">
+          <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <div class="lang-option active" data-lang="en" role="menuitem" tabindex="0"><span class="lang-flag">🇬🇧</span><span>English</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main style="margin-top:80px;">
+  <section class="bg-gradient-cultural" style="padding: 24px 0;">
+    <div class="container">
+      <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 16px; color: #2c3e50;">Bánh Phu Thê Game</h1>
+    </div>
+  </section>
+
+  <div id="game-container" style="height: 70vh;"></div>
+</main>
+
+<!-- overlay UI: title, score and help (keeps canvas untouched) -->
+<div class="game-ui" aria-hidden="false">
+  <div class="left">
+    <h2 id="gameTitle">Bánh Phu Thê</h2>
+    <div class="score" id="gameScore">Score: 0</div>
+  </div>
+  <div class="right">
+    <button id="helpBtn" aria-label="Help">Help</button>
+    <button id="restartBtn" aria-label="Restart">Restart</button>
+  </div>
+</div>
+
+<div class="help-modal" id="helpModal" role="dialog" aria-modal="true">
+  <div style="font-weight:700; margin-bottom:8px;">Quick Guide</div>
+  <div style="color:#333; line-height:1.45">Drag ingredients into the pan, click <strong>Stir</strong>. Then mix the dough, choose the leaf, place the filling and click <strong>Wrap</strong>. Hold <strong>Steam</strong> long enough to cook the cake. Earn points at each step.</div>
+  <div class="close" id="closeHelp">Close</div>
+</div>
+
+  <script>
+// PNG assets will be loaded from Game/phuthe/*.png
+
+// ===== Phaser config & scenes =====
+const config = {
+  type: Phaser.AUTO,
+  parent: 'game-container',
+  backgroundColor: '#fffaf0',
+  pixelArt: false,
+  roundPixels: true,
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 900,
+    height: 600
+  },
+  scene: [PreloadScene, StartScene, SceneNhan, SceneVo, SceneGoi, SceneHap, SceneEnd]
+};
+
+let globalState = { score: 0, doughReady: false, language: 'en' };
+
+const i18n = {
+  vi: {
+    title: 'Làm Bánh Phu Thê',
+    subtitle: 'Trò chơi làm bánh Phu Thê - một nét văn hóa Bắc Ninh',
+    start: 'Bắt đầu',
+    help: 'Hướng dẫn',
+    helpText: 'Kéo thả nguyên liệu/ lá/ nhân vào vị trí; bấm Khuấy/ Khuấy/ Gói; giữ nút Hấp đủ lâu. Điểm thưởng mỗi bước.'
+  },
+  en: {
+    title: 'Making Bánh Phu Thê',
+    subtitle: 'Festive cooking game with Bac Ninh culture',
+    start: 'Start',
+    help: 'Help',
+    helpText: 'Drag ingredients/leaf/dough; click Stir/Mix/Wrap; hold Steam long enough. Earn points each step.',
+              close: 'Close',
+              step1Title: 'Step 1: Cook the Filling',
+              step1Hint: 'Drag green bean, sugar, and coconut into the pan. Then click Stir to cook.',
+              greenBean: 'Green Bean',
+              sugar: 'Sugar',
+              coconut: 'Coconut',
+              next: 'Next →',
+              fillingCooked: 'Filling cooked: smooth and fluffy.',
+              step2Title: 'Step 2: Make the Dough',
+              step2Hint: 'Click "Mix" multiple times to achieve the right consistency. Fun fact: By adding gardenia seeds to the crust, the cake takes on a lustrous golden color, pleasing to the eye and steeped in tradition.',
+              doughReady: 'Dough ready: smooth and stretchy.',
+              step3Title: 'Step 3: Wrap the Cake',
+              step3Hint: 'Choose the correct leaf, drag filling into the center and click Wrap.',
+              wrapZone: 'Wrap Zone',
+              correctLeaf: 'Correct leaf placed. Now place the filling in the center.',
+              wrongLeaf: 'Wrong leaf. Use banana leaves.',
+              step4Title: 'Step 4: Steam the Cake',
+              step4Hint: 'Hold the Steam button for the right amount of time to cook the cake.',
+              culturalTip: 'Cultural Tip: Bánh Phu Thê symbolizes marital love and is a traditional wedding delicacy in Bac Ninh.',
+              congratulations: '🎉 Bánh Phu Thê cooked! Congratulations!',
+              playAgain: 'Play Again'
+  }
+};
+
+function t(key) { return (i18n[globalState.language] || i18n.en)[key] || key; }
+
+function playClick() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = 880; g.gain.value = 0.05;
+    o.connect(g); g.connect(ctx.destination);
+    o.start(); setTimeout(()=>{ o.stop(); ctx.close(); }, 120);
+  } catch {}
+}
+
+const game = new Phaser.Game(config);
+
+// ===== PreloadScene: nạp assets từ data URLs =====
+function PreloadScene() { Phaser.Scene.call(this, { key: 'PreloadScene' }); }
+PreloadScene.prototype = Object.create(Phaser.Scene.prototype);
+PreloadScene.prototype.constructor = PreloadScene;
+
+PreloadScene.prototype.preload = function() {
+  // tạo data URLs và load
+  this.load.image('pan', 'phuthe/pan.png');
+  this.load.image('bowl', 'phuthe/bowl.png');
+  this.load.image('dau', 'phuthe/dau.png');
+  this.load.image('duong', 'phuthe/duong.png');
+  this.load.image('dua', 'phuthe/dua.png');
+  this.load.image('leaf_ok', 'phuthe/leaf_banana.png');
+  this.load.image('leaf_no', 'phuthe/leaf_wrong.png');
+  this.load.image('dough', 'phuthe/dough.png');
+  this.load.image('btn_stir', 'phuthe/btn_stir.png');
+  this.load.image('btn_khuay', 'phuthe/btn_khuay.png');
+  this.load.image('btn_wrap', 'phuthe/btn_wrap.png');
+  this.load.image('btn_steam', 'phuthe/btn_steam.png');
+  this.load.image('hapbanh', 'phuthe/hapbanh.png');
+  this.load.image('noihap', 'phuthe/noihap.png');
+  this.load.image('mobanh', 'phuthe/mobanh.png');
+  this.load.image('wrapp', 'phuthe/wrapp.png');
+  this.load.image('wrapt', 'phuthe/wrapt.png');
+  this.load.image('wraptr', 'phuthe/wraptr.png');
+  this.load.image('wrapd', 'phuthe/wrapd.png');
+  this.load.image('banhphuthe', 'phuthe/banhphuthe.png');
+  this.load.image('panatfmix', 'phuthe/panatfmix.png');
+  this.load.image('mixp', 'phuthe/mixp.png');
+  this.load.image('mixg', 'phuthe/mixg.png');
+  this.load.image('mixt', 'phuthe/mixt.png');
+  this.load.image('mixd', 'phuthe/mixd.png');
+
+  // simple loading text
+  const w = this.cameras.main.width, h = this.cameras.main.height;
+  this.cameras.main.setBackgroundColor('#f0f8ff'); // AliceBlue, a light, neutral background
+  addText(this, w/2, h/2, 'Loading...', { fontSize: '20px', color: '#333' }).setOrigin(0.5);
+
+  // proceed when loading completes (robust)
+  this.load.once('complete', async () => {
+    try {
+      const optimized = await optimizeImageTransparent('phuthe/dough.png', 256, 256);
+      if (optimized) {
+        this.textures.addBase64('dough_opt', optimized);
+      }
+    } catch (e) { console.warn('Optimize failed', e); }
+    this.scene.start('StartScene');
+  });
+  // fallback in case of unusual loader stall
+  this.time.delayedCall(2000, () => {
+    if (this.scene.key === 'PreloadScene') {
+      this.scene.start('SceneNhan');
+    }
+  });
+};
+
+PreloadScene.prototype.create = function() {};
+
+function StartScene() { Phaser.Scene.call(this, { key: 'StartScene' }); }
+StartScene.prototype = Object.create(Phaser.Scene.prototype);
+StartScene.prototype.constructor = StartScene;
+StartScene.prototype.create = function() {
+  const w = this.cameras.main.width, h = this.cameras.main.height;
+  addText(this, w/2, 140, t('title'), { fontSize: '42px', color: '#2a6a3b' }).setOrigin(0.5);
+  addText(this, w/2, 190, t('subtitle'), { fontSize: '22px', color: '#333' }).setOrigin(0.5);
+
+  const startBtn = this.add.rectangle(w/2, 290, 180, 48, 0x2a6a3b).setInteractive();
+  this.add.text(w/2, 290, t('start'), { fontSize: '20px', color: '#fff' }).setOrigin(0.5);
+  startBtn.on('pointerdown', () => { playClick(); this.scene.start('SceneNhan'); });
+
+  const helpBtn = this.add.rectangle(w/2, 350, 180, 40, 0x8b5a2b).setInteractive();
+  this.add.text(w/2, 350, t('help'), { fontSize: '20px', color: '#fff' }).setOrigin(0.5);
+  helpBtn.on('pointerdown', () => { playClick(); this.showHelp(); });
+
+  const langBtn = this.add.rectangle(w/2, 410, 220, 38, 0xddd6c8).setInteractive();
+  this.add.text(w/2, 410, 'VI / EN', { fontSize: '18px', color: '#333' }).setOrigin(0.5);
+  langBtn.on('pointerdown', () => {
+    playClick(); globalState.language = (globalState.language === 'en') ? 'vi' : 'en'; location.reload();
+  });
+};
+StartScene.prototype.showHelp = function() {
+  const w = this.cameras.main.width, h = this.cameras.main.height;
+  const overlay = this.add.rectangle(w/2, h/2, 560, 220, 0xffffff).setStrokeStyle(2, 0x8b5a2b);
+  const txt = addText(this, w/2, h/2, t('helpText'), { fontSize: '18px', color: '#333', wordWrap: { width: 500 } }).setOrigin(0.5);
+  const close = this.add.text(w/2, h/2 + 80, t('close'), { fontSize: '18px', color: '#2a6a3b' }).setOrigin(0.5).setInteractive();
+  close.on('pointerdown', () => { playClick(); overlay.destroy(); txt.destroy(); close.destroy(); });
+};
+
+// Optimize PNG: remove background, trim, center, resize
+async function optimizeImageTransparent(url, targetW, targetH) {
+  const img = await loadImage(url);
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width; canvas.height = img.height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imgData.data;
+  const bg = sampleBackgroundColor(data, canvas.width, canvas.height);
+  const tol = 20;
+  let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
+  for (let y = 0; y < canvas.height; y++) {
+    for (let x = 0; x < canvas.width; x++) {
+      const i = (y * canvas.width + x) * 4;
+      const r = data[i], g = data[i+1], b = data[i+2];
+      if (Math.abs(r - bg.r) < tol && Math.abs(g - bg.g) < tol && Math.abs(b - bg.b) < tol) {
+        data[i+3] = 0; // transparent
+      } else {
+        if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y;
+      }
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+  if (maxX <= minX || maxY <= minY) return canvas.toDataURL('image/png');
+  const cropW = maxX - minX + 1, cropH = maxY - minY + 1;
+  const cropped = document.createElement('canvas');
+  cropped.width = cropW; cropped.height = cropH;
+  const cctx = cropped.getContext('2d');
+  cctx.drawImage(canvas, minX, minY, cropW, cropH, 0, 0, cropW, cropH);
+  const out = document.createElement('canvas');
+  out.width = targetW; out.height = targetH;
+  const octx = out.getContext('2d');
+  octx.imageSmoothingEnabled = true;
+  octx.imageSmoothingQuality = 'high';
+  // fit while preserving aspect ratio and centering
+  const scale = Math.min(targetW / cropW, targetH / cropH);
+  const drawW = Math.round(cropW * scale), drawH = Math.round(cropH * scale);
+  const dx = Math.round((targetW - drawW) / 2), dy = Math.round((targetH - drawH) / 2);
+  octx.clearRect(0, 0, targetW, targetH);
+  octx.drawImage(cropped, 0, 0, cropW, cropH, dx, dy, drawW, drawH);
+  return out.toDataURL('image/png');
+}
+
+function addText(scene, x, y, content, style) {
+  const base = { fontFamily: "'Poppins', 'Segoe UI', Arial, sans-serif", fontStyle: 'normal' };
+  const st = Object.assign({}, base, style || {});
+  const txt = scene.add.text(x, y, content, st);
+  txt.setResolution(Math.ceil(window.devicePixelRatio));
+  return txt;
+}
+
+function fitSprite(sprite, boxW, boxH) {
+  const fw = sprite.frame && sprite.frame.width ? sprite.frame.width : (sprite.texture.getSourceImage().width || 1);
+  const fh = sprite.frame && sprite.frame.height ? sprite.frame.height : (sprite.texture.getSourceImage().height || 1);
+  const scale = Math.min(boxW / fw, boxH / fh);
+  sprite.setScale(scale);
+}
+
+function sampleBackgroundColor(data, w, h) {
+  const points = [0, w-1, (h-1)*w, (h*w)-1].map(idx => idx * 4);
+  let r=0,g=0,b=0;
+  points.forEach(i => { r += data[i]; g += data[i+1]; b += data[i+2]; });
+  const n = points.length; return { r: Math.round(r/n), g: Math.round(g/n), b: Math.round(b/n) };
+}
+
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(); img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img); img.onerror = reject; img.src = url;
+  });
+}
+
+// ===== Scene 1: Nhân =====
+function SceneNhan() { Phaser.Scene.call(this, { key: 'SceneNhan' }); }
+SceneNhan.prototype = Object.create(Phaser.Scene.prototype);
+SceneNhan.prototype.constructor = SceneNhan;
+
+SceneNhan.prototype.create = function() {
+  addText(this, 24, 18, t('step1Title'), { fontSize: '32px', color: '#2a6a3b' });
+  this.hint = addText(this, 24, 66, t('step1Hint'), { fontSize: '20px', color: '#444', wordWrap: { width: 400 } });
+
+  // chảo (drop zone)
+  const panKey = this.textures.exists('pan_opt') ? 'pan_opt' : 'pan';
+  this.pan = this.add.image(580, 300, panKey).setInteractive();
+  fitSprite(this.pan, 614, 307);
+  this.panZone = this.pan.getBounds();
+
+  // nguyên liệu (hình ảnh)
+  const leftX = 180;
+  const startY = 140;
+  const gap = 120;
+  const items = [
+    { key: 'dau', label: t('greenBean') },,
+    { key: 'duong', label: t('sugar') },,
+    { key: 'dua', label: t('coconut') }
+  ];
+  this.ingredients = [];
+  items.forEach((it, idx) => {
+    const optKey = this.textures.exists(it.key + '_opt') ? it.key + '_opt' : it.key;
+    const img = this.add.image(leftX, startY + idx*gap, optKey).setInteractive({ cursor: 'grab' });
+    img.setData('name', it.key);
+    img.setData('label', it.label);
+    img.setData('homeX', leftX);
+    img.setData('homeY', startY + idx*gap);
+    this.input.setDraggable(img);
+    this.ingredients.push(img);
+    fitSprite(img, 256, 128);
+  });
+
+  // drag handlers
+  this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+    gameObject.x = dragX; gameObject.y = dragY;
+  });
+
+  this.input.on('dragend', (pointer, obj) => {
+    const inZone = Phaser.Geom.Intersects.RectangleToRectangle(obj.getBounds(), this.pan.getBounds());
+    if (inZone) {
+      obj.x = 580 + Phaser.Math.Between(-80, 80);
+      obj.y = 300 + Phaser.Math.Between(-40, 40);
+      obj.setTint(0x88ff88);
+      obj.setData('added', true);
+    } else {
+      obj.x = obj.getData('homeX'); obj.y = obj.getData('homeY');
+      obj.clearTint();
+      obj.setData('added', false);
+    }
+    this.updateHint();
+  });
+
+  // Stir button (image)
+  this.stirBtn = this.add.image(580, 480, 'btn_stir').setInteractive();
+  fitSprite(this.stirBtn, 64, 64);
+  this.stirBtn.on('pointerdown', () => {
+    playClick();
+    if (this.ingredients.every(i => i.getData('added'))) {
+      this.stirring = true;
+      if (this.textures.exists('panatfmix')) {
+        this.pan.setTexture('panatfmix');
+        fitSprite(this.pan, 512, 256);
+      }
+      this.ingredients.forEach(i => { i.visible = false; });
+    } else {
+      this.tweens.add({ targets: this.hint, alpha: 0.3, yoyo: true, duration: 200, repeat: 2 });
+    }
+  });
+
+  // progress bar
+  this.progress = 0;
+  this.progressBg = this.add.rectangle(430, 480, 300, 18, 0xddd6c8).setOrigin(0,0.5);
+  this.progressFill = this.add.rectangle(430, 480, 0, 18, 0xd2691e).setOrigin(0,0.5);
+
+  this.tipText = addText(this, 24, 520, '', { fontSize: '18px', color: '#666' });
+  this.nextText = addText(this, 760, 540, t('next'), { fontSize: '22px', color: '#2a6a3b' }).setInteractive();
+  this.nextText.visible = false;
+  this.nextText.on('pointerdown', () => {
+    globalState.doughReady = true;
+    this.scene.start('SceneVo');
+  });
+};
+
+SceneNhan.prototype.update = function(time, delta) {
+  if (this.stirring) {
+    this.progress += delta * 0.06;
+    if (this.progress > 100) this.progress = 100;
+    this.progressFill.width = (this.progress / 100) * 300;
+    if (this.progress >= 100) {
+      this.stirring = false;
+      this.tipText.setText(t('fillingCooked'));
+      globalState.score += 20;
+      this.nextText.visible = true;
+    }
+  }
+};
+
+SceneNhan.prototype.updateHint = function() {
+  const missing = this.ingredients.filter(i => !i.getData('added')).map(i => i.getData('label'));
+  if (missing.length === 0) {
+    this.hint.setText('All ingredients added. Click Stir to cook.');
+  } else {
+    this.hint.setText('Missing: ' + missing.join(', '));
+  }
+};
+
+// ===== Scene 2: Pha vỏ (khuấy) =====
+function SceneVo() { Phaser.Scene.call(this, { key: 'SceneVo' }); }
+SceneVo.prototype = Object.create(Phaser.Scene.prototype);
+SceneVo.prototype.constructor = SceneVo;
+
+SceneVo.prototype.create = function() {
+  addText(this, 24, 18, t('step2Title'), { fontSize: '32px', color: '#2a6a3b' });
+  const bowlKey = this.textures.exists('bowl_opt') ? 'bowl_opt' : 'bowl';
+  this.bowlSprite = this.add.image(580, 300, bowlKey);
+  fitSprite(this.bowlSprite, 512, 256);
+  addText(this, 24, 66, t('step2Hint'), { fontSize: '20px', color: '#444', wordWrap: { width: 400 } });
+  this.mixFrames = ['mixp','mixg','mixt','mixd'];
+  this.mixIndex = -1;
+
+  this.stirCount = 0;
+  this.progress = 0;
+  this.progressBg = this.add.rectangle(430, 460, 360, 18, 0xddd6c8).setOrigin(0,0.5);
+  this.progressFill = this.add.rectangle(430, 460, 0, 18, 0xd2691e).setOrigin(0,0.5);
+
+  this.khuayBtn = this.add.image(580, 460, 'btn_khuay').setInteractive();
+  fitSprite(this.khuayBtn, 64, 64);
+  this.khuayBtn.on('pointerdown', () => {
+    playClick();
+    this.stirCount++;
+    this.tweens.add({ targets: this.khuayBtn, scaleX: 0.95, scaleY: 0.95, yoyo: true, duration: 80 });
+    this.progress = Math.min(100, this.stirCount * 6 + (this.stirCount > 10 ? 10 : 0));
+    this.progressFill.width = (this.progress / 100) * 360;
+    this.mixIndex = (this.mixIndex + 1) % this.mixFrames.length;
+    const frameKey = this.mixFrames[this.mixIndex];
+    if (this.textures.exists(frameKey)) {
+      this.bowlSprite.setTexture(frameKey);
+      fitSprite(this.bowlSprite, 512, 256);
+    }
+    if (this.progress >= 100) {
+      addText(this, 24, 520, t('doughReady'), { fontSize: '18px', color: '#2a6a3b' });
+      globalState.score += 20;
+      this.time.delayedCall(800, () => this.scene.start('SceneGoi'));
+    }
+  });
+};
+
+// ===== Scene 3: Gói bánh =====
+function SceneGoi() { Phaser.Scene.call(this, { key: 'SceneGoi' }); }
+SceneGoi.prototype = Object.create(Phaser.Scene.prototype);
+SceneGoi.prototype.constructor = SceneGoi;
+
+SceneGoi.prototype.create = function() {
+  addText(this, 24, 18, t('step3Title'), { fontSize: '32px', color: '#2a6a3b' });
+  addText(this, 24, 66, t('step3Hint'), { fontSize: '20px', color: '#444', wordWrap: { width: 400 } });
+
+  // slot gói
+  this.slot = this.add.rectangle(580, 300, 220, 160, 0xfff7e6).setStrokeStyle(2, 0x8b5a2b);
+  addText(this, 520, 240, t('wrapZone'), { fontSize: '18px', color: '#8b5a2b' });
+  this.wrapFrames = ['wrapp','wrapt','wraptr','wrapd'];
+  this.wrapClicks = 0;
+  this.wrapSprite = this.add.image(this.slot.x, this.slot.y, 'wrapp').setVisible(false);
+  fitSprite(this.wrapSprite, 256, 256);
+
+  // lá
+  const leafOkKey = this.textures.exists('leaf_ok_opt') ? 'leaf_ok_opt' : 'leaf_ok';
+  const leafNoKey = this.textures.exists('leaf_no_opt') ? 'leaf_no_opt' : 'leaf_no';
+  this.leaf_ok = this.add.image(180, 180, leafOkKey).setInteractive();
+  this.leaf_no = this.add.image(180, 340, leafNoKey).setInteractive();
+  fitSprite(this.leaf_ok, 256, 128);
+  fitSprite(this.leaf_no, 256, 128);
+  this.input.setDraggable(this.leaf_ok);
+  this.input.setDraggable(this.leaf_no);
+  this.leaf_ok.setData('isCorrect', true);
+  this.leaf_no.setData('isCorrect', false);
+
+  // nhân (viên)
+  const doughKey = this.textures.exists('dough_opt') ? 'dough_opt' : 'dough';
+  this.dough = this.add.image(780, 260, doughKey).setInteractive();
+  fitSprite(this.dough, 128, 128);
+  this.input.setDraggable(this.dough);
+  this.dough.setData('placed', false);
+
+  // drag handlers
+  this.input.on('drag', (pointer, obj, x, y) => { obj.x = x; obj.y = y; });
+
+  this.input.on('dragend', (pointer, obj) => {
+    // leaf drop
+    if (obj === this.leaf_ok || obj === this.leaf_no) {
+      const inSlot = Phaser.Geom.Intersects.RectangleToRectangle(obj.getBounds(), this.slot.getBounds());
+      if (inSlot) {
+        obj.x = this.slot.x; obj.y = this.slot.y - 20;
+        this.leafPlaced = obj.getData('isCorrect');
+        this.currentLeaf = obj;
+        if (this.leafPlaced) {
+          addText(this, 24, 520, t('correctLeaf'), { fontSize: '18px', color: '#2a6a3b', wordWrap: { width: 400 } });
+        } else {
+          addText(this, 24, 520, t('wrongLeaf'), { fontSize: '18px', color: '#a33', wordWrap: { width: 400 } });
+        }
+      } else {
+        // trả về
+        obj.x = (obj === this.leaf_ok) ? 180 : 180;
+        obj.y = (obj === this.leaf_ok) ? 180 : 340;
+        this.leafPlaced = false;
+        this.currentLeaf = null;
+      }
+    }
+
+    // dough drop
+    if (obj === this.dough) {
+      const inSlot = Phaser.Geom.Intersects.RectangleToRectangle(obj.getBounds(), this.slot.getBounds());
+      if (inSlot && this.leafPlaced) {
+        obj.x = this.slot.x; obj.y = this.slot.y;
+        obj.setData('placed', true);
+        addText(this, 24, 520, 'Filling placed. Click Wrap to finish.', { fontSize: '18px', color: '#2a6a3b', wordWrap: { width: 400 } });
+      } else {
+        obj.x = 780; obj.y = 260; obj.setData('placed', false);
+      }
+    }
+  });
+
+  // Wrap button
+  this.wrapBtn = this.add.image(580, 480, 'btn_wrap').setInteractive();
+  fitSprite(this.wrapBtn, 64, 64);
+  this.wrapBtn.on('pointerdown', () => {
+    playClick();
+    if (this.leafPlaced && this.dough.getData('placed')) {
+      this.wrapClicks++;
+      const idx = Math.min(this.wrapClicks - 1, this.wrapFrames.length - 1);
+      const key = this.wrapFrames[idx];
+      this.wrapSprite.setTexture(key).setVisible(true);
+      if (this.wrapClicks === 1) {
+        if (this.dough) this.dough.visible = false;
+        if (this.currentLeaf) this.currentLeaf.visible = false;
+      }
+      if (this.wrapClicks >= this.wrapFrames.length) {
+        this.wrapSprite.setTexture('banhphuthe').setVisible(true);
+        addText(this, 520, 520, 'Wrapped successfully! Ready to steam.', { fontSize: '18px', color: '#2a6a3b', wordWrap: { width: 300 } });
+        globalState.score += 20;
+        this.time.delayedCall(900, () => this.scene.start('SceneHap'));
+      }
+    } else {
+      this.tweens.add({ targets: this.wrapBtn, alpha: 0.4, yoyo: true, duration: 200 });
+    }
+  });
+
+  this.leafPlaced = false;
+};
+
+// ===== Scene 4: Hấp (giữ nút) =====
+function SceneHap() { Phaser.Scene.call(this, { key: 'SceneHap' }); }
+SceneHap.prototype = Object.create(Phaser.Scene.prototype);
+SceneHap.prototype.constructor = SceneHap;
+
+SceneHap.prototype.create = function() {
+  addText(this, 24, 18, t('step4Title'), { fontSize: '32px', color: '#2a6a3b' });
+  addText(this, 24, 66, t('step4Hint'), { fontSize: '20px', color: '#444', wordWrap: { width: 400 } });
+
+  const steamKey = this.textures.exists('noihap') ? 'noihap' : 'hapbanh';
+  this.steamer = this.add.image(580, 300, steamKey);
+  fitSprite(this.steamer, 512, 512);
+
+  this.steamBtn = this.add.image(580, 480, 'btn_steam').setInteractive();
+  fitSprite(this.steamBtn, 64, 64);
+
+  this.holdProgress = 0;
+  this.targetHold = 3000; // ms
+  this.holding = false;
+
+  this.progressBg = this.add.rectangle(430, 480, 360, 18, 0xddd6c8).setOrigin(0,0.5);
+  this.progressFill = this.add.rectangle(430, 480, 0, 18, 0x2a6a3b).setOrigin(0,0.5);
+
+  this.steamBtn.on('pointerdown', () => {
+    playClick();
+    this.holding = true;
+    this.holdStart = this.time.now;
+  });
+  this.input.on('pointerup', () => {
+    if (this.holding) {
+      this.holding = false;
+      if (this.holdProgress >= this.targetHold) {
+        this.onSteamSuccess();
+      } else {
+        this.tweens.add({ targets: this.progressFill, alpha: 0.4, yoyo: true, duration: 200 });
+        this.holdProgress = Math.max(0, this.holdProgress - 800);
+      }
+    }
+  });
+};
+
+SceneHap.prototype.update = function(time, delta) {
+  if (this.holding) {
+    this.holdProgress += delta;
+    if (this.holdProgress > this.targetHold) this.holdProgress = this.targetHold;
+    this.progressFill.width = (this.holdProgress / this.targetHold) * 360;
+  }
+};
+
+SceneHap.prototype.onSteamSuccess = function() {
+  globalState.score += 40;
+  this.time.delayedCall(900, () => this.scene.start('SceneEnd'));
+};
+
+// ===== Scene End =====
+function SceneEnd() { Phaser.Scene.call(this, { key: 'SceneEnd' }); }
+SceneEnd.prototype = Object.create(Phaser.Scene.prototype);
+SceneEnd.prototype.constructor = SceneEnd;
+
+SceneEnd.prototype.create = function() {
+  const cake = this.add.image(300, 320, 'mobanh');
+  fitSprite(cake, 512, 512);
+  addText(this, 580, 240, t('culturalTip'), { fontSize: '20px', color: '#666', wordWrap: { width: 300 } });
+  addText(this, 280, 540, t('congratulations'), { fontSize: '32px', color: '#2a6a3b' });
+
+  const replay = addText(this, 280, 420, t('playAgain'), { fontSize: '24px', color: '#2a6a3b' }).setInteractive();
+  replay.on('pointerdown', () => {
+    playClick();
+    globalState.score = 0;
+    globalState.doughReady = false;
+    this.scene.start('SceneNhan');
+  });
+};
+
+</script>
+<script>
+  (function(){
+    const dropdown = document.querySelector('.nav-item.dropdown');
+    const trigger = dropdown ? dropdown.querySelector('#i18n-nav-game') : null;
+    const menu = dropdown ? dropdown.querySelector('.dropdown-menu') : null;
+    if (trigger && menu) {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault(); e.stopPropagation();
+        menu.classList.toggle('show');
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-item.dropdown')) { menu.classList.remove('show'); }
+      });
+    }
+  })();
+</script>
+
+<!-- UI sync script: update overlay score and wire help/restart buttons -->
+<script>
+  (function(){
+    const scoreEl = document.getElementById('gameScore');
+    const helpBtn = document.getElementById('helpBtn');
+    const helpModal = document.getElementById('helpModal');
+    const closeHelp = document.getElementById('closeHelp');
+    const restartBtn = document.getElementById('restartBtn');
+
+    function updateScore(){ if(window.globalState && scoreEl) scoreEl.textContent = 'Score: ' + (window.globalState.score || 0); }
+    // keep lightweight update loop to reflect score quickly
+    setInterval(updateScore, 250);
+
+    if(helpBtn && helpModal){ helpBtn.addEventListener('click', ()=> { helpModal.style.display='block'; }); }
+    if(closeHelp){ closeHelp.addEventListener('click', ()=> { helpModal.style.display='none'; }); }
+
+    if(restartBtn){ restartBtn.addEventListener('click', ()=> {
+      if(window.game && window.game.scene){
+        window.globalState.score = 0; window.globalState.doughReady = false;
+        try { window.game.scene.start('SceneNhan'); } catch(e){ location.reload(); }
+      } else { location.reload(); }
+    }); }
+  })();
+</script>
+</body>
+</html>

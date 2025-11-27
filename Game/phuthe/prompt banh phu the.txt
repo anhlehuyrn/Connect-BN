@@ -1,0 +1,229 @@
+Bánh Phu Thê 2 game prompt
+Build a step-by-step cooking simulation “Phu The” with a cultural, festive feel. Prioritize clean UX, proportional image scaling (no distortion), responsive layout, and smooth feedback. Use Phaser 3 or a similar HTML5 game framework.
+
+Core requirements
+Framework: Phaser 3 (recommended) or equivalent HTML5 engine with scene management.
+
+Aspect ratio: Always preserve image proportions. Use fit scaling (contain) with centered alignment; never stretch to fill. Prefer display-size changes over texture resampling where possible.
+
+Responsive: Target a default stage size of 900×600, scale to viewport using FIT/CONTAIN and CENTER_BOTH. Maintain consistent tap/click targets on mobile.
+
+Background: Use a cultural, festive backdrop (soft gradient with subtle motifs). Keep contrast and readability for text.
+
+Start/replay: Include a Start Game button on the entry screen and a Replay button in the final screen.
+
+Flow: Scenes in order: Start → Filling → Dough → Wrapping → Steaming → End.
+
+Interactions: Drag-and-drop for ingredients/leaf/dough; click/tap for Stir/Mix/Wrap/Steam; hold-press for steaming; progress bars and hints per step.
+
+Localization-ready: Prepare UI text for Vietnamese and English.
+
+Audio: Light UI sounds for clicks, progress completion, and success; subtle ambient kitchen/steaming loop with volume control.
+
+Performance: Preload, trim transparent backgrounds, and reuse textures; avoid layout jank; keep total asset weight reasonable.
+
+Scene blueprint
+Start scene (title and entry)
+Title: “Bánh Phu Thê 2” with short subtitle about tradition.
+
+Background: Gradient + soft cultural motif (e.g., banana leaf pattern or wedding ornament).
+
+Buttons:
+
+Start Game: Proceeds to Filling scene.
+
+Language toggle: VI/EN switch (optional).
+
+Help: Short overlay explaining controls (drag, click, hold).
+
+Scaling: Center content; apply fit scaling. Buttons minimum size 44×44 px tap targets.
+
+Filling scene (cook the mung bean filling)
+Header: Step label and brief instruction (“Drag ingredients into the pan, then click Stir.”).
+
+Objects:
+
+Pan: Center-right, acts as drop zone. Display size scaled proportionally.
+
+Ingredients list: Left column with draggable PNGs: mung beans, sugar, shredded coconut. Set interactive with grab cursor.
+
+Stir button: Below pan; enabled only when all required items are in the pan.
+
+Progress bar: Visual progress of stir-cooking (smooth tween).
+
+Hints: Dynamic text listing missing items or next action.
+
+Feedback:
+
+Drag success: Highlight/tint and snap to random offset inside pan.
+
+Stir: Animate pan texture and ingredient visibility; show progress and a completion tip when done.
+
+Score/state: Add points on completion; set a flag that filling is ready; expose a “Next” button when done.
+
+Dough scene (mix the batter)
+Header: Step label and brief instruction (“Click Mix repeatedly to reach the right consistency.”).
+
+Objects:
+
+Bowl: Center; cycles through mix frames on each click.
+
+Mix button: Click to increment progress and animate (press effect).
+
+Progress bar: Scales to show percent complete.
+
+Visual frames: A small set of textures (e.g., 4) to simulate thicker batter.
+
+Completion: Show tip (“Smooth, elastic batter achieved.”) and auto-transition or Next button.
+
+Score/state: Add points on completion.
+
+Wrapping scene (select leaf, place dough, wrap)
+Header: Step label and instruction (“Choose the correct banana leaf, place the dough in the center, then click Wrap.”).
+
+Objects:
+
+Wrapping slot: Center rectangle or decorative pad.
+
+Leaves: Two draggable options: correct banana leaf and an incorrect alternative. Only the correct one should proceed.
+
+Dough ball: Draggable, enabled only after correct leaf is placed.
+
+Wrap button: Advances through folding frames (multi-click).
+
+Animation frames: Sequence showing folding steps; final texture becomes finished wrapped cake.
+
+Feedback:
+
+Correct leaf: Confirmation hint; incorrect leaf triggers a gentle corrective message.
+
+Wrap progression: Each click advances the wrapping frame; hide leaf/dough once folding begins.
+
+Score/state: Add points on completion; proceed to steaming.
+
+Steaming scene (hold press to steam)
+Header: Step label and instruction (“Hold the Steam button to cook the cake.”).
+
+Objects:
+
+Steamer: Center image (proportional scaling).
+
+Steam button: Interactive; on pointerdown start a timer; on pointerup check if target hold threshold reached.
+
+Progress bar: Fills while held; slight decay if released too early; add subtle steam particle or glow effect when near completion.
+
+Completion: On reaching the hold threshold, trigger success and transition to End.
+
+Score/state: Add a larger point value for successful steaming.
+
+End scene (celebration and replay)
+Visuals: Display the finished cake and a celebratory banner/message.
+
+Cultural tip: Text explaining the symbolic meaning of Bánh Phu Thê in weddings.
+
+Buttons:
+
+Replay: Resets score and flags; returns to Filling scene or Start scene.
+
+Language toggle: Optional.
+
+Accessibility: Ensure color contrast and legible fonts; avoid rapid flashing.
+
+UI and scaling rules
+Proportional scaling:
+
+Always use aspect-preserving transforms. In Phaser, prefer setDisplaySize with original aspect or scale uniformly (same x/y).
+
+Contain strategy: Compute scale = min(targetW/sourceW, targetH/sourceH); center via dx/dy offsets.
+
+No distortion: Never set different scaleX/scaleY values; avoid stretching backgrounds—use tiled patterns or gradients.
+
+Drag targets:
+
+Hit areas: Slightly larger than visual bounds for mobile ease.
+
+Snap: On drop into zone, snap to random offset for natural look; keep within zone bounds.
+
+Buttons:
+
+Size: Minimum ~128×64 logical pixels; add 1–2 px focus ring and press animation (scale to 0.95, quick yoyo).
+
+State: Disabled (lower alpha) until prerequisites met; enable/disable based on scene state.
+
+Systems and data
+Global state:
+
+Fields: score, fillingReady, batterReady, wrapped, steamed, language.
+
+Reset: On Replay, reset all flags and score.
+
+Scoring:
+
+Filling: +20
+
+Dough: +20
+
+Wrapping: +20
+
+Steaming: +40
+
+Localization:
+
+Text keys: Store all strings (headings, hints, button labels, tips) in a dictionary for VI/EN; swap by language state.
+
+Audio:
+
+UI: Click/complete sounds.
+
+Ambient: Light kitchen loop, fade-in/out.
+
+Steaming: Soft steam sound during hold; stop on release/success.
+
+Asset guidance
+Aspect-preserved sizes:
+
+Ingredients/leaves/dough: ~256×128 or 128×128; keep transparent padding minimal; trim background.
+
+Tools (pan/bowl/steamer): ~512×256 or 512×512 depending on shape; export at 2× for crisp scaling.
+
+Buttons: ~128×64; consistent style.
+
+Animation frames: ~256×256; aligned consistent pivot/center.
+
+Final cake: ~512×512 for the End scene.
+
+Optimization:
+
+Trim transparency: Remove uniform background; center and fit into target bounding boxes while preserving aspect ratio.
+
+Atlas: Optional texture atlas for smaller loads; ensure frame names are consistent.
+
+Quality and accessibility
+Feedback:
+
+Visual: Tints, subtle particles, scaling tweens.
+
+Text: Real-time hints and tips per step.
+
+Accessibility:
+
+Contrast: Ensure text readability on gradients.
+
+Motion: Keep animations gentle; allow reduce-motion toggle if possible.
+
+Controls: All actions usable with mouse/touch; consider keyboard shortcuts for Start/Replay.
+
+Deliverables
+Playable build: HTML file with embedded scripts or bundled assets.
+
+Scenes implemented: Start, Filling, Dough, Wrapping, Steaming, End.
+
+Config: FIT scaling, CENTER alignment, proportional image handling.
+
+Assets: PNGs trimmed and centered; consistent look and sizing.
+
+Localization: VI/EN support ready.
+
+Replay and Start buttons: Working and visually clear.
+
+Documentation: Short README explaining controls and flow.

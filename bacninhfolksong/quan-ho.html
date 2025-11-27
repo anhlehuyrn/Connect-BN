@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quan Họ Bắc Ninh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .qh-page { font-family: 'Inter', sans-serif; color: #2c3e50; line-height: 1.7; }
+    .hero-qh { position: relative; min-height: 420px; display:flex; align-items:center; justify-content:center; text-align:center; color:white; overflow:hidden; }
+    .hero-qh::before { content:''; position:absolute; inset:0; background-image:url('../image%20list%20png/backgroundqh.png'); background-size:cover; background-position:center; z-index:0; }
+    .hero-qh::after { content:''; position:absolute; inset:0; background: linear-gradient(135deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35)); z-index:1; }
+    .hero-content-qh { position:relative; z-index:2; max-width:820px; padding:2rem; }
+    .hero-qh h1 { font-size: 3rem; font-weight: 800; margin-bottom: 0.75rem; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); }
+    .hero-qh .subtitle { font-size: 1.25rem; opacity: 0.95; }
+
+    .content-section { max-width: 1000px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .section { margin-bottom: 3.5rem; opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+    .section.visible { opacity:1; transform:none; }
+    .section-icon { font-size: 2rem; margin-right: .75rem; }
+    .section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; display:flex; align-items:center; gap: .5rem; }
+    .section p { font-size: 1.05rem; color: #444; }
+
+    .image-showcase { margin: 1.25rem 0 1.75rem; border-radius: 12px; overflow:hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); background:#fff; }
+    .image-showcase img { width:100%; height:auto; display:block; }
+
+    .accent-link, .youtube-link { display:inline-flex; align-items:center; gap:.5rem; font-weight:700; text-decoration:none; padding-bottom:2px; border-bottom:2px solid transparent; }
+    .accent-link { color:#d4a574; border-color: rgba(212,165,116,0.3); }
+    .accent-link:hover { color:#e0b980; border-color: rgba(224,185,128,0.6); }
+    .youtube-link { color:#3498db; border-color: rgba(52,152,219,0.3); }
+    .youtube-link:hover { color:#1f7fbf; border-color: rgba(31,127,191,0.6); }
+
+    @media (max-width: 768px) {
+      .hero-qh h1 { font-size: 2.3rem; }
+      .hero-qh .subtitle { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body class="qh-page">
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+            <img id="i18n-logo" src="../Giaodien/logowweb.png" alt="Bắc Ninh" />
+          </a>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a></li>
+          <li class="nav-item"><a href="../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a></li>
+          <li class="nav-item"><a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a></li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+            <ul class="dropdown-menu">
+              <li><a href="../Game/game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+              <li><a href="../Game/dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="lang-switcher">
+          <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </button>
+          <div class="lang-dropdown" id="langDropdown" role="menu">
+            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0"><span class="lang-flag">🇬🇧</span><span>English</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero-qh" style="margin-top:80px;">
+    <div class="hero-content-qh">
+      <h1>Dân ca Quan họ Bắc Ninh</h1>
+      <p class="subtitle">Nét tinh hoa Kinh Bắc – Di sản sống của Việt Nam</p>
+    </div>
+  </section>
+
+  <div class="content-section">
+    <section class="section">
+      <h2><span class="section-icon">🌿</span> Origins and Formation</h2>
+      <p>Quan Ho folk singing originates from the ancient Kinh Bac region, today belonging to Bac Ninh and Bac Giang Provinces. The tradition emerged hundreds of years ago, closely linked to the custom of village twinning (kết chạ) and the practice of lyrical exchanges during spring festivals, communal yards, river wharfs, and other cultural gatherings. Flourishing from the Le to Nguyen dynasties, Quan Ho became a cultural emblem of the Red River Delta.</p>
+      <div class="image-showcase"><img src="kinhbac.png" alt="Kinh Bac region landscape" loading="lazy"></div>
+    </section>
+
+    <section class="section">
+      <h2><span class="section-icon">🎤</span> Vocal Techniques and Artistic Features</h2>
+      <p><strong>“Vang – Ren – Nen – Nay” Technique</strong> gives Quan Ho its smooth, resonant, and graceful sound:</p>
+      <p>Vang: open, rounded voice • Ren: soft, vibrating resonance • Nen: a stable, harmonious base tone • Nay: delicate articulation and controlled bouncing notes</p>
+      <p><strong>Antiphonal Singing Between “Liền Anh” and “Liền Chị”</strong> – performed in pairs, showcasing elegance, politeness, and refined communication.</p>
+      <div class="image-showcase"><img src="lienanhchi.png" alt="Liền Anh and Liền Chị antiphonal singing" loading="lazy"></div>
+      <p><strong>Perfect Vocal Harmony</strong> – two singers blend their voices so seamlessly they sound like one.</p>
+    </section>
+
+    <section class="section">
+      <h2><span class="section-icon">🏅</span> UNESCO Recognition</h2>
+      <p>In 2009, Quan Ho Folk Singing of Bac Ninh was inscribed by UNESCO as an Intangible Cultural Heritage of Humanity.</p>
+      <p><a class="accent-link" href="https://ich.unesco.org/doc/download.php?versionID=27707" target="_blank" rel="noopener">📄 Nomination file No. 00183</a></p>
+      <p><a class="youtube-link" href="https://www.youtube.com/watch?v=MlKtqU5685w" target="_blank" rel="noopener">▶️ Watch a Quan Họ performance</a></p>
+    </section>
+
+    <section class="section">
+      <h2><span class="section-icon">🌸</span> Contributions and Contemporary Significance</h2>
+      <p><strong>Artistic Value:</strong> Gentle melodies, poetic lyrics, and distinctive singing techniques enrich Vietnamese music.</p>
+      <p><strong>Cultural and Social Importance:</strong> Customs such as village twinning, serving betel and areca, ceremonial greetings, and courteous behavior reflect the warmth and humanistic spirit of Vietnamese culture.</p>
+      <p><strong>Contribution to Tourism:</strong> Quan Ho has become a symbol of Bac Ninh and Bac Giang, attracting visitors through festivals, river wharf performances, and cultural exchange programs.</p>
+      <div class="image-showcase"><img src="hoilimqh.png" alt="Lim Festival and Quan Họ performances" loading="lazy"></div>
+      <p><strong>Education and Preservation:</strong> Community clubs, artisans, cultural centers, and schools actively teach Quan Ho to younger generations.</p>
+    </section>
+
+    <section class="section">
+      <h2><span class="section-icon">🌟</span> Quan Ho Today – A Living Heritage</h2>
+      <p>Despite modernization, Quan Ho continues to flourish through traditional festivals, community performances, cultural showcases, and modern artistic adaptations. Quan Ho is not just a form of folk singing—it is the soul of Kinh Bac culture, embodying harmony, elegance, and deep emotional beauty.</p>
+      <div class="image-showcase"><img src="linhhonvhqh.png" alt="Modern showcases of Quan Họ in community" loading="lazy"></div>
+    </section>
+  </div>
+
+  <footer style="background: #2c3e50; color: white; padding: 3rem 2rem; text-align: center;">
+    <p>&copy; 2024 Connect Bac Ninh. Preserving Vietnamese cultural heritage.</p>
+    <p class="text-muted text-sm" style="margin-top: 2rem; font-size: 0.85rem; color: #bbb; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+      Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa. Chúng tôi cam kết không sử dụng bất kỳ hình ảnh nào cho mục đích thương mại mà không có sự cho phép thích hợp.
+    </p>
+  </footer>
+
+  <script>
+    const I18N = {
+      vi: { logo: 'Bắc Ninh', nav_intro: 'Giới Thiệu', nav_map: 'Bản Đồ', nav_locations: 'Địa Điểm', nav_game: 'Trò chơi', nav_memory: 'Ghép hình', nav_printing: 'In tranh' },
+      en: { logo: 'Bac Ninh', nav_intro: 'Introduction', nav_map: 'Map', nav_locations: 'Locations', nav_game: 'Game', nav_memory: 'Memory Game', nav_printing: 'Printing Game' }
+    };
+    let currentLanguage = localStorage.getItem('language') || 'vi';
+    function el(id){ return document.getElementById(id); }
+    function applyLanguage(lang){
+      currentLanguage = lang; localStorage.setItem('language', lang); document.documentElement.lang = lang; const t = I18N[lang];
+      const logoImg = el('i18n-logo'); if (logoImg && logoImg.tagName === 'IMG') { logoImg.setAttribute('alt', t.logo); }
+      el('i18n-nav-intro')?.replaceChildren(document.createTextNode(t.nav_intro));
+      el('i18n-nav-map')?.replaceChildren(document.createTextNode(t.nav_map));
+      el('i18n-nav-locations')?.replaceChildren(document.createTextNode(t.nav_locations));
+      el('i18n-nav-game')?.replaceChildren(document.createTextNode(t.nav_game));
+      el('i18n-nav-memory')?.replaceChildren(document.createTextNode(t.nav_memory));
+      el('i18n-nav-printing')?.replaceChildren(document.createTextNode(t.nav_printing));
+      updateActiveLang(lang);
+    }
+    function updateActiveLang(lang){
+      document.querySelectorAll('.lang-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
+      const globeBtn = el('globeBtn'); if (globeBtn) { globeBtn.setAttribute('aria-label', lang === 'vi' ? 'Đổi ngôn ngữ' : 'Change language'); }
+    }
+    const globeBtn = el('globeBtn'); const langDropdown = el('langDropdown'); const langOptions = document.querySelectorAll('.lang-option');
+    function openLangDropdown(){ langDropdown?.classList.add('show'); globeBtn?.setAttribute('aria-expanded', 'true'); }
+    function closeLangDropdown(){ langDropdown?.classList.remove('show'); globeBtn?.setAttribute('aria-expanded', 'false'); }
+    globeBtn?.addEventListener('click', (e)=>{ e.stopPropagation(); const isOpen = langDropdown.classList.contains('show'); if (isOpen) { closeLangDropdown(); } else { openLangDropdown(); } });
+    document.addEventListener('click', (e)=>{ if (!e.target.closest('.lang-switcher')) { closeLangDropdown(); } });
+    langOptions.forEach(option => { option.addEventListener('click', ()=>{ const lang = option.dataset.lang; if (currentLanguage === lang) return; applyLanguage(lang); closeLangDropdown(); }); option.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); option.click(); } }); });
+    applyLanguage(currentLanguage);
+
+    const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -100px 0px' };
+    const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } }); }, observerOptions);
+    document.querySelectorAll('.section').forEach(section => { observer.observe(section); });
+
+    const navDropdown = document.querySelector('.nav-item.dropdown');
+    const navGameTrigger = navDropdown ? navDropdown.querySelector('#i18n-nav-game') : null;
+    const navDropdownMenu = navDropdown ? navDropdown.querySelector('.dropdown-menu') : null;
+    if (navGameTrigger && navDropdownMenu) {
+      navGameTrigger.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const isOpen = navDropdownMenu.classList.contains('show'); if (isOpen) { navDropdownMenu.classList.remove('show'); } else { navDropdownMenu.classList.add('show'); } });
+      document.addEventListener('click', (e) => { if (!e.target.closest('.nav-item.dropdown')) { navDropdownMenu.classList.remove('show'); } });
+    }
+  </script>
+</body>
+</html>

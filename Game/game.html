@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dong Ho Memory Game</title>
+  <link rel="icon" href="../image%20list%20png/logo1.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <!-- External JS CDNs removed to prevent runtime parse issues in this environment -->
+</head>
+<body class="min-h-screen bg-[#f8f9fa]">
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <h1 id="i18n-logo">Bắc Ninh</h1>
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a>
+          </li>
+          <li class="nav-item">
+            <a href="../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a>
+          </li>
+          <li class="nav-item">
+            <a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+            <ul class="dropdown-menu">
+              <li><a href="game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+              <li><a href="dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+              <li><a href="phuthe_vi.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="lang-switcher">
+          <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </button>
+          <div class="lang-dropdown" id="langDropdown" role="menu">
+            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">
+              <span class="lang-flag">🇻🇳</span>
+              <span>Tiếng Việt</span>
+              <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">
+              <span class="lang-flag">🇬🇧</span>
+              <span>English</span>
+              <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Header banner and controls -->
+    <section class="bg-gradient-cultural" style="padding: 64px 0;">
+      <div class="container">
+        <div class="text-center shadow-cultural container">
+          <div class="overlay"></div>
+
+          <h1 style="font-size: 40px; font-weight: 700; margin-bottom: 16px; color: #2c3e50;" id="i18n-game-title">Dong Ho Memory Game
+          </h1>
+          <p style="font-size: 18px; color: #7f8c8d; max-width: 720px; margin: 0 auto 24px;" id="i18n-game-subtitle">Match pairs of Vietnamese cultural symbols inspired by Dong Ho folk paintings
+          </p>
+        </div>
+
+
+          <div class="game-controls">
+            <span class="badge" id="moves-label">Moves: 0</span>
+            <span class="badge" id="matches-label">Matches: 0/8</span>
+            <button class="badge" id="new-game-btn" style="cursor:pointer;">New Game</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trophy -->
+    <div class="container" id="trophy" style="display:none;">
+      <div class="trophy-card shadow-elevated text-center">
+        <div class="text-5xl mb-4">🏆</div>
+        <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #2c3e50;" id="i18n-congrats">Congratulations!</h2>
+        <p style="color: #7f8c8d; margin-bottom: 16px;" id="trophy-text">You completed the game!</p>
+        <button class="btn btn-primary" id="play-again-btn">Play Again</button>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <section style="padding-bottom: 64px;">
+      <div class="container">
+        <div>
+          <div class="game-grid" id="game-grid"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-20">
+    <div class="container mx-auto px-4">
+      <p class="text-center text-white py-8 bg-[#2c3e50]" id="i18n-footer">© 2024 Connect Bac Ninh — Dong Ho Memory Game</p>
+      <p class="text-muted text-sm" style="text-align: center; margin-top: 1rem; padding-bottom: 2rem; font-size: 0.85rem; color: #95a5a6; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6;" id="i18n-copyright">
+        Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa. Chúng tôi cam kết không sử dụng bất kỳ hình ảnh nào cho mục đích thương mại mà không có sự cho phép thích hợp.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // i18n translations
+    const I18N = {
+      vi: {
+        logo: 'Bắc Ninh',
+        nav_intro: 'Giới Thiệu',
+        nav_map: 'Bản Đồ',
+        nav_locations: 'Địa Điểm',
+        nav_game: 'Trò chơi',
+        nav_memory: 'Ghép hình',
+        nav_printing: 'In tranh',
+        nav_phuthe: 'Bánh Phu Thê',
+        game_title: 'Trò chơi Ghép hình Đông Hồ',
+        game_subtitle: 'Ghép các cặp biểu tượng văn hóa Việt Nam lấy cảm hứng từ tranh dân gian Đông Hồ',
+        moves: 'Nước đi',
+        matches: 'Cặp đúng',
+        new_game: 'Chơi mới',
+        congrats: 'Chúc mừng!',
+        complete_msg: 'Bạn đã hoàn thành trò chơi với',
+        moves_word: 'nước đi!',
+        play_again: 'Chơi lại',
+        footer: '© 2024 Smart Bắc Ninh — Trò chơi Ghép hình Đông Hồ',
+        copyright: 'Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa. Chúng tôi cam kết không sử dụng bất kỳ hình ảnh nào cho mục đích thương mại mà không có sự cho phép thích hợp.'
+      },
+      en: {
+        logo: 'Bac Ninh',
+        nav_intro: 'Introduction',
+        nav_map: 'Map',
+        nav_locations: 'Locations',
+        nav_game: 'Game',
+        nav_memory: 'Memory Game',
+        nav_printing: 'Printing Game',
+        nav_phuthe: 'Phu Thê Cake Game',
+        game_title: 'Dong Ho Memory Game',
+        game_subtitle: 'Match pairs of Vietnamese cultural symbols inspired by Dong Ho folk paintings',
+        moves: 'Moves',
+        matches: 'Matches',
+        new_game: 'New Game',
+        congrats: 'Congratulations!',
+        complete_msg: 'You completed the game in',
+        moves_word: 'moves!',
+        play_again: 'Play Again',
+        footer: '© 2024 Smart Bac Ninh — Dong Ho Memory Game',
+        copyright: 'Images used on this website are collected from various public sources and curated for educational and cultural preservation purposes. We commit to not using any image for commercial purposes without proper permission.'
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('language') || 'vi';
+
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    function applyLanguage(lang) {
+      currentLanguage = lang;
+      localStorage.setItem('language', lang);
+      document.documentElement.lang = lang;
+      const t = I18N[lang];
+
+      // Navigation
+      el('i18n-logo')?.replaceChildren(document.createTextNode(t.logo));
+      el('i18n-nav-intro')?.replaceChildren(document.createTextNode(t.nav_intro));
+      el('i18n-nav-map')?.replaceChildren(document.createTextNode(t.nav_map));
+      el('i18n-nav-locations')?.replaceChildren(document.createTextNode(t.nav_locations));
+      el('i18n-nav-game')?.replaceChildren(document.createTextNode(t.nav_game));
+      el('i18n-nav-memory')?.replaceChildren(document.createTextNode(t.nav_memory));
+      el('i18n-nav-printing')?.replaceChildren(document.createTextNode(t.nav_printing));
+      el('i18n-nav-phuthe')?.replaceChildren(document.createTextNode(t.nav_phuthe));
+
+      // Game content
+      el('i18n-game-title')?.replaceChildren(document.createTextNode(t.game_title));
+      el('i18n-game-subtitle')?.replaceChildren(document.createTextNode(t.game_subtitle));
+      el('new-game-btn')?.replaceChildren(document.createTextNode(t.new_game));
+      el('i18n-congrats')?.replaceChildren(document.createTextNode(t.congrats));
+      el('play-again-btn')?.replaceChildren(document.createTextNode(t.play_again));
+
+      // Footer
+      el('i18n-footer')?.replaceChildren(document.createTextNode(t.footer));
+      const footerEl = el('i18n-footer');
+      if (footerEl) {
+        footerEl.textContent = footerEl.textContent.replace('Smart Bac Ninh','Connect Bac Ninh').replace('Smart Bắc Ninh','Connect Bắc Ninh');
+      }
+      el('i18n-copyright')?.replaceChildren(document.createTextNode(t.copyright));
+      updateActiveLang(lang);
+    }
+
+    function updateActiveLang(lang) {
+      document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === lang);
+      });
+      const globeBtn = el('globeBtn');
+      if (globeBtn) {
+        globeBtn.setAttribute('aria-label', lang === 'vi' ? 'Đổi ngôn ngữ' : 'Change language');
+      }
+    }
+
+    // Globe button functionality
+    const globeBtn = el('globeBtn');
+    const langDropdown = el('langDropdown');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    function openLangDropdown() {
+      langDropdown?.classList.add('show');
+      globeBtn?.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeLangDropdown() {
+      langDropdown?.classList.remove('show');
+      globeBtn?.setAttribute('aria-expanded', 'false');
+    }
+
+    globeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = langDropdown.classList.contains('show');
+      if (isOpen) {
+        closeLangDropdown();
+      } else {
+        openLangDropdown();
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.lang-switcher')) {
+        closeLangDropdown();
+      }
+    });
+
+    langOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const lang = option.dataset.lang;
+        if (currentLanguage === lang) return;
+        applyLanguage(lang);
+        if (typeof updateCounters === 'function') {
+          updateCounters();
+        }
+        closeLangDropdown();
+      });
+
+      option.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          option.click();
+        }
+      });
+    });
+
+    // Apply language on load
+    applyLanguage(currentLanguage);
+
+    // Game logic
+    const CARD_IMAGES = [
+      'g_tranhdongho/ca.png',
+      'g_tranhdongho/muarong.png',
+      'g_tranhdongho/taoquan.png',
+      'g_tranhdongho/voi.png',
+      'g_tranhdongho/emtrau.png',
+      'g_tranhdongho/conga.png',
+      'g_tranhdongho/emga.png',
+      'g_tranhdongho/emngong.png'
+    ];
+    const BACK_TEXTURE = '../image%20list%20png/otherpics/haiembe.png';
+
+    let deck = [];
+    let flipped = [];
+    let moves = 0;
+    let matches = 0;
+    const totalPairs = CARD_IMAGES.length;
+
+    const gridEl = document.getElementById('game-grid');
+    const movesEl = document.getElementById('moves-label');
+    const matchesEl = document.getElementById('matches-label');
+    const trophyEl = document.getElementById('trophy');
+    const trophyTextEl = document.getElementById('trophy-text');
+    const newGameBtn = document.getElementById('new-game-btn');
+    const playAgainBtn = document.getElementById('play-again-btn');
+
+    function initializeDeck() {
+      deck = [...CARD_IMAGES, ...CARD_IMAGES]
+        .map((img, i) => ({ id: i, image: img, isFlipped: false, isMatched: false }))
+        .sort(() => Math.random() - 0.5);
+      flipped = [];
+      moves = 0;
+      matches = 0;
+      updateCounters();
+      trophyEl.style.display = 'none';
+      renderGrid();
+    }
+
+    function updateCounters() {
+      const t = I18N[currentLanguage];
+      movesEl.textContent = `${t.moves}: ${moves}`;
+      matchesEl.textContent = `${t.matches}: ${matches}/${totalPairs}`;
+    }
+
+    function onCardClick(idx) {
+      if (flipped.length === 2) return;
+      const card = deck[idx];
+      if (card.isFlipped || card.isMatched) return;
+      card.isFlipped = true;
+      flipped.push(idx);
+      moves++;
+      updateCounters();
+      renderCard(idx);
+      if (flipped.length === 2) {
+        const [a, b] = flipped;
+        const first = deck[a];
+        const second = deck[b];
+        const isMatch = first.image === second.image;
+        if (isMatch) {
+          first.isMatched = true;
+          second.isMatched = true;
+          matches++;
+          flipped = [];
+          updateCounters();
+          if (matches === totalPairs) {
+            const t = I18N[currentLanguage];
+            trophyTextEl.textContent = `${t.complete_msg} ${moves} ${t.moves_word}`;
+            trophyEl.style.display = 'block';
+          }
+        } else {
+          setTimeout(() => {
+            first.isFlipped = false;
+            second.isFlipped = false;
+            flipped = [];
+            renderCard(a);
+            renderCard(b);
+          }, 800);
+        }
+      }
+    }
+
+    function renderGrid() {
+      gridEl.innerHTML = '';
+      deck.forEach((card, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `game-card shadow-cultural ${card.isMatched ? 'matched' : ''}`;
+        btn.disabled = card.isFlipped && flipped.length === 2;
+        btn.style.backgroundImage = card.isFlipped || card.isMatched ? 'none' : `url(${BACK_TEXTURE})`;
+        btn.style.backgroundSize = 'cover';
+        btn.style.backgroundPosition = 'center';
+        if (card.isFlipped || card.isMatched) {
+          const img = document.createElement('img');
+          img.src = card.image;
+          img.alt = 'Cultural symbol';
+          img.className = 'card-image';
+          img.loading = 'lazy';
+          btn.appendChild(img);
+        } else {
+          btn.style.backgroundColor = '#fbf7f2';
+        }
+        btn.addEventListener('click', () => onCardClick(idx));
+        gridEl.appendChild(btn);
+      });
+    }
+
+    function renderCard(idx) {
+      const btn = gridEl.children[idx];
+      const card = deck[idx];
+      btn.innerHTML = '';
+      btn.className = `game-card shadow-cultural ${card.isMatched ? 'matched' : ''}`;
+      btn.disabled = card.isFlipped && flipped.length === 2;
+      btn.style.backgroundImage = card.isFlipped || card.isMatched ? 'none' : `url(${BACK_TEXTURE})`;
+      btn.style.backgroundSize = 'cover';
+      btn.style.backgroundPosition = 'center';
+      if (card.isFlipped || card.isMatched) {
+        const img = document.createElement('img');
+        img.src = card.image;
+        img.alt = 'Cultural symbol';
+        img.className = 'card-image';
+        img.loading = 'lazy';
+        btn.appendChild(img);
+      } else {
+        btn.style.backgroundColor = '#fbf7f2';
+      }
+    }
+
+    newGameBtn.addEventListener('click', initializeDeck);
+    playAgainBtn.addEventListener('click', initializeDeck);
+
+    // Initialize on load
+    initializeDeck();
+  </script>
+</body>
+</html>

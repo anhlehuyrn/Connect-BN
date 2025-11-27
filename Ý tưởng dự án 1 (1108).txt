@@ -1,0 +1,59 @@
+🧭 1. “Digital Public Infrastructure for Cultural Micro-Regions”
+Core idea: Smart Bắc Ninh as a modular civic-tech platform that empowers small provinces to digitize and promote their intangible cultural heritage, while integrating local services like tourism, disaster alerts, and transport.
+
+Why it works:
+
+Many Southeast Asian provinces have rich cultural assets but lack digital infrastructure.
+
+Smart Bắc Ninh shows how open data + inclusive design can bridge that gap.
+
+Aligns with UNESCO, UNDP, and EU priorities on digital heritage and local development.
+
+Use for:
+
+Programs in digital heritage, urban innovation, development studies, cultural policy, smart cities.
+
+🌱 2. “Scalable Civic Data Systems for Resilient Local Governance”
+Core idea: Smart Bắc Ninh as a lightweight, scalable data platform that enables local governments to manage disaster response, transport, and public services using open-source tools and community reporting.
+
+Why it works:
+
+Many small provinces lack the budget or capacity for complex smart city systems.
+
+Your project shows how to build low-cost, modular systems using FastAPI, PostGIS, and open standards.
+
+Emphasizes resilience, transparency, and citizen participation.
+
+Use for:
+
+Programs in data science for development, urban resilience, ICT for governance, Erasmus Mundus GLODEP, MATHS-DISC, EDISS.
+
+🧳 3. “Smart Tourism for Secondary Cities”
+Core idea: Smart Bắc Ninh as a tourism-tech prototype that helps lesser-known provinces attract visitors by mapping cultural sites, festivals, and local experiences in a multilingual, accessible format.
+
+Why it works:
+
+Tourism is a key economic driver for many Southeast Asian provinces.
+
+Your platform supports inclusive, sustainable tourism by making local culture visible and navigable.
+
+Can integrate with regional tourism strategies and smart mobility.
+
+Use for:
+
+Programs in circular economy, creative industries, urban planning, GLOCAL, IMATEC, Euroculture.
+
+🧠 4. “Data Sovereignty and Local Innovation in the Global South”
+Core idea: Smart Bắc Ninh as a case study in bottom-up digital innovation, where local actors build and control their own data ecosystems — rather than relying on top-down or foreign smart city models.
+
+Why it works:
+
+Challenges the “big city bias” in smart city discourse.
+
+Highlights local agency, open-source ethics, and contextual design.
+
+Resonates with decolonial tech, digital sovereignty, and Global South innovation narratives.
+
+Use for:
+
+Programs in global studies, development policy, digital governance, EMGS, TEMA+, GLODEP.

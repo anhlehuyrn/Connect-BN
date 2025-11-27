@@ -1,0 +1,192 @@
+import { useState, useEffect } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { RefreshCw, Trophy } from "lucide-react";
+import culturalPattern from "@/assets/cultural-pattern.jpg";
+
+// Image-based memory matching game with Vietnamese cultural theme
+const Game = () => {
+  const [cards, setCards] = useState<
+    Array<{ id: number; image: string; isFlipped: boolean; isMatched: boolean }>
+  >([]);
+  const [flippedCards, setFlippedCards] = useState<number[]>([]);
+  const [moves, setMoves] = useState(0);
+  const [matches, setMatches] = useState(0);
+  const [isWon, setIsWon] = useState(false);
+
+  const imageSymbols = [
+    "ca.png",
+    "conga.png",
+    "emga.png",
+    "emtrau.png",
+    "muarong.png",
+    "taoquan.png",
+    "voi.png",
+    "emngong.png",
+  ];
+
+  const initializeGame = () => {
+    const gameCards = [...imageSymbols, ...imageSymbols]
+      .sort(() => Math.random() - 0.5)
+      .map((image, index) => ({
+        id: index,
+        image,
+        isFlipped: false,
+        isMatched: false,
+      }));
+    setCards(gameCards);
+    setFlippedCards([]);
+    setMoves(0);
+    setMatches(0);
+    setIsWon(false);
+  };
+
+  useEffect(() => {
+    initializeGame();
+  }, []);
+
+  useEffect(() => {
+    if (matches === imageSymbols.length) {
+      setIsWon(true);
+    }
+  }, [matches]);
+
+  useEffect(() => {
+    if (flippedCards.length === 2) {
+      const [first, second] = flippedCards;
+      if (cards[first].image === cards[second].image) {
+        setCards((prev) =>
+          prev.map((card) =>
+            card.id === first || card.id === second ? { ...card, isMatched: true } : card
+          )
+        );
+        setMatches((prev) => prev + 1);
+        setFlippedCards([]);
+      } else {
+        setTimeout(() => {
+          setCards((prev) =>
+            prev.map((card) =>
+              card.id === first || card.id === second ? { ...card, isFlipped: false } : card
+            )
+          );
+          setFlippedCards([]);
+        }, 1000);
+      }
+    }
+  }, [flippedCards, cards]);
+
+  const handleCardClick = (id: number) => {
+    if (flippedCards.length === 2 || cards[id].isFlipped || cards[id].isMatched) {
+      return;
+    }
+
+    setCards((prev) =>
+      prev.map((card) => (card.id === id ? { ...card, isFlipped: true } : card))
+    );
+    setFlippedCards((prev) => [...prev, id]);
+    setMoves((prev) => prev + 1);
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      <section className="py-16 bg-gradient-cultural min-h-[calc(100vh-200px)]">
+        <div className="container mx-auto px-4">
+          <div
+            className="text-center mb-8 py-12"
+            style={{
+              backgroundImage: "url(/assets/haiembe.png)",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          >
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
+              Cultural Memory Game
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              Match pairs of Vietnamese cultural symbols inspired by Dong Ho folk paintings
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <Badge variant="secondary" className="text-lg px-4 py-2">
+                Moves: {moves}
+              </Badge>
+              <Badge variant="secondary" className="text-lg px-4 py-2">
+                Matches: {matches}/{imageSymbols.length}
+              </Badge>
+              <Button onClick={initializeGame} variant="outline" size="sm" className="gap-2">
+                <RefreshCw className="h-4 w-4" /> New Game
+              </Button>
+            </div>
+          </div>
+
+          {isWon && (
+            <Card className="max-w-md mx-auto mb-8 border-heritage-gold border-2">
+              <CardContent className="p-6 text-center">
+                <Trophy className="h-12 w-12 text-heritage-gold mx-auto mb-4" />
+                <h2 className="text-2xl font-bold mb-2 text-primary">Congratulations!</h2>
+                <p className="text-muted-foreground mb-4">
+                  You completed the game in {moves} moves!
+                </p>
+                <Button onClick={initializeGame} className="gap-2">
+                  <RefreshCw className="h-4 w-4" /> Play Again
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          <div className="max-w-2xl mx-auto">
+            <div className="grid grid-cols-4 gap-4">
+              {cards.map((card) => (
+                <button
+                  key={card.id}
+                  onClick={() => handleCardClick(card.id)}
+                  className={`aspect-square rounded-xl shadow-md transition-all duration-300 transform hover:scale-105 ${
+                    card.isFlipped || card.isMatched
+                      ? "bg-heritage-cream"
+                      : "bg-primary hover:bg-primary/90"
+                  } ${card.isMatched ? "opacity-50" : ""}`}
+                  disabled={card.isFlipped || card.isMatched}
+                  style={{
+                    backgroundImage:
+                      card.isFlipped || card.isMatched
+                        ? "none"
+                        : `url(${culturalPattern})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                >
+                  {(card.isFlipped || card.isMatched) && (
+                    <img
+                      src={`/assets/cards/${card.image}`}
+                      alt="Cultural symbol"
+                      className="w-full h-full object-contain p-2"
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-12 max-w-2xl mx-auto text-center">
+            <h3 className="text-xl font-semibold mb-4">About the Game</h3>
+            <p className="text-muted-foreground">
+              This memory game features symbols representing Bac Ninh's rich cultural heritage, including temples, 
+              traditional crafts, festivals, and folk art. Each symbol reflects an important aspect of Vietnamese 
+              culture that continues to thrive in the province.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Game;

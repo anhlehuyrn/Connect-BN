@@ -1,0 +1,277 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dau Pagoda (Chua Dau)",
+        "category": "Religious Site",
+        "address": "Thanh Khuong, Thuan Thanh",
+        "description": "Oldest Buddhist pagoda in Vietnam, built in the 2nd century.",
+        "image": "Dau.png",
+        "opening_hours": "7:00–18:00",
+        "ticket_info": "Free",
+        "accessibility": "Wheelchair accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0823, 21.0276]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "But Thap Pagoda",
+        "category": "Religious Site",
+        "address": "Dinh To, Thuan Thanh",
+        "description": "Famous for its stone Buddha and 13-story stone tower.",
+        "image": "ButThap.png",
+        "opening_hours": "7:00–18:00",
+        "ticket_info": "Free",
+        "accessibility": "Partial access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0626, 21.0383]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Temple of Ly Kings (Den Do)",
+        "category": "Historical Site",
+        "address": "Dinh Bang, Tu Son",
+        "description": "Honors eight Ly dynasty kings; rich in architecture and history.",
+        "image": "DenDo.png",
+        "opening_hours": "7:00–17:30",
+        "ticket_info": "Free",
+        "accessibility": "Wheelchair accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [105.9735, 21.0950]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Phat Tich Pagoda",
+        "category": "Religious Site",
+        "address": "Phat Tich, Tien Du",
+        "description": "Houses Vietnam’s oldest stone Buddha statue; scenic mountain view.",
+        "image": "PhatTich.png",
+        "opening_hours": "6:30–18:00",
+        "ticket_info": "Free",
+        "accessibility": "Moderate access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [105.9739, 21.0844]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lim Festival Site",
+        "category": "Cultural Site",
+        "address": "Lim Town, Tien Du",
+        "description": "Annual Quan ho folk singing festival; vibrant cultural experience.",
+        "image": "Lim.png",
+        "opening_hours": "Seasonal (February)",
+        "ticket_info": "Free",
+        "accessibility": "Crowded, limited access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [105.9750, 21.0840]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dong Ho Village",
+        "category": "Craft Village",
+        "address": "Song Ho, Thuan Thanh",
+        "description": "Famous for Dong Ho folk paintings; traditional art workshops.",
+        "image": "DongHo.png",
+        "opening_hours": "8:00–17:00",
+        "ticket_info": "Free or paid workshop",
+        "accessibility": "Accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0820, 21.0270]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bac Ninh Quan Ho Folk Song Theatre",
+        "category": "Cultural Venue",
+        "address": "Viem Xa, Bac Ninh City",
+        "description": "The Bac Ninh Quan Ho Folk Song Theatre performs Quan Ho folk art programs for the public and tourists, contributing to the preservation and promotion of the value of this UNESCO intangible cultural heritage. The theatre also organizes many other major cultural events",
+        "image": "QuanHo.png",
+        "opening_hours": "8:00–21:00",
+        "ticket_info": "Varies by event",
+        "accessibility": "Fully accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0509, 21.1865]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bac Ninh Museum",
+        "category": "Museum",
+        "address": "Nguyen Van Cu, Bac Ninh City",
+        "description": "Exhibits on history, archaeology, and folk culture of the region.",
+        "image": "BacNinhMu.png",
+        "opening_hours": "8:00–17:00",
+        "ticket_info": "Free",
+        "accessibility": "Fully accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0512, 21.1868]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Luy Lau Citadel",
+        "category": "Archaeological Site",
+        "address": "Thanh Khuong, Thuan Thanh",
+        "description": "Ancient citadel from Han dynasty era; archaeological significance.",
+        "image": "LuyLau.png",
+        "opening_hours": "7:00–17:00",
+        "ticket_info": "Free",
+        "accessibility": "Limited access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0800, 21.0300]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Dam Pagoda (Thần Quang Tự)",
+        "category": "Religious Site",
+        "address": "Tự Thôn, Nam Sơn, Bac Ninh City",
+        "description": "Built in 1086 by Lý Nhân Tông; once a grand Buddhist center, now a historic ruin on Dạm Mountain.",
+        "image": "Dam.png",
+        "opening_hours": "7:00–17:00",
+        "ticket_info": "Free",
+        "accessibility": "Rough terrain"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0950, 21.1600]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vinh Nghiem Pagoda (Duc La)",
+        "category": "Religious Site",
+        "address": "Duc La Village, Tri Yen, Yen Dung, Bac Giang",
+        "description": "13th-century pagoda; cradle of Truc Lam Zen Buddhism; houses UNESCO-listed woodblocks.",
+        "image": "VinhNghiem.png",
+        "opening_hours": "7:00–18:00",
+        "ticket_info": "Free",
+        "accessibility": "Wheelchair accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.1830, 21.2730]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tay Yen Tu Spiritual-Eco Site",
+        "category": "Ecotourism Site",
+        "address": "Tay Yen Tu Town, Son Dong, Bac Giang",
+        "description": "Final stop on Truc Lam Zen pilgrimage route; combines nature and spirituality in Yen Tu range.",
+        "image": "TayYenTu.png",
+        "opening_hours": "8:00–17:30",
+        "ticket_info": "Entry fee varies",
+        "accessibility": "Moderate access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.5000, 21.4000]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Khe Ro Lake Ecotourism Site",
+        "category": "Nature Reserve",
+        "address": "An Lac, Son Dong, Bac Giang",
+        "description": "Pristine forest and lake within Tay Yen Tu Nature Reserve; ideal for healing and trekking.",
+        "image": "KheRo.png",
+        "opening_hours": "8:00–17:00",
+        "ticket_info": "Free",
+        "accessibility": "Limited access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.5700, 21.4200]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bo Da Pagoda",
+        "category": "Religious Site",
+        "address": "Tien Son, Viet Yen, Bac Giang",
+        "description": "Unique soil-walled pagoda with 100 ancient rooms and tower garden; Truc Lam Zen heritage.",
+        "image": "BoDa.png",
+        "opening_hours": "7:00–17:00",
+        "ticket_info": "Free",
+        "accessibility": "Partial access"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.0522, 21.2425]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kinh Duong Vuong Temple",
+        "category": "Historical Site",
+        "address": "A Lu Village, Dai Dong Thanh, Thuan Thanh, Bac Ninh",
+        "description": "National relic honoring Vietnam’s legendary ancestor; tomb and temple complex by Duong River.",
+        "image": "KinhDuongVuong.png",
+        "opening_hours": "7:00–17:00",
+        "ticket_info": "Free",
+        "accessibility": "Wheelchair accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.1000, 21.0500]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Phu Lang Pottery Village",
+        "category": "Craft Village",
+        "address": "Phu Lang, Que Vo, Bac Ninh",
+        "description": "13th-century ceramic village by Cau River; known for wood-fired red clay pottery.",
+        "image": "PhuLang.png",
+        "opening_hours": "8:00–17:00",
+        "ticket_info": "Free or paid workshop",
+        "accessibility": "Accessible"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [106.2000, 21.1500]
+      }
+    }
+  ]
+}

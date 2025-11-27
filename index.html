@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bac Ninh Connect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;800&family=Noto+Sans+Vietnamese:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                        <a href="index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+                            <img id="i18n-logo" src="Giaodien/logowweb.png" alt="Bắc Ninh" />
+                        </a>
+                    </div>
+                    <ul class="nav-menu" id="navMenu">
+                        <li class="nav-item">
+                            <a href="#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="Giaodien/mapsection.html" class="nav-link" id="i18n-nav-map">Bản Đồ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="Giaodien/Gamehub.html" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="file:///c:/Users/leeka/Documents/0. ER pl/smart blink/Giaodien/Gamehub.html" class="nav-link" id="i18n-nav-memory">Game hub</a></li>
+                                <li><a href="Game/game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
+                                <li><a href="Game/dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
+                                <li><a href="Game/phuthe_vi.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
+                                <li><a href="Game/guessdongho/dongho-game.html" class="nav-link" id="i18n-nav-dongho">Đoán Tranh Đông Hồ</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="lang-switcher">
+                        <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                        </button>
+                        <div class="lang-dropdown" id="langDropdown" role="menu">
+                            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">
+                                <span class="lang-flag">🇻🇳</span>
+                                <span>Tiếng Việt</span>
+                                <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">
+                                <span class="lang-flag">🇬🇧</span>
+                                <span>English</span>
+                                <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <button class="mobile-menu-toggle" id="mobileToggle" aria-label="Menu di động">
+                            <span class="toggle-line"></span>
+                            <span class="toggle-line"></span>
+                            <span class="toggle-line"></span>
+                        </button>
+                    </div>
+                </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="intro" class="hero" style="background-image: url('Giaodien/headerbg.png');">
+            <div class="hero-content">
+                <h1 id="i18n-intro-title" class="hero-title" data-aos="fade-up">Khám Phá Bắc Ninh</h1>
+                <p id="i18n-hero-subtitle" class="hero-subtitle" data-aos="fade-up" data-aos-delay="150">Di sản sống • Văn hóa • Lịch sử</p>
+                <p id="i18n-intro-p1" class="text-muted-foreground" style="max-width: 780px; margin: 0.75rem auto 0;">
+                    Khám phá vùng đất cổ kính nơi lưu giữ tinh hoa văn hóa Việt - từ dân ca Quan họ được UNESCO công nhận đến tranh Đông Hồ tinh xảo và những ngôi chùa nghìn năm tuổi.
+                </p>
+                <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
+                    <a href="#map" id="i18n-hero-btn-map" class="btn-outline">Khám phá bản đồ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Grid -->
+        <section class="features-section bg-heritage-cream">
+            <div class="container" data-aos="fade-up">
+                <div class="features-grid">
+                    <div class="feature-card" data-aos="fade-up">
+                        <div class="feature-icon">🏛️</div>
+                        <div id="i18n-feature-1-title" class="feature-title">Di tích nổi tiếng</div>
+                        <div id="i18n-feature-1-text" class="feature-text">Hơn 10 di tích lịch sử và danh thắng đặc sắc.</div>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="feature-icon">🎵</div>
+                        <div id="i18n-feature-2-title" class="feature-title">Quan họ</div>
+                        <div id="i18n-feature-2-text" class="feature-text">Cội nguồn dân ca Quan họ — Di sản văn hóa phi vật thể.</div>
+                    </div>
+                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="feature-icon">🎨</div>
+                        <div id="i18n-feature-3-title" class="feature-title">Làng nghề</div>
+                        <div id="i18n-feature-3-text" class="feature-text">Tranh Đông Hồ, gốm Phù Lãng và nhiều làng nghề truyền thống.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cultural Highlights -->
+        <section class="cultural-section">
+            <div class="container">
+                <h2 id="i18n-cultural-title" style="text-align:center; color:#2c3e50; font-size:2.2rem; margin-bottom:1.5rem;" data-aos="fade-up">Di Sản Văn Hóa Nổi Bật</h2>
+                <div class="cultural-grid">
+                    <div class="cultural-card" data-aos="zoom-in">
+                        <a href="Giaodien/tranhdongho/dongho-village.html">
+                            <img src="image list png/places png/DongHo.png" alt="Làng tranh Đông Hồ">
+                        </a>
+                        <div class="cultural-overlay">
+                            <h3 id="i18n-cultural-1-title">Tranh Đông Hồ</h3>
+                            <p id="i18n-cultural-1-text">Biểu tượng nghệ thuật dân gian độc đáo.</p>
+                        </div>
+                    </div>
+                    <div class="cultural-card" data-aos="zoom-in" data-aos-delay="100">
+                        <img src="image list png/places png/ButThap.png" alt="Chùa Bút Tháp">
+                        <div class="cultural-overlay">
+                            <h3 id="i18n-cultural-2-title">Chùa Bút Tháp</h3>
+                            <p id="i18n-cultural-2-text">Kiến trúc cổ kính, linh thiêng.</p>
+                        </div>
+                    </div>
+                    <div class="cultural-card" data-aos="zoom-in" data-aos-delay="200">
+                        <img src="image list png/places png/PhatTich.png" alt="Chùa Phật Tích">
+                        <div class="cultural-overlay">
+                            <h3 id="i18n-cultural-3-title">Chùa Phật Tích</h3>
+                            <p id="i18n-cultural-3-text">Tượng Phật cổ nổi tiếng, không gian tĩnh lặng.</p>
+                        </div>
+                    </div>
+                    <div class="cultural-card" data-aos="zoom-in" data-aos-delay="300">
+                        <a href="Giaodien/bacninhfolksong/quan-ho.html">
+                            <img src="image list png/quanho.png" alt="Dân ca Quan họ Bắc Ninh">
+                        </a>
+                        <div class="cultural-overlay">
+                            <h3 id="i18n-cultural-4-title"><a href="Giaodien/bacninhfolksong/quan-ho.html" style="color:inherit; text-decoration:none;">Dân ca Quan họ Bắc Ninh</a></h3>
+                            <p id="i18n-cultural-4-text">Làn điệu hát đối hài hòa, được UNESCO vinh danh.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section class="video-section">
+            <div class="container">
+                <h2 id="i18n-video-title" style="text-align:center; color:#2c3e50; font-size:2.2rem; margin-bottom:1rem;" data-aos="fade-up">Bắc Ninh qua góc nhìn</h2>
+                <p id="i18n-video-subtitle" class="section-subtitle" style="margin-bottom:1.5rem;" data-aos="fade-up" data-aos-delay="150">Khám phá văn hóa Quan họ và di sản sống</p>
+                <div class="video-container" data-aos="fade-up" data-aos-delay="300">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/OTDoZx9qyk0" title="Giới thiệu Bắc Ninh" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2 id="i18n-cta-title" style="font-size:2rem; font-weight:800;" data-aos="fade-up">Sẵn sàng khám phá Bắc Ninh?</h2>
+                <p id="i18n-cta-subtitle" class="text-muted-foreground" style="margin-top:0.5rem;" data-aos="fade-up" data-aos-delay="150">Xem bản đồ tương tác hoặc trải nghiệm trò chơi văn hóa.</p>
+                <div class="cta-actions" data-aos="fade-up" data-aos-delay="300">
+                    <a href="Giaodien/mapsection.html" id="i18n-cta-btn-map" class="btn-outline">Mở bản đồ</a>
+                    <a href="Game/game.html" id="i18n-cta-btn-game" class="btn-ghost">Trò chơi</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Link to Map Section -->
+        <section id="map-link" class="map-link-section text-center py-5">
+            <div class="container">
+                <h2 data-aos="fade-up">Explore Our Map and Locations</h2>
+                <p class="section-subtitle" data-aos="fade-up" data-aos-delay="150">Click below to view the interactive map and a list of all locations.</p>
+                <a href="Giaodien/mapsection.html" class="btn btn-primary btn-lg mt-4" data-aos="fade-up" data-aos-delay="300">View Map and Locations</a>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="script.js?v=20251127"></script>
+    
+    <footer>
+                <div class="container footer-container">
+                    <p id="i18n-footer">© 2024 Discover Bac Ninh. Bac Ninh provincial tourism information website.</p>
+                    <div class="social-icons">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 5.02 3.68 9.18 8.48 9.88v-6.99H8.9v-2.89h1.58v-2.2c0-1.56.93-2.42 2.35-2.42.68 0 1.39.12 1.39.12v1.53h-.78c-.77 0-1.01.48-1.01.97v1.99h1.72l-.27 2.89h-1.45v6.99C18.32 21.18 22 17.02 22 12z"></path></svg>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" aria-label="YouTube" class="gold">
+                            <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1.3-1.4-2.3-2.7-2.6C18.6 3 12 3 12 3s-6.6 0-8.8.6C1.9 4 1 5 0.8 6.3 0.2 8.5 0.2 12 0.2 12s0 3.5.6 5.7c.3 1.3 1.4 2.3 2.7 2.6 2.2.6 8.8.6 8.8.6s6.6 0 8.8-.6c1.3-.3 2.4-1.3 2.7-2.6.6-2.2.6-5.7.6-5.7s0-3.5-.6-5.7zM9.8 15.5V8.5l6.4 3.5-6.4 3.5z"></path></svg>
+                        </a>
+                        <a href="mailto:example@gmail.com" aria-label="Gmail">
+                            <svg viewBox="0 0 24 24"><path d="M12 13.5L3 7v10h18V7l-9 6.5zM21 5H3l9 6.5L21 5z"></path></svg>
+                        </a>
+                        <a href="https://tiktok.com" target="_blank" aria-label="TikTok">
+                            <svg viewBox="0 0 24 24"><path d="M17 7.5c1.5 1.1 3.3 1.7 5 1.7V12c-2.3 0-4.5-.7-6.3-2v5.1c0 3.4-2.7 6.1-6.1 6.1S3.5 18.5 3.5 15s2.7-6.1 6.1-6.1c.4 0 .8 0 1.2.1v3.3c-.4-.2-.8-.3-1.2-.3-1.6 0-2.9 1.3-2.9 2.9s1.3 2.9 2.9 2.9 2.9-1.3 2.9-2.9V3h3V7.5z"></path></svg>
+                        </a>
+                    </div>
+                    <p class="text-muted text-sm" style="margin-top: 2rem; font-size: 0.85rem; color: #95a5a6; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.6;" id="i18n-copyright">Images used on this website are collected from various public sources and curated for educational and cultural preservation purposes.</p>
+                </div>
+            </footer>
+    </body>
+</html>

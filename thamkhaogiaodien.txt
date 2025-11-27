@@ -1,0 +1,92 @@
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import templeImage from "@/assets/temple-interior.jpg";
+import craftsImage from "@/assets/crafts-workshop.jpg";
+import heroImage from "@/assets/hero-bac-ninh.jpg";
+
+const Gallery = () => {
+  const galleryItems = [
+    {
+      image: templeImage,
+      title: "Đền Đô Temple",
+      category: "Sacred Sites",
+      description: "Ancient temple complex dating back to the Ly Dynasty",
+    },
+    {
+      image: craftsImage,
+      title: "Dong Ho Paintings",
+      category: "Traditional Crafts",
+      description: "Artisans creating iconic Vietnamese folk art",
+    },
+    {
+      image: heroImage,
+      title: "Quan Ho Folk Songs",
+      category: "Intangible Heritage",
+      description: "UNESCO-recognized traditional singing performances",
+    },
+    {
+      image: templeImage,
+      title: "Dau Pagoda",
+      category: "Sacred Sites",
+      description: "One of the oldest Buddhist temples in Vietnam",
+    },
+    {
+      image: craftsImage,
+      title: "Traditional Woodblock Carving",
+      category: "Traditional Crafts",
+      description: "Master craftsmen preserving ancient techniques",
+    },
+    {
+      image: heroImage,
+      title: "Lim Festival",
+      category: "Cultural Events",
+      description: "Annual celebration of Quan Ho folk singing",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      <section className="py-16 bg-gradient-cultural">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">
+              Cultural Gallery
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Discover the rich heritage of Bac Ninh through images of temples, crafts, festivals, and community life
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {galleryItems.map((item, index) => (
+              <Card key={index} className="overflow-hidden hover:shadow-cultural transition-all duration-300 hover:-translate-y-1">
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <Badge variant="secondary" className="mb-3">
+                    {item.category}
+                  </Badge>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground">{item.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </div>
+  );
+};
+
+export default Gallery;
