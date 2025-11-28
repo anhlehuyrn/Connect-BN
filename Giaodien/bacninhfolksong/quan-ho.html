@@ -42,39 +42,8 @@
     }
   </style>
 </head>
-<body class="qh-page">
-  <header>
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <a href="../../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
-            <img id="i18n-logo" src="../logowweb.png" alt="Bắc Ninh" />
-          </a>
-        </div>
-        <ul class="nav-menu">
-          <li class="nav-item"><a href="../../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a></li>
-          <li class="nav-item"><a href="../../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a></li>
-          <li class="nav-item"><a href="../../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a></li>
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link" id="i18n-nav-game">Trò chơi</a>
-            <ul class="dropdown-menu">
-              <li><a href="../../Game/game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
-              <li><a href="../../Game/dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
-            </ul>
-          </li>
-        </ul>
-        <div class="lang-switcher">
-          <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </button>
-          <div class="lang-dropdown" id="langDropdown" role="menu">
-            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0"><span class="lang-flag">🇬🇧</span><span>English</span><svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+<body>
+  <div id="global-header-placeholder"></div>
 
   <section class="hero-qh" style="margin-top:80px;">
     <div class="hero-content-qh">
@@ -180,47 +149,6 @@
     </p>
   </footer>
 
-  <script>
-    const I18N = {
-      vi: { logo: 'Bắc Ninh', nav_intro: 'Giới Thiệu', nav_map: 'Bản Đồ', nav_locations: 'Địa Điểm', nav_game: 'Trò chơi', nav_memory: 'Ghép hình', nav_printing: 'In tranh' },
-      en: { logo: 'Bac Ninh', nav_intro: 'Introduction', nav_map: 'Map', nav_locations: 'Locations', nav_game: 'Game', nav_memory: 'Memory Game', nav_printing: 'Printing Game' }
-    };
-    let currentLanguage = localStorage.getItem('language') || 'vi';
-    function el(id){ return document.getElementById(id); }
-    function applyLanguage(lang){
-      currentLanguage = lang; localStorage.setItem('language', lang); document.documentElement.lang = lang; const t = I18N[lang];
-      const logoImg = el('i18n-logo'); if (logoImg && logoImg.tagName === 'IMG') { logoImg.setAttribute('alt', t.logo); }
-      el('i18n-nav-intro')?.replaceChildren(document.createTextNode(t.nav_intro));
-      el('i18n-nav-map')?.replaceChildren(document.createTextNode(t.nav_map));
-      el('i18n-nav-locations')?.replaceChildren(document.createTextNode(t.nav_locations));
-      el('i18n-nav-game')?.replaceChildren(document.createTextNode(t.nav_game));
-      el('i18n-nav-memory')?.replaceChildren(document.createTextNode(t.nav_memory));
-      el('i18n-nav-printing')?.replaceChildren(document.createTextNode(t.nav_printing));
-      updateActiveLang(lang);
-    }
-    function updateActiveLang(lang){
-      document.querySelectorAll('.lang-option').forEach(opt => { opt.classList.toggle('active', opt.dataset.lang === lang); });
-      const globeBtn = el('globeBtn'); if (globeBtn) { globeBtn.setAttribute('aria-label', lang === 'vi' ? 'Đổi ngôn ngữ' : 'Change language'); }
-    }
-    const globeBtn = el('globeBtn'); const langDropdown = el('langDropdown'); const langOptions = document.querySelectorAll('.lang-option');
-    function openLangDropdown(){ langDropdown?.classList.add('show'); globeBtn?.setAttribute('aria-expanded', 'true'); }
-    function closeLangDropdown(){ langDropdown?.classList.remove('show'); globeBtn?.setAttribute('aria-expanded', 'false'); }
-    globeBtn?.addEventListener('click', (e)=>{ e.stopPropagation(); const isOpen = langDropdown.classList.contains('show'); if (isOpen) { closeLangDropdown(); } else { openLangDropdown(); } });
-    document.addEventListener('click', (e)=>{ if (!e.target.closest('.lang-switcher')) { closeLangDropdown(); } });
-    langOptions.forEach(option => { option.addEventListener('click', ()=>{ const lang = option.dataset.lang; if (currentLanguage === lang) return; applyLanguage(lang); closeLangDropdown(); }); option.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); option.click(); } }); });
-    applyLanguage(currentLanguage);
-
-    const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -100px 0px' };
-    const observer = new IntersectionObserver((entries)=>{ entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } }); }, observerOptions);
-    document.querySelectorAll('.section').forEach(section => { observer.observe(section); });
-
-    const navDropdown = document.querySelector('.nav-item.dropdown');
-    const navGameTrigger = navDropdown ? navDropdown.querySelector('#i18n-nav-game') : null;
-    const navDropdownMenu = navDropdown ? navDropdown.querySelector('.dropdown-menu') : null;
-    if (navGameTrigger && navDropdownMenu) {
-      navGameTrigger.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); const isOpen = navDropdownMenu.classList.contains('show'); if (isOpen) { navDropdownMenu.classList.remove('show'); } else { navDropdownMenu.classList.add('show'); } });
-      document.addEventListener('click', (e) => { if (!e.target.closest('.nav-item.dropdown')) { navDropdownMenu.classList.remove('show'); } });
-    }
-  </script>
+  <script src="../../script.js"></script>
 </body>
 </html>

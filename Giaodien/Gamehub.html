@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trò chơi Bắc Ninh – Game Hub</title>
+  <title id="i18n-gamehub-title">Trò chơi Bắc Ninh – Game Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -25,80 +25,104 @@
   </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <a href="../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
-            <img id="i18n-logo" src="logowweb.png" alt="Bắc Ninh" />
-          </a>
-        </div>
-        <ul class="nav-menu">
-          <li class="nav-item"><a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a></li>
-          <li class="nav-item"><a href="../index.html#map" class="nav-link" id="i18n-nav-map">Bản Đồ</a></li>
-          <li class="nav-item"><a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a></li>
-          <li class="nav-item dropdown">
-            <a href="Gamehub.html" class="nav-link" id="i18n-nav-game">Trò chơi</a>
-            <ul class="dropdown-menu">
-              <li><a href="../Game/game.html" class="nav-link" id="i18n-nav-memory">Ghép hình</a></li>
-              <li><a href="../Game/dongho-printing.html" class="nav-link" id="i18n-nav-printing">In tranh</a></li>
-              <li><a href="../Game/phuthe_vi.html" class="nav-link" id="i18n-nav-phuthe">Bánh Phu Thê</a></li>
-              <li><a href="../Game/guessdongho/dongho-game.html" class="nav-link" id="i18n-nav-dongho">Đoán Tranh Đông Hồ</a></li>
-                <li><a href="Gamehub.html" class="nav-link" id="i18n-nav-hub">Game Hub</a></li>
-            </ul>
-          </li>
-        </ul>
-        <div class="lang-switcher">
-          <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-          </button>
-          <div class="lang-dropdown" id="langDropdown" role="menu">
-            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">🇻🇳 Tiếng Việt</div>
-            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">🇬🇧 English</div>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </header>
+<header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                        <a href="../index.html" class="nav-logo-link" aria-label="Bac Ninh Home">
+                            <img id="i18n-logo" src="logowweb.png" alt="Bắc Ninh" />
+                        </a>
+                    </div>
+                    <ul class="nav-menu" id="navMenu">
+                        <li class="nav-item">
+                            <a href="../index.html#intro" class="nav-link" id="i18n-nav-intro">Giới Thiệu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="mapsection.html" class="nav-link" id="i18n-nav-map">Bản Đồ</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../index.html#locations" class="nav-link" id="i18n-nav-locations">Địa Điểm</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="Gamehub.html" class="nav-link" id="i18n-nav-game">Trò chơi</a>
+                            
+                        </li>
+                    </ul>
+                    <div class="lang-switcher">
+                        <button class="globe-icon-btn" id="globeBtn" aria-label="Change language" aria-haspopup="true" aria-expanded="false">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                            </svg>
+                        </button>
+                        <div class="lang-dropdown" id="langDropdown" role="menu">
+                            <div class="lang-option" data-lang="vi" role="menuitem" tabindex="0">
+                                <span class="lang-flag">🇻🇳</span>
+                                <span>Tiếng Việt</span>
+                                <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="lang-option" data-lang="en" role="menuitem" tabindex="0">
+                                <span class="lang-flag">🇬🇧</span>
+                                <span>English</span>
+                                <svg class="lang-checkmark" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <button class="mobile-menu-toggle" id="mobileToggle" aria-label="Menu di động">
+                            <span class="toggle-line"></span>
+                            <span class="toggle-line"></span>
+                            <span class="toggle-line"></span>
+                        </button>
+                    </div>
+                </div>
+        </nav>
+    </header>
 
   <main>
     <div class="grid">
       <!-- Game 1 -->
       <div class="card">
         <img src="game backg/banhphuthebg.png" alt="Bánh Phu Thê game">
-        <h2>Bánh Phu Thê</h2>
-        <p>Trò chơi làm bánh truyền thống Bắc Ninh.</p>
-        <a href="http://localhost:8001/Game/phuthe_vi.html">Chơi ngay</a>
+        <h2 id="i18n-gamehub-phuthe-title">Bánh Phu Thê</h2>
+        <p id="i18n-gamehub-phuthe-desc">Trò chơi làm bánh truyền thống Bắc Ninh.</p>
+        <a href="http://localhost:8001/Game/phuthe_vi.html" id="i18n-gamehub-play-now-1">Chơi ngay</a>
       </div>
 
       <!-- Game 2 -->
       <div class="card">
         <img src="game backg/guesdonghobg.png" alt="Đông Hồ Quiz">
-        <h2>Đông Hồ Quiz</h2>
-        <p>Đoán tranh Đông Hồ và biểu tượng văn hóa quốc tế.</p>
-        <a href="http://localhost:8001/Game/guessdongho/dongho-game.html">Chơi ngay</a>
+        <h2 id="i18n-gamehub-dongho-quiz-title">Đoán Tranh Đông Hồ</h2>
+        <p id="i18n-gamehub-dongho-quiz-desc">Đoán tranh Đông Hồ và biểu tượng văn hóa quốc tế.</p>
+        <a href="http://localhost:8001/Game/guessdongho/dongho-game.html" id="i18n-gamehub-play-now-2">Chơi ngay</a>
       </div>
 
       <!-- Game 3 -->
       <div class="card">
         <img src="game backg/ghephinhbg.png" alt="Ghép hình">
-        <h2>Ghép hình</h2>
-        <p>Trò chơi trí nhớ với hình ảnh Bắc Ninh.</p>
-        <a href="http://localhost:8001/Game/game.html">Chơi ngay</a>
+        <h2 id="i18n-gamehub-memory-game-title">Ghép hình</h2>
+        <p id="i18n-gamehub-memory-game-desc">Trò chơi trí nhớ với hình ảnh Bắc Ninh.</p>
+        <a href="http://localhost:8001/Game/game.html" id="i18n-gamehub-play-now-3">Chơi ngay</a>
       </div>
 
       <!-- Game 4 -->
       <div class="card">
         <img src="game backg/intranhbg.png" alt="In tranh">
-        <h2>In tranh</h2>
-        <p>Trò chơi in tranh Đông Hồ.</p>
-        <a href="http://localhost:8001/Game/dongho-printing.html">Chơi ngay</a>
+        <h2 id="i18n-gamehub-printing-game-title">In tranh</h2>
+        <p id="i18n-gamehub-printing-game-desc">Trò chơi in tranh Đông Hồ.</p>
+        <a href="http://localhost:8001/Game/intranh/inchontranh.html" id="i18n-gamehub-play-now-4">Chơi ngay</a>
       </div>
     </div>
   </main>
-
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="../script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      applyLanguage(currentLanguage);
+    });
+  </script>
 </body>
 </html>

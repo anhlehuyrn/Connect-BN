@@ -1,4 +1,10 @@
-#python -m http.server 8000 
-#http://localhost:8000/Giaodien/tranhdongho/dongho-village.html
-#http://localhost:8001/index.html#intro
 print("Hello World!")
+
+"""
+python -m http.server 8000 
+http://localhost:8001/index.html#intro
+
+git add .
+git commit -m "Update code"
+git push
+"""

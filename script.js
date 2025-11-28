@@ -10,21 +10,39 @@ let currentCategory = 'all';
 // Initialize once when page loads
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Initializing map...');
-  applyLanguage(currentLanguage);
-  loadGeoJSONData().then(() => {
-    document.addEventListener('DOMContentLoaded', function() {
-  initializeMap();
-});
-    renderLocationsList();
-    setupEventListeners();
-    setupCardObserver(); // scroll animations
-    AOS.init();
+  loadHeader().then(() => {
+    applyLanguage(currentLanguage);
+    loadGeoJSONData().then(() => {
+      if (document.getElementById('map-container')) {
+        initializeMap();
+      }
+      renderLocationsList();
+      setupEventListeners();
+      setupCardObserver(); // scroll animations
+      AOS.init();
+    });
   });
 });
 
+async function loadHeader() {
+  const headerPlaceholder = document.getElementById('global-header-placeholder');
+  if (headerPlaceholder) {
+    try {
+      const response = await fetch('/header.html');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const headerHtml = await response.text();
+      headerPlaceholder.innerHTML = headerHtml;
+    } catch (error) {
+      console.error('Error loading header:', error);
+    }
+  }
+}
+
 // Load GeoJSON data from file
 function getPlacesUrl(lang) {
-  return lang === 'vi' ? '../places.vi.geojson' : '../places.en.geojson';
+  return lang === 'vi' ? '/places.vi.geojson' : '/places.en.geojson';
 }
 
 async function loadGeoJSONData() {
@@ -62,7 +80,7 @@ async function loadGeoJSONData() {
   } catch (error) {
     console.warn('Primary GeoJSON load failed, trying fallback places.geojson:', error);
     try {
-      const resp2 = await fetch('../places.geojson');
+      const resp2 = await fetch('/places.geojson');
       if (!resp2.ok) throw new Error(`HTTP error! status: ${resp2.status}`);
       const data2 = await resp2.json();
       console.log('Fallback GeoJSON data loaded:', data2);
@@ -131,7 +149,7 @@ const I18N = {
     filter_museum: 'Bảo Tàng',
     filter_nature: 'Thiên Nhiên & Giải Trí',
     locations_title: 'Danh Sách Địa Điểm',
-    footer: '© 2024 Khám Phá Bắc Ninh. Website thông tin du lịch tỉnh Bắc Ninh.',
+    footer: '© 2025 Connect Bac Ninh. Website thông tin du lịch tỉnh Bắc Ninh.',
     lbl_address: '📍 Địa chỉ:',
     lbl_hours: '🕐 Giờ mở cửa:',
     lbl_ticket: '🎫 Vé vào cửa:',
@@ -157,7 +175,32 @@ const I18N = {
     cta_subtitle: 'Xem bản đồ tương tác hoặc trải nghiệm trò chơi văn hóa.',
     cta_btn_map: 'Mở bản đồ',
     cta_btn_game: 'Trò chơi',
-    copyright: 'Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa.'
+    copyright: 'Hình ảnh sử dụng trên trang web này được thu thập từ các nguồn công khai khác nhau và được sưu tầm cho mục đích giáo dục và bảo tồn văn hóa.',
+    gamehub: {
+      title: 'Trò chơi Bắc Ninh  – Game Hub',
+      phuthe_title: 'Bánh Phu Thê',
+      phuthe_desc: 'Trò chơi làm bánh truyền thống Bắc Ninh.',
+      play_now: 'Chơi ngay',
+      dongho_quiz_title: 'Đoán Tranh Đông Hồ',
+      dongho_quiz_desc: 'Đoán tranh Đông Hồ và biểu tượng văn hóa quốc tế.',
+      memory_game_title: 'Ghép hình',
+      memory_game_desc: 'Trò chơi trí nhớ với hình ảnh Bắc Ninh.',
+      printing_game_title: 'In tranh',
+      printing_game_desc: 'Trò chơi in tranh Đông Hồ.'
+    },
+    red_layer: 'Lớp đỏ',
+    yellow_layer: 'Lớp vàng',
+    blue_layer: 'Lớp xanh',
+    black_layer: 'Lớp đen',
+    selected: 'Đã chọn',
+    click_to_print: 'Nhấp để in',
+    all_complete: 'Hoàn thành tất cả các lớp!',
+    complete_layer: 'Hoàn thành lớp',
+    step: 'Bước',
+    of: 'của',
+    welcome_msg: 'Chào mừng bạn đến với trò chơi In Tranh Đông Hồ!',
+    congrats: 'Chúc mừng!',
+    complete_msg: 'Bạn đã hoàn thành bức tranh Đông Hồ của mình!'
   },
   en: {
     logo: 'Bac Ninh',
@@ -182,14 +225,14 @@ const I18N = {
     map_subtitle: 'Explore famous tourist attractions on the interactive map',
     show_all: 'Show All',
     filter_all: 'All Categories',
-    filter_religious: 'Religious Sites',
-    filter_historical: 'Historical Sites',
-    filter_cultural: 'Cultural Sites',
-    filter_craft: 'Craft Villages',
-    filter_museum: 'Museums',
-    filter_nature: 'Nature & Entertainment',
+    filter_religious: 'Religious Site',
+    filter_historical: 'Historical Site',
+    filter_cultural: 'Cultural Site',
+    filter_craft: 'Craft Village',
+    filter_museum: 'Museum',
+    filter_nature: 'Nature & Leisure',
     locations_title: 'List of Locations',
-    footer: '© 2024 Discover Bac Ninh. Bac Ninh provincial tourism information website.',
+    footer: '© 2025 Connect Bac Ninh. Bac Ninh provincial tourism information website.',
     lbl_address: '📍 Address:',
     lbl_hours: '🕐 Opening hours:',
     lbl_ticket: '🎫 Tickets:',
@@ -207,7 +250,7 @@ const I18N = {
       { title: 'Dong Ho Paintings', text: 'An iconic folk art tradition.' },
       { title: 'But Thap Pagoda', text: 'Ancient architecture, a sacred site.' },
       { title: 'Phat Tich Pagoda', text: 'Famous ancient Buddha statue, serene ambiance.' },
-      { title: 'Bac Ninh Folk Songs', text: 'Timeless harmonized duet singing, UNESCO honored.' }
+      { title: 'Quan Ho Folk Songs of Bac Ninh', text: 'Timeless harmonized duet singing, UNESCO honored.' }
     ],
     video_title: 'Bac Ninh in Focus',
     video_subtitle: 'Explore Quan ho culture and living heritage',
@@ -215,7 +258,32 @@ const I18N = {
     cta_subtitle: 'Open the interactive map or try the cultural game.',
     cta_btn_map: 'Open map',
     cta_btn_game: 'Game',
-    copyright: 'Images used on this website are collected from various public sources and curated for educational and cultural preservation purposes.'
+    copyright: 'Images used on this website are collected from various public sources and curated for educational and cultural preservation purposes.',
+    gamehub: {
+      title: 'Bac Ninh Games – Game Hub',
+      phuthe_title: 'Phu The Cake',
+      phuthe_desc: 'Traditional Bac Ninh cake making game.',
+      play_now: 'Play Now',
+      dongho_quiz_title: 'Guess Dong Ho Painting',
+      dongho_quiz_desc: 'Guess Dong Ho paintings and international cultural symbols.',
+      memory_game_title: 'Memory Game',
+      memory_game_desc: 'Memory game with Bac Ninh images.',
+      printing_game_title: 'Printing Game',
+      printing_game_desc: 'Dong Ho painting printing game.'
+    },
+    red_layer: 'Red Layer',
+    yellow_layer: 'Yellow Layer',
+    blue_layer: 'Blue Layer',
+    black_layer: 'Black Layer',
+    selected: 'Selected',
+    click_to_print: 'Click to print',
+    all_complete: 'All layers complete!',
+    complete_layer: 'Completed layer',
+    step: 'Step',
+    of: 'of',
+    welcome_msg: 'Welcome to the Dong Ho Printing Game!',
+    congrats: 'Congratulations!',
+    complete_msg: 'You have completed your Dong Ho painting!'
   }
 };
 
@@ -321,7 +389,8 @@ function initializeMap() {
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
-      maxZoom: 19
+      maxZoom: 19,
+      crossOrigin: 'anonymous'
     }).addTo(map);
 
     console.log('Map initialized successfully');
@@ -345,7 +414,9 @@ function addMarkersToMap() {
 
     const filteredLocations = currentCategory === 'all'
       ? locations
-      : locations.filter(loc => loc.category === currentCategory);
+      : currentCategory === 'Nature & Leisure'
+        ? locations.filter(loc => loc.category === 'Nature Reserve' || loc.category === 'Ecotourism Site')
+        : locations.filter(loc => loc.category === currentCategory);
 
     console.log('Adding markers for', filteredLocations.length, 'locations');
 
@@ -458,7 +529,9 @@ function renderLocationsList() {
 
     const filteredLocations = currentCategory === 'all'
       ? locations
-      : locations.filter(loc => loc.category === currentCategory);
+      : currentCategory === 'Nature & Leisure'
+        ? locations.filter(loc => loc.category === 'Nature Reserve' || loc.category === 'Ecotourism Site')
+        : locations.filter(loc => loc.category === currentCategory);
 
     grid.innerHTML = filteredLocations.map(location => {
       const imagePath = location.image ? encodeURI(`../image list png/places png/${location.image}`) : '';
@@ -507,16 +580,7 @@ function setupEventListeners() {
     const mapLink = document.getElementById('i18n-nav-map');
     const gameLink = document.getElementById('i18n-nav-game');
 
-    if (mapLink) {
-      const mapUrl = 'file:///c:/Users/leeka/Documents/0. ER pl/smart blink/Giaodien/mapsection.html';
-      mapLink.setAttribute('href', mapUrl);
-      mapLink.addEventListener('click', function(e) { e.preventDefault(); window.location.href = mapUrl; });
-    }
-    if (gameLink) {
-      const gameUrl = 'file:///c:/Users/leeka/Documents/0. ER pl/smart blink/Giaodien/Gamehub.html';
-      gameLink.setAttribute('href', gameUrl);
-      gameLink.addEventListener('click', function(e) { e.preventDefault(); window.location.href = gameUrl; });
-    }
+
 
     if (navbarEl) {
       window.addEventListener('scroll', () => {
