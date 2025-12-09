@@ -1,0 +1,21 @@
+ID,Image_Region,Lexical_Entry_VN,Lexical_Entry_EN,Visual_Denotation,Ontological_Concept,Sentiment_Score,Cultural_Category
+DH_001,tDHimg/lon_dan.jpg,Lợn đàn,Yin-Yang Pig,"Lợn mẹ xoáy âm dương, 5 lợn con quây quần","Prosperity, Abundance",1,Worship
+DH_002,tDHimg/dam_cuoi_chuot.jpg,Đám cưới chuột,Rat’s Wedding,"Chuột dâng cá cho mèo, đoàn rước dâu","Corruption, Satire, Survival",-0.5,Satire
+DH_003,tDHimg/ga_mai_con.jpg,Gà mái và gà con,Hen and Chicks,Gà mẹ dẫn đàn gà con,"Fertility, Care, Family",1,Daily
+DH_004,tDHimg/ga_trong_hoa_hong.jpg,Gà trống hoa hồng,Rooster with Rose,Gà trống đứng cạnh hoa hồng,"Pride, Beauty, Vitality",0.8,Worship
+DH_005,tDHimg/tranh_hung_dua.jpg,Hứng dừa,Coconut Harvest,Người hứng quả dừa rơi từ trên cao,"Luck, Joy, Celebration",0.7,Daily
+DH_006,tDHimg/tranh_vinh_quy.jpg,Vinh quy bái tổ,Returning in Glory,Quan trạng rước kiệu về làng,"Honor, Filial Piety",1,Worship
+DH_007,tDHimg/tranh_phuc_loc.jpg,Phúc Lộc Song Toàn,Fortune and Prosperity,"Hai ông Phúc và Lộc ngồi cạnh nhau, biểu tượng cho phúc và lộc song toàn","Blessings, Wealth, Harmony",1,Worship
+DH_008,tDHimg/tranh_ga_gay_nam_canh.jpg,Gà gáy năm canh,Rooster Crows Five Times,Gà trống gáy vang trong năm canh,"Time, Awakening, Renewal",0.5,Daily
+DH_009,tDHimg/tranh_thay_co.jpg,Thầy đồ cóc,The Toad Teacher,Cóc ngồi dạy học trò,"Wisdom, Satire, Learning",0,Satire
+DH_010,tDHimg/tranh_tu_quy.jpg,Tứ quý hạc,Four Seasons with Cranes,Hạc đứng trong cảnh bốn mùa,"Longevity, Harmony, Nature",1,Worship
+DH_011,tDHimg/tranh_em_be.jpg,Em bé ôm gà,Child with Chicken,Bé ôm gà con trong lòng,"Innocence, Family, Care",0.9,Daily
+DH_012,tDHimg/tranh_trau_sao.jpg,Trâu sao,Buffalo with Star,Trâu đứng dưới sao sáng,"Strength, Agriculture, Cosmic Order",0.8,Worship
+DH_013,tDHimg/tranh_trau_thoi_sao.jpg,Mục đồng thổi sáo,Buffalo Herd Boy Playing Flute,Bé thổi sáo trên lưng trâu,"Harmony, Leisure, Rural Life",1,Daily
+DH_014,tDHimg/tranh_thien_ha_thai_binh.jpg,Thiên hạ thái bình,World Peace,"Cảnh dân làng vui vẻ, hòa thuận","Peace, Harmony, Prosperity",1,Worship
+DH_015,tDHimg/tranh_vinh_hoa.jpg,Vinh hoa,Glory,Bé gái cầm gà trống,"Beauty, Status, Prosperity",0.7,Worship
+DH_016,tDHimg/tranh_phu_quy.jpg,Phú quý,Wealth,Bé trai cầm cá chép,"Wealth, Abundance",0.7,Worship
+DH_017,tDHimg/tranh_danh_gian.jpg,Đánh ghen,Jealousy Satire,"Hai người phụ nữ cãi nhau, đánh ghen","Satire, Social Commentary",-0.8,Satire
+DH_018,img/choi_ca.jpg,Chơi cá,Playing with Fish,"Trẻ em cầm cá chép, nô đùa vui vẻ","Innocence, Wealth, Joy",0.8,Daily
+DH_019,img/hai_ba_trung.jpg,Hai Bà Trưng,Trung Sisters,"Hai Bà Trưng cưỡi voi, dẫn quân khởi nghĩa chống giặc ngoại xâm","Resistance, Patriotism, Heroism",1,Worship / History
+DH_020,tDHimg/tranh_danh_quan.jpg,Đánh quân,Fighting Enemy,Quân lính giao chiến,"Resistance, Survival, Patriotism",-0.3,Satire
