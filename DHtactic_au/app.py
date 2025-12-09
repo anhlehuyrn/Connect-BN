@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from PIL import Image, ImageDraw, ImageFont
+from streamlit_image_coordinates import streamlit_image_coordinates
 
 # --- CẤU HÌNH TRANG WEB ---
 st.set_page_config(page_title="Dong Ho Tactile Audio", page_icon="🎨", layout="wide")
@@ -94,60 +95,69 @@ with tab2:
         st.warning(f"⚠️ Chưa load được dữ liệu: {e}")
         st.info("Hãy upload file 'data_1.xlsx - Sheet1.csv' lên cùng thư mục với app.py")
 
-# --- TAB 3: MÔ PHỎNG (Khoe tính năng AI Vision) ---
+# --- CẬP NHẬT TAB 3: TƯƠNG TÁC CHẠM THẬT ---
 with tab3:
-    st.header("Digital Twin Simulation with AI Vision")
-    
-    col_sim_1, col_sim_2 = st.columns([1, 2])
-    
+    st.header("👆 Interactive Tactile Interface")
+    st.write("Hãy click trực tiếp vào các nhân vật trong tranh để xem AI phân tích.")
+
+    col_sim_1, col_sim_2 = st.columns([2, 1])
+
+    # Đường dẫn ảnh
+    img_path = "tDHimg/dam_cuoi_chuot.jpg"  # Đảm bảo đường dẫn đúng
+
     with col_sim_1:
-        st.subheader("🎮 Control Panel")
-        
-        # Nút gạt bật tắt chế độ AI
-        ai_mode = st.checkbox("👁️ Activate AI Vision (Object Detection)", value=True)
-        st.caption("*Mô phỏng lớp phân tích Computer Vision (YOLO/ResNet)*")
-        
-        st.markdown("---")
-        
-        # Chọn vùng chạm (Dùng Radio button nhìn sẽ trực quan hơn Selectbox)
-        option = st.radio(
-            "📍 Select Touch Point (Chọn điểm chạm):",
-            ("None", "Con Mèo (The Cat)", "Con Chuột đi đầu (Leading Rat)", "Kèn Trống (Instruments)")
-        )
-        
-        st.markdown("---")
-        
-        # Hiển thị kết quả phân tích
-        if option != "None":
-            st.success(f"Detected Interaction: **{option}**")
-            
-            # Logic giả lập AI phản hồi
-            if option == "Con Mèo (The Cat)":
-                st.audio("https://www.soundjay.com/nature/sounds/cat-meow-01.mp3") 
-                st.markdown("> **AI Description:** *Đây là con Mèo già, đại diện cho giai cấp thống trị tham lam. Tay nó đang nhận hối lộ.*")
-                # Hiển thị dạng JSON để khoe cấu trúc dữ liệu
-                st.json({"Concept": "Corruption", "Confidence": 0.98, "Region_ID": "box_01", "OntoLex": "Cat_Official"})
-            
-            elif option == "Con Chuột đi đầu (Leading Rat)":
-                st.markdown("> **AI Description:** *Chú chuột dâng cá, thể hiện sự khúm núm đút lót để được yên thân.*")
-                st.json({"Concept": "Bribery/Survival", "Confidence": 0.95, "Region_ID": "box_02", "OntoLex": "Rat_Tribute"})
-                
-            elif option == "Kèn Trống (Instruments)":
-                st.markdown("> **AI Description:** *Tiếng kèn đám ma nhưng lại thổi trong đám cưới, thể hiện sự bi hài và châm biếm.*")
-                st.json({"Concept": "Satire", "Confidence": 0.92, "Region_ID": "box_03", "OntoLex": "Irony_Music"})
+        # 1. Định nghĩa "Bản đồ tọa độ" (Bounding Boxes)
+        # Đây là phần "Trí tuệ" của AI: AI (YOLO) đã quét và cho ta biết vị trí các con vật.
+        # Cấu trúc: [x_min, y_min, x_max, y_max]
+        # Lưu ý: Bạn cần căn chỉnh số này cho khớp với ảnh thật của bạn.
+        # Mẹo: Click thử lên ảnh, web sẽ hiện tọa độ X, Y để bạn điền vào đây.
+        ai_boxes = {
+            "Con Mèo (The Cat)": [400, 50, 550, 250],   
+            "Chuột đi đầu (Leading Rat)": [280, 150, 380, 250],
+            "Kèn Trống (Instruments)": [50, 180, 200, 300],
+            "Con Cá (The Fish)": [300, 180, 350, 220] # Ví dụ thêm con cá
+        }
+
+        # 2. Hiển thị ảnh và Bắt sự kiện Click
+        # Biến 'value' sẽ trả về tọa độ {'x': 123, 'y': 456} khi người dùng click
+        value = streamlit_image_coordinates(img_path, key="pil")
 
     with col_sim_2:
-        st.subheader("🖼️ Real-time Interface")
-        
-        if os.path.exists(img_file_path):
-            if ai_mode:
-                # Nếu bật AI Mode thì gọi hàm vẽ khung
-                # Truyền active_box (option) vào để tô đậm vùng đang chọn
-                processed_img = visualize_ai_analysis(img_file_path, active_box=option)
-                if processed_img:
-                    st.image(processed_img, caption="Computer Vision Layer (Simulation)", use_column_width=True)
+        st.subheader("🧠 AI Analysis Result")
+
+        # 3. Xử lý Logic: Kiểm tra xem Click vào đâu?
+        if value:
+            click_x = value['x']
+            click_y = value['y']
+            
+            # Biến kiểm tra xem có click trúng con nào không
+            found_object = None 
+
+            # Duyệt qua danh sách các hộp (boxes) để xem click có nằm trong đó không
+            for name, coords in ai_boxes.items():
+                x_min, y_min, x_max, y_max = coords
+                
+                # Thuật toán Hit-Test (Kiểm tra va chạm)
+                if x_min <= click_x <= x_max and y_min <= click_y <= y_max:
+                    found_object = name
+                    break # Tìm thấy rồi thì dừng lại
+            
+            # 4. Hiển thị kết quả
+            if found_object:
+                st.success(f"🎯 Detected: **{found_object}**")
+                st.write(f"📍 Coordinates: `({click_x}, {click_y})`")
+                
+                # Logic hiển thị nội dung (lấy từ Dataset OntoLex)
+                if found_object == "Con Mèo (The Cat)":
+                    st.markdown("> *Con mèo già tham lam, tay nhận hối lộ nhưng mặt vẫn ra vẻ đạo mạo.*")
+                    st.json({"Concept": "Corruption", "Confidence": "98%"})
+                    # st.audio("cat_sound.mp3") 
+                
+                elif found_object == "Con Cá (The Fish)":
+                    st.markdown("> *Lễ vật hối lộ. Cá chép tượng trưng cho sự dư dả, nhưng ở đây lại dùng để mua chuộc.*")
+                    st.json({"Concept": "Bribery", "Confidence": "95%"})
+
             else:
-                # Nếu tắt thì hiện ảnh gốc
-                st.image(img_file_path, caption="Original Woodblock Print", use_column_width=True)
+                st.info(f"Bạn click vào vùng trống `({click_x}, {click_y})`. Hãy thử click vào con vật!")
         else:
-            st.error("⚠️ Không tìm thấy ảnh để hiển thị.")
+            st.write("👈 Hãy click vào bức tranh bên trái.")
