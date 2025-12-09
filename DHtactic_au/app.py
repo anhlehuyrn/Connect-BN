@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -27,7 +28,8 @@ with tab1:
         st.info("💡 Inspired by the 'Red Hen Lab' multimodal research vision.")
     with col2:
         # Bạn thay bằng ảnh bìa dự án của bạn
-        st.image("tDHimg/dam_cuoi_chuot.jpg", caption="Đám cưới chuột - Rat's Wedding")
+        image_path = os.path.join(os.path.dirname(__file__), "tDHimg/dam_cuoi_chuot.jpg")
+        st.image(image_path, caption="Đám cưới chuột - Rat's Wedding")
 
 # --- TAB 2: DỮ LIỆU (Khoe kỹ năng Data) ---
 with tab2:
@@ -75,4 +77,5 @@ with tab3:
                 st.code("Concept: Satire | Sentiment: Mixed", language="json")
 
     with col_sim_2:
-        st.image("tDHimg/dam_cuoi_chuot.jpg", width=500)
+        image_path_sim = os.path.join(os.path.dirname(__file__), "tDHimg/dam_cuoi_chuot.jpg")
+        st.image(image_path_sim, width=500)
