@@ -6,3 +6,4 @@ openpyxl
 Pillow
 torch
 torchvision
+streamlit_image_coordinates

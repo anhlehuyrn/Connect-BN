@@ -56,7 +56,7 @@ tab1, tab2, tab3 = st.tabs(["📖 Story & Vision", "📊 Data Explorer", "👆 T
 
 # Đường dẫn ảnh chung (Sửa lại cho chuẩn với cấu trúc thư mục của bạn)
 # Giả sử ảnh nằm trong thư mục tDHimg cùng cấp với file app.py
-img_file_path = os.path.join(os.path.dirname(__file__), "tDHimg/dam_cuoi_chuot.jpg")
+img_file_path = os.path.join(os.path.dirname(__file__), "tDHimg", "dam_cuoi_chuot", "dam_cuoi_chuot.jpg")
 
 # --- TAB 1: CÂU CHUYỆN ---
 with tab1:
@@ -103,7 +103,7 @@ with tab3:
     col_sim_1, col_sim_2 = st.columns([2, 1])
 
     # Đường dẫn ảnh
-    img_path = "tDHimg/dam_cuoi_chuot.jpg"  # Đảm bảo đường dẫn đúng
+    img_path = img_file_path  # Use the absolute path defined earlier
 
     with col_sim_1:
         # 1. Định nghĩa "Bản đồ tọa độ" (Bounding Boxes)
@@ -118,9 +118,9 @@ with tab3:
             "Con Cá (The Fish)": [300, 180, 350, 220] # Ví dụ thêm con cá
         }
 
-        # 2. Hiển thị ảnh và Bắt sự kiện Click
         # Biến 'value' sẽ trả về tọa độ {'x': 123, 'y': 456} khi người dùng click
-        value = streamlit_image_coordinates(img_path, key="pil")
+        img_pil = Image.open(img_file_path)
+        value = streamlit_image_coordinates(img_pil, key="pil")
 
     with col_sim_2:
         st.subheader("🧠 AI Analysis Result")
