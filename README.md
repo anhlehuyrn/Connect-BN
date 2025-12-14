@@ -7,14 +7,23 @@
 > **"Art should not be just for the eyes. It should be for the hands, the ears, and the heart."**
 
 ## 📖 Introduction
+
+### 🏮 Cultural Context: The UNESCO Urgency
+
+**Dong Ho Folk Painting**, a centuries-old Vietnamese woodblock art, is currently a candidate for **UNESCO's List of Intangible Cultural Heritage in Need of Urgent Safeguarding**.
+
+![alt text](image-2.png)
+
 **Tactile Audio** is an accessibility project designed to bridge the gap between Vietnamese Cultural Heritage (**Dong Ho Folk Paintings**) and the **Visually Impaired community**.
 
 By integrating **Computer Vision (YOLO/Roboflow)** with **Semantic Web technologies (OntoLex-Lemon)**, this system allows blind users to "hear" the stories hidden within the woodblock prints just by touching them.
 
 ---
-
+Gif:
 ![alt text](DHtactic_au\tDHimg\Demo.gif)
-> *The AI identifies motifs (e.g., 'The Groom', 'The Bride') in the 'Mouse Wedding' painting in real-time.*
+![alt text](image-1.png)
+![alt text](DHtactic_au/tDHimg/demo.png)
+> *The AI will identify motifs (e.g., 'The Groom', 'The Bride') in the 'Mouse Wedding' painting in real-time.*
 
 ---
 
