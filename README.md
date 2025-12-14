@@ -20,7 +20,7 @@ By integrating **Computer Vision (YOLO/Roboflow)** with **Semantic Web technolog
 
 ---
 Gif:
-![alt text](DHtactic_au\tDHimg\Demo.gif)
+![Demo GIF](DHtactic_au\tDHimg\Demo.gif)
 ![alt text](image-1.png)
 ![alt text](DHtactic_au/tDHimg/demo.png)
 > *The AI will identify motifs (e.g., 'The Groom', 'The Bride') in the 'Mouse Wedding' painting in real-time.*
